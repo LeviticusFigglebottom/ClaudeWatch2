@@ -10,14 +10,14 @@ Branch: `claude/game-repo-setup-q94hom`
 ## 1. Where we are in one paragraph
 
 The engine, the simulation, the netcode, the bot AI and the presentation layer are **complete and
-working**. All **18 heroes exist, build, and play** — a 10-bot match with the full roster runs for
-30 simulated seconds with **zero script errors** and bots trading kills. **3 of 6 maps** are playable (including the training range)
-(Nightmarket Vertical, Saltmarsh Terminal), both now registered and playable. The UI has
-all 13 screens written but only 4 are screenshot-verified. **Audio is the largest single gap: 0
-sound files exist.** Per-hero and per-map design docs were never written. Nothing has been
-balance-tested with data.
+working**. All **18 heroes exist, build, and play** — full-roster bot matches run with **zero
+script errors** across three maps and three modes. **Two of the six designed maps are built and
+playable** (Nightmarket Vertical on Push, Saltmarsh Terminal on Escort), plus the training range;
+Kestrel, Aurelia, Orchard and Meridian do not exist yet. The UI has all 13 screens written but only
+4 are screenshot-verified. **Audio is the largest single gap: 0 sound files exist.** Per-hero and
+per-map design docs were never written, and nothing has been balance-tested with data.
 
-Scale: 29,091 lines of GDScript across 203 source files, 18 hero builders, 16 passing unit tests.
+Scale: 29,091 lines of GDScript across 203 source files, 18 hero builders, 18 passing unit tests.
 
 ---
 
