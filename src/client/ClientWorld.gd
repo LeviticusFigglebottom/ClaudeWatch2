@@ -43,10 +43,38 @@ func setup(c: GameClient) -> void:
 	damage_numbers = DamageNumbers.new()
 	damage_numbers.name = "DamageNumbers"
 	add_child(damage_numbers)
+	_register_rig_commands()
 
 
 func world() -> SimWorld:
 	return client.world
+
+
+var _rig_show: Node3D
+
+
+## Console: rigshow <hero> [x y z] [yaw_deg] — place a static hero rig for visual review.
+func _register_rig_commands() -> void:
+	Console.register("rigshow", "rigshow <hero> [x y z] [yaw]: show a hero rig for review", func(a: PackedStringArray) -> String:
+		if a.size() < 1: return "usage: rigshow <hero> [x y z] [yaw]"
+		var h := Registry.hero(StringName(a[0]))
+		if h == null: return "unknown hero"
+		if _rig_show: _rig_show.queue_free()
+		_rig_show = Node3D.new()
+		world().add_child(_rig_show)
+		var pos := Vector3(float(a[1]), float(a[2]), float(a[3])) if a.size() >= 4 else Vector3(0, 0.02, 0)
+		_rig_show.global_position = pos
+		_rig_show.rotation.y = deg_to_rad(float(a[4])) if a.size() >= 5 else 0.0
+		var rig := HeroRig.new()
+		_rig_show.add_child(rig)
+		rig.build(h, RF.Team.A)
+		rig.animate(0.016, {"speed": 0.0, "max_speed": 5.5, "local_move": Vector2.ZERO, "grounded": true, "crouch": 0.0, "pitch": 0.0,
+			"recoil": 0.0, "melee": 0.0, "hit": 0.0, "heal": 0.0, "stunned": false, "rooted": false, "pose": &"", "vy": 0.0, "invisible": false, "revealed": false, "hovering": false})
+		return "rig %s at %s" % [h.id, pos])
+	Console.register("rigclear", "Remove the review rig", func(_a: PackedStringArray) -> String:
+		if _rig_show: _rig_show.queue_free()
+		_rig_show = null
+		return "cleared")
 
 
 func on_map_loaded(md: MapData) -> void:

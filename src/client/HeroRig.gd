@@ -75,7 +75,7 @@ func build(hero: HeroData, t: int) -> void:
 		_capsule(torso, 0.19 * bulk * sw / 0.55, torso_h, Vector3(0, torso_h * 0.5, 0), primary)
 		_box(torso, Vector3(sw * 0.62, torso_h * 0.42, 0.26 * bulk), Vector3(0, torso_h * 0.66, 0.04), secondary)
 	# Chest emblem (team glow)
-	_box(torso, Vector3(0.12, 0.12, 0.03), Vector3(0, torso_h * 0.7, 0.15 * bulk + 0.08), team_mat)
+	_box(torso, Vector3(0.12, 0.12, 0.03), Vector3(0, torso_h * 0.7, -(0.15 * bulk + 0.08)), team_mat)
 	# Belt
 	_box(hips, Vector3(sw * 0.62, 0.08, 0.28 * bulk), Vector3(0, 0.02, 0), accent)
 	# Shoulders
@@ -104,7 +104,7 @@ func build(hero: HeroData, t: int) -> void:
 		var shin := Node3D.new(); shin.name = "Shin"; leg.add_child(shin)
 		shin.position.y = -leg_len * 0.5
 		_capsule(shin, 0.075 * bulk, leg_len * 0.48, Vector3(0, -leg_len * 0.24, 0), primary)
-		_box(shin, Vector3(0.14 * bulk, 0.09, 0.26 * bulk), Vector3(0, -leg_len * 0.5 + 0.04, 0.05), accent)   # boot
+		_box(shin, Vector3(0.14 * bulk, 0.09, 0.26 * bulk), Vector3(0, -leg_len * 0.5 + 0.04, -0.05), accent)   # boot
 	# Head
 	head.position.y = torso_h + 0.06 * h
 	_build_head(head, skin, primary, secondary, accent, glow, team_mat, bulk)
@@ -153,18 +153,18 @@ func _build_head(node: Node3D, skin: StandardMaterial3D, primary: StandardMateri
 	match visual.head:
 		HeroVisualData.HeadShape.HELMET_ROUND:
 			_sphere(node, r * 1.1, Vector3(0, r, 0), primary)
-			_box(node, Vector3(r * 1.6, r * 0.5, 0.05), Vector3(0, r * 0.9, r * 0.95), glow)
+			_box(node, Vector3(r * 1.6, r * 0.5, 0.05), Vector3(0, r * 0.9, -r * 0.95), glow)
 		HeroVisualData.HeadShape.HELMET_VISOR:
 			_box(node, Vector3(r * 1.9, r * 2.0, r * 2.0), Vector3(0, r, 0), primary)
-			_box(node, Vector3(r * 1.7, r * 0.6, 0.06), Vector3(0, r * 1.1, r * 1.0), glow)
+			_box(node, Vector3(r * 1.7, r * 0.6, 0.06), Vector3(0, r * 1.1, -r * 1.0), glow)
 			_box(node, Vector3(r * 0.5, r * 0.9, r * 0.5), Vector3(0, r * 2.2, 0), accent)
 		HeroVisualData.HeadShape.HOOD:
-			_sphere(node, r * 1.25, Vector3(0, r * 0.9, -0.02), secondary)
-			_sphere(node, r * 0.85, Vector3(0, r * 0.75, r * 0.5), Color(0.05, 0.05, 0.07) if true else null)
-			_box(node, Vector3(r * 0.6, r * 0.15, 0.04), Vector3(0, r * 0.8, r * 1.15), glow)
+			_sphere(node, r * 1.25, Vector3(0, r * 0.9, 0.02), secondary)
+			_sphere(node, r * 0.85, Vector3(0, r * 0.75, -r * 0.5), Color(0.05, 0.05, 0.07))
+			_box(node, Vector3(r * 0.6, r * 0.15, 0.04), Vector3(0, r * 0.8, -r * 1.15), glow)
 		HeroVisualData.HeadShape.BARE:
 			_sphere(node, r, Vector3(0, r, 0), skin)
-			_sphere(node, r * 1.02, Vector3(0, r * 1.25, -0.03), secondary)   # hair cap
+			_sphere(node, r * 1.02, Vector3(0, r * 1.25, 0.03), secondary)   # hair cap
 		HeroVisualData.HeadShape.DOME:
 			_sphere(node, r * 1.35, Vector3(0, r * 0.9, 0), glow)
 			_box(node, Vector3(r * 2.2, r * 0.3, r * 2.2), Vector3(0, r * 0.2, 0), secondary)
@@ -174,13 +174,13 @@ func _build_head(node: Node3D, skin: StandardMaterial3D, primary: StandardMateri
 			_box(node, Vector3(r * 1.9, r * 0.25, r * 1.9), Vector3(0, r * 2.5, 0), accent)
 		HeroVisualData.HeadShape.DIVER:
 			_sphere(node, r * 1.4, Vector3(0, r * 1.1, 0), primary)
-			_cylinder(node, r * 0.75, 0.06, Vector3(0, r * 1.1, r * 1.3), glow, Vector3(PI * 0.5, 0, 0))
+			_cylinder(node, r * 0.75, 0.06, Vector3(0, r * 1.1, -r * 1.3), glow, Vector3(PI * 0.5, 0, 0))
 			for a: float in [0.0, 2.1, 4.2]:
 				_cylinder(node, r * 0.35, 0.08, Vector3(sin(a) * r * 1.35, r * 1.1 + cos(a) * r * 0.6, 0), accent, Vector3(0, 0, PI * 0.5))
 		HeroVisualData.HeadShape.BEAKED:
 			_sphere(node, r * 1.05, Vector3(0, r, 0), primary)
-			_box(node, Vector3(r * 0.5, r * 0.5, r * 1.6), Vector3(0, r * 0.8, r * 1.2), accent)
-			_box(node, Vector3(r * 1.6, r * 0.35, 0.04), Vector3(0, r * 1.25, r * 0.9), glow)
+			_box(node, Vector3(r * 0.5, r * 0.5, r * 1.6), Vector3(0, r * 0.8, -r * 1.2), accent)
+			_box(node, Vector3(r * 1.6, r * 0.35, 0.04), Vector3(0, r * 1.25, -r * 0.9), glow)
 		HeroVisualData.HeadShape.CROWN:
 			_sphere(node, r, Vector3(0, r, 0), skin)
 			for i in 5:
@@ -189,7 +189,7 @@ func _build_head(node: Node3D, skin: StandardMaterial3D, primary: StandardMateri
 			_cylinder(node, r * 0.95, 0.08, Vector3(0, r * 1.55, 0), accent)
 		HeroVisualData.HeadShape.ANTENNA:
 			_box(node, Vector3(r * 1.6, r * 1.8, r * 1.6), Vector3(0, r, 0), primary)
-			_box(node, Vector3(r * 1.3, r * 0.4, 0.05), Vector3(0, r * 1.0, r * 0.8), glow)
+			_box(node, Vector3(r * 1.3, r * 0.4, 0.05), Vector3(0, r * 1.0, -r * 0.8), glow)
 			_cylinder(node, 0.02, r * 2.0, Vector3(r * 0.5, r * 2.5, 0), accent)
 			_sphere(node, 0.05, Vector3(r * 0.5, r * 3.5, 0), glow)
 
@@ -197,42 +197,42 @@ func _build_head(node: Node3D, skin: StandardMaterial3D, primary: StandardMateri
 func _build_extra(e: HeroVisualData.Extra, primary: StandardMaterial3D, secondary: StandardMaterial3D, accent: StandardMaterial3D, glow: StandardMaterial3D, bulk: float, torso_h: float, sw: float) -> void:
 	match e:
 		HeroVisualData.Extra.CLOAK:
-			var cloak := _box(extras_root, Vector3(sw * 0.9, torso_h * 1.5, 0.05), Vector3(0, torso_h * 0.15, -0.18 * bulk), secondary)
+			var cloak := _box(extras_root, Vector3(sw * 0.9, torso_h * 1.5, 0.05), Vector3(0, torso_h * 0.15, 0.2 * bulk), secondary)
 			cloak.name = "Cloak"
 		HeroVisualData.Extra.BACKPACK:
-			_box(extras_root, Vector3(sw * 0.55, torso_h * 0.7, 0.25), Vector3(0, torso_h * 0.5, -0.26 * bulk), secondary)
-			_box(extras_root, Vector3(0.06, 0.06, 0.06), Vector3(sw * 0.2, torso_h * 0.75, -0.4 * bulk), glow)
+			_box(extras_root, Vector3(sw * 0.55, torso_h * 0.7, 0.25), Vector3(0, torso_h * 0.5, 0.26 * bulk), secondary)
+			_box(extras_root, Vector3(0.06, 0.06, 0.06), Vector3(sw * 0.2, torso_h * 0.75, 0.4 * bulk), glow)
 		HeroVisualData.Extra.JETPACK:
 			for side: float in [-1.0, 1.0]:
-				_cylinder(extras_root, 0.09, torso_h * 0.8, Vector3(side * sw * 0.22, torso_h * 0.45, -0.24 * bulk), secondary)
-				_cylinder(extras_root, 0.07, 0.08, Vector3(side * sw * 0.22, torso_h * 0.02, -0.24 * bulk), glow)
+				_cylinder(extras_root, 0.09, torso_h * 0.8, Vector3(side * sw * 0.22, torso_h * 0.45, 0.24 * bulk), secondary)
+				_cylinder(extras_root, 0.07, 0.08, Vector3(side * sw * 0.22, torso_h * 0.02, 0.24 * bulk), glow)
 		HeroVisualData.Extra.SHOULDER_PADS:
 			pass   # handled at shoulders
 		HeroVisualData.Extra.TANK_CANISTERS:
 			for side: float in [-1.0, 1.0]:
-				_cylinder(extras_root, 0.12, torso_h * 0.9, Vector3(side * sw * 0.25, torso_h * 0.45, -0.3 * bulk), accent)
-				_sphere(extras_root, 0.12, Vector3(side * sw * 0.25, torso_h * 0.9, -0.3 * bulk), secondary)
+				_cylinder(extras_root, 0.12, torso_h * 0.9, Vector3(side * sw * 0.25, torso_h * 0.45, 0.3 * bulk), accent)
+				_sphere(extras_root, 0.12, Vector3(side * sw * 0.25, torso_h * 0.9, 0.3 * bulk), secondary)
 		HeroVisualData.Extra.WINGS:
 			for side: float in [-1.0, 1.0]:
-				var w := _box(extras_root, Vector3(0.5, 0.04, 0.22), Vector3(side * (sw * 0.5 + 0.25), torso_h * 0.8, -0.2), glow)
+				var w := _box(extras_root, Vector3(0.5, 0.04, 0.22), Vector3(side * (sw * 0.5 + 0.25), torso_h * 0.8, 0.2), glow)
 				w.rotation.z = side * 0.35
 				w.name = "WingL" if side < 0 else "WingR"
 		HeroVisualData.Extra.HALO:
 			var ring := MeshInstance3D.new()
 			var tm := TorusMesh.new(); tm.inner_radius = 0.22; tm.outer_radius = 0.26
 			ring.mesh = tm; ring.material_override = glow
-			ring.position = Vector3(0, torso_h + 0.5, -0.05)
+			ring.position = Vector3(0, torso_h + 0.5, 0.05)
 			ring.rotation.x = 0.4
 			extras_root.add_child(ring)
 			meshes.append(ring)
 		HeroVisualData.Extra.TAIL:
-			_capsule(extras_root, 0.05, 0.7, Vector3(0, 0.05, -0.45), secondary, Vector3(1.2, 0, 0))
+			_capsule(extras_root, 0.05, 0.7, Vector3(0, 0.05, 0.45), secondary, Vector3(-1.2, 0, 0))
 		HeroVisualData.Extra.BANNER:
-			_cylinder(extras_root, 0.02, 1.4, Vector3(-sw * 0.35, torso_h * 0.7, -0.2), accent)
-			_box(extras_root, Vector3(0.35, 0.5, 0.02), Vector3(-sw * 0.35 + 0.18, torso_h * 1.2, -0.2), glow)
+			_cylinder(extras_root, 0.02, 1.4, Vector3(-sw * 0.35, torso_h * 0.7, 0.2), accent)
+			_box(extras_root, Vector3(0.35, 0.5, 0.02), Vector3(-sw * 0.35 + 0.18, torso_h * 1.2, 0.2), glow)
 		HeroVisualData.Extra.ANCHOR:
-			_box(extras_root, Vector3(0.08, 0.7, 0.08), Vector3(0, torso_h * 0.4, -0.3 * bulk), accent)
-			_box(extras_root, Vector3(0.5, 0.08, 0.08), Vector3(0, torso_h * 0.05, -0.3 * bulk), accent)
+			_box(extras_root, Vector3(0.08, 0.7, 0.08), Vector3(0, torso_h * 0.4, 0.3 * bulk), accent)
+			_box(extras_root, Vector3(0.5, 0.08, 0.08), Vector3(0, torso_h * 0.05, 0.3 * bulk), accent)
 		HeroVisualData.Extra.VINES:
 			for i in 4:
 				var a := float(i) / 4.0 * TAU
@@ -240,17 +240,17 @@ func _build_extra(e: HeroVisualData.Extra, primary: StandardMaterial3D, secondar
 		HeroVisualData.Extra.CANDLES:
 			for i in 3:
 				var x := (i - 1) * 0.16
-				_cylinder(extras_root, 0.035, 0.22, Vector3(x, torso_h + 0.35, -0.22), accent)
-				_sphere(extras_root, 0.04, Vector3(x, torso_h + 0.5, -0.22), glow)
+				_cylinder(extras_root, 0.035, 0.22, Vector3(x, torso_h + 0.35, 0.22), accent)
+				_sphere(extras_root, 0.04, Vector3(x, torso_h + 0.5, 0.22), glow)
 		HeroVisualData.Extra.SPEAKERS:
 			for side: float in [-1.0, 1.0]:
-				_box(extras_root, Vector3(0.22, 0.3, 0.16), Vector3(side * (sw * 0.5 + 0.12), torso_h * 0.5, -0.18), secondary)
-				_cylinder(extras_root, 0.08, 0.02, Vector3(side * (sw * 0.5 + 0.12), torso_h * 0.5, -0.09), glow, Vector3(PI * 0.5, 0, 0))
+				_box(extras_root, Vector3(0.22, 0.3, 0.16), Vector3(side * (sw * 0.5 + 0.12), torso_h * 0.5, 0.18), secondary)
+				_cylinder(extras_root, 0.08, 0.02, Vector3(side * (sw * 0.5 + 0.12), torso_h * 0.5, 0.09), glow, Vector3(PI * 0.5, 0, 0))
 		HeroVisualData.Extra.PRISM:
 			var prism := MeshInstance3D.new()
 			var pm := PrismMesh.new(); pm.size = Vector3(0.3, 0.4, 0.3)
 			prism.mesh = pm; prism.material_override = glow
-			prism.position = Vector3(0, torso_h + 0.6, -0.1)
+			prism.position = Vector3(0, torso_h + 0.6, 0.1)
 			extras_root.add_child(prism)
 			meshes.append(prism)
 			prism.name = "Prism"
@@ -455,7 +455,7 @@ func animate(dt: float, s: Dictionary) -> void:
 		(extras_root.get_node("WingR") as Node3D).rotation.z = 0.35 + flap
 	var cloak := extras_root.get_node_or_null("Cloak")
 	if cloak:
-		(cloak as Node3D).rotation.x = -0.15 - norm * 0.5 - (0.3 if not grounded else 0.0)
+		(cloak as Node3D).rotation.x = 0.15 + norm * 0.5 + (0.3 if not grounded else 0.0)
 	var prism := extras_root.get_node_or_null("Prism")
 	if prism:
 		(prism as Node3D).rotation.y += dt * 1.5

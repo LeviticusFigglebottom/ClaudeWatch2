@@ -43,8 +43,8 @@ func build() -> void:
 		block(Vector3(x, 0, -30), Vector3(0.6, 1.9, 0.4), mat(&"fabric", Color(0.9, 0.3, 0.3)))
 		block(Vector3(x, 1.9, -30), Vector3(0.4, 0.4, 0.4), mat(&"fabric", Color(1.0, 0.8, 0.3)))
 	# Layout
-	layout.add_spawn_room(&"a", 0, Vector3(0, 0, 34), 180.0, Vector3(6, 3, 3))
-	layout.add_spawn_room(&"b", 0, Vector3(0, 0, -34), 0.0, Vector3(6, 3, 3))
+	layout.add_spawn_room(&"a", 0, Vector3(0, 0, 34), 0.0, Vector3(6, 3, 3))
+	layout.add_spawn_room(&"b", 0, Vector3(0, 0, -34), 180.0, Vector3(6, 3, 3))
 	layout.control_points.append(layout.make_zone("Range", Vector3(0, 0, 0), Vector3(7, 3, 7)))
 	layout.add_health_pack(Vector3(-16, 3.0, 0), true)
 	layout.add_health_pack(Vector3(16, 3.0, 0), false)
