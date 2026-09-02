@@ -35,6 +35,9 @@ Scale: 29,091 lines of GDScript across 203 source files, 18 hero builders, 18 pa
 | Netcode under load | Works | 20–31 KB/s to one client at 30 Hz, server tick 4.4–5.1 ms with 10 pawns |
 | Screenshot harness | Works | `tools/screenshot.sh` under Xvfb + lavapipe; FP/TP/overview/rig views captured and reviewed |
 | Visual regression | Works | `tools/visual_check.py screenshots/*.png` → 13 files, 0 failed |
+| **Parse gate** | Clean | `tools/parse_check.sh` → 232 scripts, 0 parse errors, 20 s |
+| **UI smoke** | Clean | `tools/ui_smoke.tscn` → all 12 screens/overlays instantiate and render, 0 errors |
+| **Play vs Bots end to end** | Works | `tools/play_smoke.tscn` → menu → hero select → spawned as Vesper on Nightmarket/Push, alive at 8 s, 10 pawns, 0 errors |
 
 **Do not re-litigate these.** They are done. Spend the next session's budget on §4 and §5.
 
@@ -42,7 +45,7 @@ Scale: 29,091 lines of GDScript across 203 source files, 18 hero builders, 18 pa
 
 ## 3. Bugs fixed while assessing
 
-Five real bugs. Worth reading — the same classes will recur as more content lands:
+Seven real bugs. Worth reading — the same classes will recur as more content lands:
 
 1. **`ClientWorld` assigned freed instances.** `projectile_visuals` is a pooled dictionary whose
    nodes `queue_free()` on impact; the typed lookup `var pv: ProjectileVisual = dict.get(id)` throws
@@ -60,7 +63,18 @@ Five real bugs. Worth reading — the same classes will recur as more content la
    damage-over-time tick can kill the pawn; death calls `clear_all()` re-entrantly; the loop then
    read `active[i]` out of bounds. Now iterates a snapshot and re-checks membership after every
    call that can re-enter. Covered by a new regression test.
-5. **Deployables outlived their owner pawn and kept a dangling reference** — 2,791 errors in a
+5. **The Play vs Bots menu path was broken in three separate ways**, none of which any headless
+   bot match could catch, because every automated test so far used the console `map` command and
+   bypassed the UI entirely. A player hit all three:
+   - `PlayMenu` had a parse error (`var team := [5, 6, 3, 1][i]` cannot infer from an untyped array
+     literal). The screen crashed the moment it was opened. Root cause was `RF.ROLE_LIMIT` being an
+     untyped array; it is now `Array[int]`.
+   - Bots filled all five role slots before a joining human picked, so the 1/2/2 role limit
+     rejected **every** hero and the player was stuck at hero select permanently. Bots now yield a
+     contested hero or role slot to a human and re-pick into a role with room.
+   - The menu offered modes with no map, then fell back to listing every map, producing invalid
+     combinations such as Hybrid on a Push-only map. It now lists only modes that have a map.
+6. **Deployables outlived their owner pawn and kept a dangling reference** — 2,791 errors in a
    single 2-match sim once Bramble's thicket was in a comp, and it would have hit almost every
    hero with a placeable. `SimWorld.remove_pawn()` now severs owner references held by
    deployables, projectiles, homing targets and status instances; `DamagePipeline` degrades a
@@ -180,6 +194,25 @@ disjoint file set, never touches shared code, appends to `docs/REQUESTS.md` when
 
 ---
 
+## 5b. Test discipline (this is how a crash reached a player)
+
+Every automated check up to that point drove the game through the console `map` command, which
+skips the entire menu. The UI was therefore completely untested, and a parse error in the play
+screen shipped. Three gates now cover that gap and **all three should run before saying anything
+works**:
+
+```bash
+tools/parse_check.sh                      # every .gd, catches runtime-only script errors, 20 s
+tools/godot.sh --headless res://tools/ui_smoke.tscn        # all 12 screens instantiate + render
+tools/godot.sh --headless res://tools/play_smoke.tscn      # the real menu -> match path
+```
+
+`--import` alone is **not** a parse check. It imports a broken UI screen without complaint.
+Both smoke tests carry watchdogs: an unguarded failure previously left Godot running forever and
+held the tool lock, which blocks every other run in the repo.
+
+---
+
 ## 6. Traps discovered the hard way (read before writing code)
 
 - **`set_anchors_preset` keeps the current rect.** Calling it in `_ready` on a zero-sized Control
@@ -202,6 +235,11 @@ disjoint file set, never touches shared code, appends to `docs/REQUESTS.md` when
 - **Anything that applies damage inside a loop can kill the target and mutate the list you are
   iterating.** Snapshot, then re-check membership.
 - **Balance-test via `--sim`, never via the `map` console command** — the latter is 4v5 (§4).
+- **The console `map` command is not a test of the game.** It bypasses the menu, hero select and
+  composition rules. Use the smoke tests in §5b for anything a player actually touches.
+- **Untyped array literals poison `:=`.** `[1, 2, 3][i]` is Variant, so `var x := arr[i]` fails to
+  infer. Type the constant (`const X: Array[int] = ...`) or annotate the variable.
+- **Bots must always yield to humans** in composition rules; a strict limit locks players out.
 - Godot runs are serialized through a lock in `tools/godot.sh`. Parallel agents will wait on it;
   keep individual sim limits ≤ 200–300 s so nobody starves.
 

@@ -12,6 +12,9 @@ Living list. Items move from *Open* to *Done* with the commit that closed them; 
 
 ## Done
 
+- [x] Fix the Play vs Bots crash: PlayMenu parse error, bot role-slot lockout, invalid mode/map
+      combinations; add parse/UI/play smoke gates (c6c506d)
+
 - [x] Project scaffold, sim core, ability framework, netcode, bot brain, presentation (67f0268)
 - [x] Escort / Control / Hybrid / Push modes, sim harness, unit tests, asset library (123392e)
 - [x] Tactical map bake + bot usage, status flags min_health_one/fire_rate_mult, multi-segment beams (6d8af18)
