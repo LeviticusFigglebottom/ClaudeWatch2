@@ -204,6 +204,9 @@ func step(cmd: InputCmd, dt: float) -> void:
 		fall_speed_peak = minf(fall_speed_peak, vel.y)
 
 	pawn.velocity = vel
+	if pawn.global_position.y > 12.0 and Console.cvar("dbg_high", 0.0) > 0.0:
+		var act := pawn.abilities.active_ability()
+		print("[dbg] %s y=%.1f vel=%s controlled=%s active=%s grounded=%s ext=%s" % [pawn.display_name, pawn.global_position.y, pawn.velocity, controlled, act.data.id if act else "-", grounded, external_impulse])
 	pawn.move_and_slide()
 	_try_step_up(dt)
 
@@ -247,6 +250,10 @@ func _try_step_up(_dt: float) -> void:
 	var wish := wish_dir.normalized()
 	if horiz.length() > 1.5:
 		return   # not actually blocked
+	# Only step up onto static world geometry, never onto other pawns (that builds ladders).
+	var last := pawn.get_last_slide_collision()
+	if last and last.get_collider() is Pawn:
+		return
 	var up := Vector3(0, profile.step_height, 0)
 	var fwd := wish * (profile.capsule_radius + 0.15)
 	var from := pawn.global_transform
@@ -268,6 +275,8 @@ func _try_step_up(_dt: float) -> void:
 	var down_res := PhysicsTestMotionResult3D.new()
 	if PhysicsServer3D.body_test_motion(pawn.get_rid(), p, down_res):
 		var n := down_res.get_collision_normal()
+		if down_res.get_collider() is Pawn:
+			return
 		if n.y > 0.7:
 			pawn.global_position = p.from.origin + p.motion * down_res.get_collision_safe_fraction()
 			pawn.velocity = Vector3(wish.x * maxf(profile.max_speed * 0.8, horiz.length()), 0, wish.z * maxf(profile.max_speed * 0.8, horiz.length()))

@@ -71,7 +71,10 @@ func boot() -> void:
 		start_dedicated_server()
 		return
 	if launch_args.has("sim"):
-		return   # SimHarness drives everything
+		var sim := SimHarness.new()
+		sim.name = "SimHarness"
+		add_child(sim)
+		return
 	if not Console.has_pending():
 		go_to_menu()
 

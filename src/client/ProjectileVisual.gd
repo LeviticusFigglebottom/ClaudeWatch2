@@ -75,7 +75,7 @@ func setup(v: VfxLibrary, vid: StringName, col: Color, velocity: Vector3, grav: 
 	light.omni_range = 3.5
 	light.shadow_enabled = false
 	add_child(light)
-	trail = v._build_particles(&"projectile_trail")
+	trail = v.build_particles(&"projectile_trail")
 	(trail.process_material as ParticleProcessMaterial).color = col
 	trail.emitting = true
 	add_child(trail)

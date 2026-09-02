@@ -21,6 +21,36 @@ var loops: Dictionary = {}             # "net_id:ability" -> Node3D
 var rings: Array = []                  # [mesh, t, life]
 var MAX_DECALS := 96
 var _tracer_mat_cache: Dictionary = {}
+static var custom_builders: Dictionary = {}     # vfx id -> Callable(lib: VfxLibrary) -> GPUParticles3D
+static var custom_spawners: Dictionary = {}     # vfx id -> Callable(lib, pos, normal, color, attach) -> void
+static var _extensions_loaded: bool = false
+
+
+## Hero-specific VFX live in src/vfx/hero_vfx/<hero>_vfx.gd with a static register(lib) that fills
+## custom_builders (particle recipes) and/or custom_spawners (arbitrary node effects).
+static func load_extensions() -> void:
+	if _extensions_loaded:
+		return
+	_extensions_loaded = true
+	var dir := DirAccess.open("res://src/vfx/hero_vfx")
+	if dir == null:
+		return
+	dir.list_dir_begin()
+	var f := dir.get_next()
+	while f != "":
+		if f.ends_with(".gd"):
+			var s := load("res://src/vfx/hero_vfx/" + f) as GDScript
+			if s and s.has_method("register"):
+				s.call("register")
+		f = dir.get_next()
+
+
+static func register_builder(id: StringName, builder: Callable) -> void:
+	custom_builders[id] = builder
+
+
+static func register_spawner(id: StringName, spawner: Callable) -> void:
+	custom_spawners[id] = spawner
 
 
 static func flash_texture() -> Texture2D:
@@ -93,6 +123,7 @@ static func _make_radial(size: int, inner: float, outer: float, star: bool) -> T
 
 
 func set_world(w: SimWorld) -> void:
+	load_extensions()
 	world = w
 	for t: MeshInstance3D in tracers:
 		t.queue_free()
@@ -201,10 +232,13 @@ func impact(pos: Vector3, normal: Vector3, pres: AbilityPresentation) -> void:
 func spawn(kind: StringName, pos: Vector3, normal: Vector3, color: Color, attach_to: Node3D = null) -> GPUParticles3D:
 	if world == null or kind == &"":
 		return null
+	if custom_spawners.has(kind):
+		(custom_spawners[kind] as Callable).call(self, pos, normal, color, attach_to)
+		return null
 	var p: GPUParticles3D
 	var pool: Array = particles_free.get(kind, [])
 	if pool.is_empty():
-		p = _build_particles(kind)
+		p = build_particles(kind)
 		if p == null:
 			return null
 		_root().add_child(p)
@@ -240,7 +274,7 @@ func spawn(kind: StringName, pos: Vector3, normal: Vector3, color: Color, attach
 	return p
 
 
-func _mesh_quad(size: float, tex: Texture2D, add: bool = true) -> QuadMesh:
+func mesh_quad(size: float, tex: Texture2D, add: bool = true) -> QuadMesh:
 	var q := QuadMesh.new()
 	q.size = Vector2(size, size)
 	var m := StandardMaterial3D.new()
@@ -255,7 +289,13 @@ func _mesh_quad(size: float, tex: Texture2D, add: bool = true) -> QuadMesh:
 	return q
 
 
-func _build_particles(kind: StringName) -> GPUParticles3D:
+func build_particles(kind: StringName) -> GPUParticles3D:
+	if custom_builders.has(kind):
+		var built: GPUParticles3D = (custom_builders[kind] as Callable).call(self)
+		if built:
+			built.set_meta("tint", built.get_meta("tint", false))
+			built.layers = 1 << 3
+			return built
 	var p := GPUParticles3D.new()
 	var mat := ParticleProcessMaterial.new()
 	p.one_shot = true
@@ -282,93 +322,93 @@ func _build_particles(kind: StringName) -> GPUParticles3D:
 			mat.initial_velocity_min = 3.0; mat.initial_velocity_max = 7.0
 			mat.scale_min = 0.15; mat.scale_max = 0.35
 			mat.spread = 55.0
-			p.draw_pass_1 = _mesh_quad(0.12, spark_texture())
+			p.draw_pass_1 = mesh_quad(0.12, spark_texture())
 		&"impact_flesh":
 			p.amount = 10; p.lifetime = 0.3
 			mat.initial_velocity_min = 1.5; mat.initial_velocity_max = 4.0
 			mat.scale_min = 0.3; mat.scale_max = 0.6; mat.spread = 80.0
 			mat.gravity = Vector3(0, -9, 0)
-			p.draw_pass_1 = _mesh_quad(0.14, soft_texture(), false)
+			p.draw_pass_1 = mesh_quad(0.14, soft_texture(), false)
 		&"impact_barrier":
 			p.amount = 12; p.lifetime = 0.3
 			mat.spread = 90.0; mat.initial_velocity_min = 1.0; mat.initial_velocity_max = 2.5; mat.gravity = Vector3.ZERO
 			mat.scale_min = 0.3; mat.scale_max = 0.5
-			p.draw_pass_1 = _mesh_quad(0.2, ring_texture())
+			p.draw_pass_1 = mesh_quad(0.2, ring_texture())
 		&"muzzle_generic":
 			p.amount = 6; p.lifetime = 0.12
 			mat.spread = 20.0; mat.initial_velocity_min = 2.0; mat.initial_velocity_max = 4.0; mat.gravity = Vector3.ZERO
 			mat.scale_min = 0.6; mat.scale_max = 1.2
-			p.draw_pass_1 = _mesh_quad(0.15, flash_texture())
+			p.draw_pass_1 = mesh_quad(0.15, flash_texture())
 		&"death_burst":
 			p.amount = 40; p.lifetime = 0.9
 			mat.spread = 180.0; mat.direction = Vector3(0, 1, 0)
 			mat.initial_velocity_min = 2.0; mat.initial_velocity_max = 6.0
 			mat.scale_min = 0.4; mat.scale_max = 0.9
-			p.draw_pass_1 = _mesh_quad(0.25, soft_texture())
+			p.draw_pass_1 = mesh_quad(0.25, soft_texture())
 		&"melee_hit":
 			p.amount = 8; p.lifetime = 0.25
 			mat.spread = 90.0; mat.initial_velocity_min = 2.0; mat.initial_velocity_max = 4.0
-			p.draw_pass_1 = _mesh_quad(0.18, spark_texture())
+			p.draw_pass_1 = mesh_quad(0.18, spark_texture())
 		&"blink_out", &"blink_in":
 			p.amount = 24; p.lifetime = 0.5
 			mat.spread = 180.0; mat.direction = Vector3(0, 1, 0); mat.gravity = Vector3(0, 2, 0)
 			mat.initial_velocity_min = 0.5; mat.initial_velocity_max = 2.5
 			mat.scale_min = 0.3; mat.scale_max = 0.7
-			p.draw_pass_1 = _mesh_quad(0.25, soft_texture())
+			p.draw_pass_1 = mesh_quad(0.25, soft_texture())
 		&"deploy_place", &"deploy_break":
 			p.amount = 20; p.lifetime = 0.6
 			mat.spread = 180.0; mat.direction = Vector3(0, 1, 0)
 			mat.initial_velocity_min = 1.0; mat.initial_velocity_max = 4.0
 			mat.scale_min = 0.2; mat.scale_max = 0.5
-			p.draw_pass_1 = _mesh_quad(0.2, spark_texture())
+			p.draw_pass_1 = mesh_quad(0.2, spark_texture())
 		&"ping_marker":
 			p.amount = 1; p.lifetime = 2.5; p.explosiveness = 1.0
 			mat.initial_velocity_min = 0.0; mat.initial_velocity_max = 0.0; mat.gravity = Vector3.ZERO
 			mat.scale_min = 1.0; mat.scale_max = 1.0
-			p.draw_pass_1 = _mesh_quad(1.2, ring_texture())
+			p.draw_pass_1 = mesh_quad(1.2, ring_texture())
 		&"explosion":
 			p.amount = 36; p.lifetime = 0.7
 			mat.spread = 180.0; mat.direction = Vector3(0, 1, 0)
 			mat.initial_velocity_min = 3.0; mat.initial_velocity_max = 9.0
 			mat.scale_min = 0.8; mat.scale_max = 1.8
 			mat.gravity = Vector3(0, -3, 0)
-			p.draw_pass_1 = _mesh_quad(0.5, soft_texture())
+			p.draw_pass_1 = mesh_quad(0.5, soft_texture())
 		&"heal_burst":
 			p.amount = 16; p.lifetime = 0.8
 			mat.spread = 30.0; mat.direction = Vector3(0, 1, 0); mat.gravity = Vector3(0, 1.5, 0)
 			mat.initial_velocity_min = 0.5; mat.initial_velocity_max = 1.5
 			mat.scale_min = 0.2; mat.scale_max = 0.4
-			p.draw_pass_1 = _mesh_quad(0.2, spark_texture())
+			p.draw_pass_1 = mesh_quad(0.2, spark_texture())
 		&"cast_generic":
 			p.amount = 18; p.lifetime = 0.5
 			mat.spread = 180.0; mat.direction = Vector3(0, 1, 0); mat.gravity = Vector3.ZERO
 			mat.initial_velocity_min = 1.0; mat.initial_velocity_max = 3.0
 			mat.scale_min = 0.3; mat.scale_max = 0.6
-			p.draw_pass_1 = _mesh_quad(0.22, soft_texture())
+			p.draw_pass_1 = mesh_quad(0.22, soft_texture())
 		&"ult_burst":
 			p.amount = 60; p.lifetime = 1.2
 			mat.spread = 180.0; mat.direction = Vector3(0, 1, 0)
 			mat.initial_velocity_min = 3.0; mat.initial_velocity_max = 10.0
 			mat.scale_min = 0.6; mat.scale_max = 1.4
 			mat.gravity = Vector3(0, -2, 0)
-			p.draw_pass_1 = _mesh_quad(0.45, soft_texture())
+			p.draw_pass_1 = mesh_quad(0.45, soft_texture())
 		&"smoke_puff":
 			p.amount = 10; p.lifetime = 1.1
 			mat.spread = 60.0; mat.initial_velocity_min = 0.5; mat.initial_velocity_max = 1.5; mat.gravity = Vector3(0, 0.8, 0)
 			mat.scale_min = 0.8; mat.scale_max = 1.6
-			p.draw_pass_1 = _mesh_quad(0.6, soft_texture(), false)
+			p.draw_pass_1 = mesh_quad(0.6, soft_texture(), false)
 		&"projectile_trail":
 			p.one_shot = false; p.explosiveness = 0.0
 			p.amount = 24; p.lifetime = 0.35
 			mat.spread = 5.0; mat.initial_velocity_min = 0.0; mat.initial_velocity_max = 0.2; mat.gravity = Vector3.ZERO
 			mat.scale_min = 0.4; mat.scale_max = 0.7
-			p.draw_pass_1 = _mesh_quad(0.2, soft_texture())
+			p.draw_pass_1 = mesh_quad(0.2, soft_texture())
 		_:
 			# Unknown id: generic soft burst so nothing is ever invisible.
 			p.amount = 16; p.lifetime = 0.5
 			mat.spread = 180.0; mat.direction = Vector3(0, 1, 0)
 			mat.initial_velocity_min = 1.0; mat.initial_velocity_max = 3.0
-			p.draw_pass_1 = _mesh_quad(0.25, soft_texture())
+			p.draw_pass_1 = mesh_quad(0.25, soft_texture())
 	p.process_material = mat
 	return p
 
@@ -486,7 +526,7 @@ func attach_loop(p: Pawn, kind: StringName, ability_id: StringName, color: Color
 	light.light_energy = 1.8
 	light.omni_range = 4.0
 	node.add_child(light)
-	var part := _build_particles(&"cast_generic")
+	var part := build_particles(&"cast_generic")
 	part.one_shot = false
 	part.explosiveness = 0.0
 	part.amount = 24

@@ -762,6 +762,11 @@ func _spawn_health_packs() -> void:
 		world.pickups.append(pk)
 
 
+## Called by modes when spawn rooms change (checkpoint / capture): nothing to do now, respawns read the mode.
+func respawn_pending_positions_changed() -> void:
+	pass
+
+
 func scoreboard_rows() -> Array:
 	return _stats_rows()
 

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ModeData" load_steps=3 format=3 uid="uid://rf_mode_push"]
+
+[ext_resource type="Script" path="res://src/data/ModeData.gd" id="1"]
+[ext_resource type="Script" path="res://src/modes/PushMode.gd" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"push"
+display_name = "Push"
+description = "A hauler bot walks for whichever team stands beside it. Push it into your barrier and drive it toward the enemy side. Farthest push wins when the clock ends; touching it in overtime keeps the round alive."
+kind = 3
+controller_script = ExtResource("2")
+setup_time = 20.0
+overtime_grace = 3.0
+max_rounds = 1
+push_robot_speed = 1.3
+push_barrier_speed_mult = 1.25
+push_time = 480.0
+respawn_time_attack = 10.0
+respawn_time_defend = 10.0
+symmetric = true

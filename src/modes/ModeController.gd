@@ -190,6 +190,20 @@ func spawn_transform(team: int) -> Transform3D:
 	var r: MapLayout.SpawnRoom = rooms[rng.randi() % rooms.size()]
 	if r.points.is_empty():
 		return Transform3D(Basis(), r.zone.center)
+	# Prefer a point nobody is standing on; fall back to a random one.
+	var order: Array[int] = []
+	for i in r.points.size():
+		order.append(i)
+	order.shuffle()
+	for i: int in order:
+		var pt := r.points[i].origin
+		var free := true
+		for p: Pawn in world.pawns.values():
+			if p.alive and p.global_position.distance_to(pt) < 1.2:
+				free = false
+				break
+		if free:
+			return r.points[i]
 	return r.points[rng.randi() % r.points.size()]
 
 

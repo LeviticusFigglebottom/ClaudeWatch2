@@ -1,7 +1,20 @@
 class_name DeployableVisuals
 ## Builds client-side visuals for deployables by kind/visual id.
 
+static var custom: Dictionary = {}   # visual id -> Callable(kind, data, team, color, max_hp) -> Node3D
+
+
+static func register(visual: StringName, builder: Callable) -> void:
+	custom[visual] = builder
+
+
 static func create(kind: StringName, visual: StringName, data: Dictionary, team: int, color: Color, max_hp: float) -> Node3D:
+	VfxLibrary.load_extensions()
+	var key := visual if visual != &"" else kind
+	if custom.has(key):
+		var n: Node3D = (custom[key] as Callable).call(kind, data, team, color, max_hp)
+		if n:
+			return n
 	var root := DeployableVisual.new()
 	root.kind = kind
 	root.team = team
