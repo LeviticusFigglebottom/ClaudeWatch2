@@ -11,7 +11,7 @@ const ROLE_DESCRIPTIONS := [
 	"Damage. Wins duels, converts space into kills, punishes mistakes.",
 	"Sustain. Keeps the team alive, enables plays, decides who gets to keep fighting.",
 ]
-const ROLE_LIMIT := [1, 2, 2]     # 5v5: 1 bulwark, 2 strikers, 2 conduits
+const ROLE_LIMIT: Array[int] = [1, 2, 2]   # 5v5: 1 bulwark, 2 strikers, 2 conduits
 
 enum Team { A = 0, B = 1, NONE = 2 }
 const TEAM_COUNT := 2

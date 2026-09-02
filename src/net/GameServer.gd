@@ -351,20 +351,7 @@ func request_hero(ps: PlayerState, hero_id: StringName) -> void:
 	var hero := Registry.hero(hero_id)
 	if hero == null or hero_id == ps.hero_id and ps.pawn and ps.pawn.alive:
 		return
-	if not config.allow_hero_duplicates and Registry.heroes.size() >= 8:
-		for other: PlayerState in team_players(ps.team):
-			if other != ps and other.hero_id == hero_id:
-				send_event_to(ps, &"notice", {"text": "%s is already on your team" % hero.display_name})
-				return
-	# Role limits (5v5: 1/2/2) apply only when the team is full-size.
-	var role_count := 0
-	for other: PlayerState in team_players(ps.team):
-		if other != ps:
-			var oh := Registry.hero(other.hero_id)
-			if oh and oh.role == hero.role:
-				role_count += 1
-	if role_count >= RF.ROLE_LIMIT[hero.role] and Registry.heroes.size() >= 8 and config.team_size >= 5:
-		send_event_to(ps, &"notice", {"text": "Your team already has enough %ss" % RF.role_name(hero.role)})
+	if not _ensure_slot_for(ps, hero):
 		return
 	var can_swap_now := ps.pawn == null or not ps.pawn.alive or (mode and mode.in_own_spawn(ps.pawn)) or (mode and mode.phase == ModeController.Phase.SETUP)
 	if can_swap_now:
@@ -380,6 +367,83 @@ func request_hero(ps: PlayerState, hero_id: StringName) -> void:
 		ps.pending_hero_id = hero_id
 		send_event_to(ps, &"notice", {"text": "Swapping to %s at next respawn" % hero.display_name})
 	_send_roster()
+
+
+## Composition rules for a hero request. Duplicates and the 1/2/2 role limit are enforced between
+## *players*, but a bot never outranks a human: since bot_fill seats five bots before a joining
+## player picks, every role is already taken and a strict check would leave the human permanently
+## stuck at hero select. So a contested slot held by a bot is taken from it and the bot re-picks
+## into whatever role still has room. Only another human can actually block a request.
+func _ensure_slot_for(ps: PlayerState, hero: HeroData) -> bool:
+	if Registry.heroes.size() < 8:
+		return true   # tiny rosters (tests, training) have no composition rules
+	var enforce_roles := config.team_size >= 5
+	for attempt in 2:
+		var dup: PlayerState = null
+		for other: PlayerState in team_players(ps.team):
+			if other != ps and other.hero_id == hero.id:
+				dup = other
+				break
+		var role_count := 0
+		for other: PlayerState in team_players(ps.team):
+			if other != ps and other != dup:
+				var oh := Registry.hero(other.hero_id)
+				if oh and oh.role == hero.role:
+					role_count += 1
+		var role_full: bool = enforce_roles and dup == null and role_count >= RF.ROLE_LIMIT[hero.role]
+		if dup == null and not role_full:
+			return true
+		if not config.allow_hero_duplicates or role_full:
+			var blocker := dup if dup != null else _teammate_in_role(ps, hero.role)
+			if blocker == null:
+				return true
+			if ps.is_bot or not blocker.is_bot or not _reassign_bot(blocker, ps, hero):
+				var text := "%s is already on your team" % hero.display_name if dup != null \
+					else "Your team already has enough %ss" % RF.role_name(hero.role)
+				send_event_to(ps, &"notice", {"text": text})
+				return false
+			continue   # the bot moved; re-check
+		return true
+	return true
+
+
+func _teammate_in_role(ps: PlayerState, role: int) -> PlayerState:
+	var fallback: PlayerState = null
+	for other: PlayerState in team_players(ps.team):
+		if other == ps:
+			continue
+		var oh := Registry.hero(other.hero_id)
+		if oh and oh.role == role:
+			if other.is_bot:
+				return other     # prefer taking the slot from a bot
+			fallback = other
+	return fallback
+
+
+## Moves `bot` off the slot `requester` wants, into any hero whose role still has room.
+func _reassign_bot(bot: PlayerState, requester: PlayerState, wanted: HeroData) -> bool:
+	var taken: Dictionary = {wanted.id: true}
+	var role_counts := [0, 0, 0]
+	role_counts[wanted.role] += 1
+	for other: PlayerState in team_players(requester.team):
+		if other == bot or other == requester or other.hero_id == &"":
+			continue
+		taken[other.hero_id] = true
+		var oh := Registry.hero(other.hero_id)
+		if oh:
+			role_counts[oh.role] += 1
+	for id: StringName in Registry.hero_ids():
+		if taken.has(id):
+			continue
+		var h := Registry.hero(id)
+		if h == null or role_counts[h.role] >= RF.ROLE_LIMIT[h.role]:
+			continue
+		bot.hero_id = id
+		bot.pending_hero_id = &""
+		bot.ult_charge_carry = 0.0
+		_spawn_player(bot)
+		return true
+	return false
 
 
 func respawn_everyone() -> void:

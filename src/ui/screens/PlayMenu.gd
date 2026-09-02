@@ -19,7 +19,11 @@ func _ready() -> void:
 	var vb := VBoxContainer.new(); vb.add_theme_constant_override("separation", 12); p.add_child(vb)
 	vb.add_child(UITheme.heading("Play vs Bots", 36))
 	mode_opt = OptionButton.new()
+	# Only offer modes that have at least one map. Listing a mode with no map produced invalid
+	# combinations (Hybrid on a Push-only map), which start but have no working objective.
 	for id: StringName in Registry.mode_ids():
+		if _playable_maps(id).is_empty():
+			continue
 		mode_opt.add_item(Registry.mode(id).display_name)
 		mode_opt.set_item_metadata(mode_opt.item_count - 1, id)
 	mode_opt.item_selected.connect(func(_i: int) -> void: _refresh_maps())
@@ -55,18 +59,21 @@ func _row(label: String, ctrl: Control) -> HBoxContainer:
 	return h
 
 
+## Maps that support `mode_id`, excluding the training range (it has its own menu entry).
+func _playable_maps(mode_id: StringName) -> Array[MapData]:
+	var out: Array[MapData] = []
+	for m: MapData in Registry.maps_for_mode(mode_id):
+		if m.id != &"test_range":
+			out.append(m)
+	return out
+
+
 func _refresh_maps() -> void:
 	map_opt.clear()
 	var mode_id: StringName = mode_opt.get_item_metadata(mode_opt.selected) if mode_opt.item_count > 0 else &""
-	for m: MapData in Registry.maps_for_mode(mode_id):
-		if m.id == &"test_range":
-			continue
+	for m: MapData in _playable_maps(mode_id):
 		map_opt.add_item(m.display_name)
 		map_opt.set_item_metadata(map_opt.item_count - 1, m.id)
-	if map_opt.item_count == 0:
-		for id: StringName in Registry.map_ids():
-			map_opt.add_item(Registry.map(id).display_name)
-			map_opt.set_item_metadata(map_opt.item_count - 1, id)
 	_refresh_desc()
 
 
@@ -81,7 +88,7 @@ func _refresh_desc() -> void:
 func _start() -> void:
 	if map_opt.item_count == 0:
 		return
-	var team := [5, 6, 3, 1][size_opt.selected]
+	var team: int = [5, 6, 3, 1][size_opt.selected]
 	Settings.set_value(&"gameplay", "bot_difficulty", diff_opt.selected)
 	App.start_local_match(map_opt.get_item_metadata(map_opt.selected), mode_opt.get_item_metadata(mode_opt.selected), team * 2 - 1,
 		{"difficulty": diff_opt.selected, "team_size": team})
