@@ -21,6 +21,18 @@ with prediction and lag compensation, and bots designed to be mistaken for peopl
 - Linux export templates 4.7.2 for building binaries (`Editor → Manage Export Templates`).
 - Python 3.10+ with `numpy scipy pillow` for the sim analysis and audio tooling.
 
+## First run after cloning
+
+Godot builds its `class_name` registry during import, so a fresh clone must be imported **once**
+before scripts resolve each other. Opening the project in the editor does this automatically; from
+the command line run:
+
+```bash
+godot --headless --path . --import
+```
+
+Skipping it produces a wall of "Identifier not declared" errors that are not real.
+
 ## Run
 
 ```bash
@@ -59,6 +71,7 @@ godot --headless --path . --export-release "Linux Dedicated Server" build/server
 ## Tests and tooling
 
 ```bash
+tools/parse_check.sh                           # parse gate: every .gd, catches runtime-only script errors
 tools/test.sh                                  # GUT unit suite (combat math, statuses, codec, rays)
 tools/check.sh saltmarsh escort 1800           # import + build data + headless bot match, lists script errors
 tools/sim.py run --map kestrel --mode control --matches 40 --procs 4 --out sim_out/kestrel

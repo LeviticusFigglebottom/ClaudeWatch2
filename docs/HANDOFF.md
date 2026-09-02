@@ -240,6 +240,9 @@ held the tool lock, which blocks every other run in the repo.
 - **Untyped array literals poison `:=`.** `[1, 2, 3][i]` is Variant, so `var x := arr[i]` fails to
   infer. Type the constant (`const X: Array[int] = ...`) or annotate the variable.
 - **Bots must always yield to humans** in composition rules; a strict limit locks players out.
+- **A fresh clone must be imported once** (`godot --headless --path . --import`) before any script
+  check, or every `class_name` reads as undeclared and you get hundreds of false failures.
+  `tools/parse_check.sh` now does this automatically when `.godot/` is missing.
 - Godot runs are serialized through a lock in `tools/godot.sh`. Parallel agents will wait on it;
   keep individual sim limits ≤ 200–300 s so nobody starves.
 

@@ -17,6 +17,14 @@ JOBS="${JOBS:-4}"
 AUTOLOADS='EventBus|Registry|Settings|Console|App'
 cd "$ROOT"
 
+# A project that has never been imported has no class_name registry, so every `class_name` type
+# (UIRouter, RF, HeroData, ...) reads as "not declared" and the gate reports hundreds of false
+# failures. Import once first on a fresh clone.
+if [ ! -d "$ROOT/.godot" ]; then
+  echo "no .godot/ yet — running one import pass to build the class registry..."
+  "$GODOT_BIN" --headless --path "$ROOT" --import >/dev/null 2>&1
+fi
+
 check_one() {
   local f="$1"
   local out
