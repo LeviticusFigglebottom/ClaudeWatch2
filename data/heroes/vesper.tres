@@ -1,0 +1,280 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_xtwcx"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_8hky3"]
+[ext_resource type="Script" path="res://src/heroes/deployables/LanternDeployable.gd" id="3_fvsor"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="4_1cmdf"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="5_6nx3q"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="6_pkwmu"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="7_kff1g"]
+[ext_resource type="Script" path="res://src/heroes/abilities/ZiplineBehavior.gd" id="8_rpyg6"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="9_7m3iy"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="10_32vv7"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="11_yewef"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="12_ej6ka"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="13_mtnn1"]
+[ext_resource type="Script" path="res://src/abilities/effects/HitscanEffect.gd" id="14_ctioh"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="15_5otm2"]
+[ext_resource type="Script" path="res://src/heroes/abilities/LongNightBehavior.gd" id="16_2b5yq"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="17_gqgps"]
+
+[sub_resource type="Resource" id="Resource_xtwcx"]
+script = ExtResource("1_xtwcx")
+intent = 10
+min_range = 6.0
+ideal_range = 18.0
+needs_line_of_sight = false
+target_ground = true
+cast_priority = 0.55
+
+[sub_resource type="Resource" id="Resource_8hky3"]
+script = ExtResource("4_1cmdf")
+deployable_script = ExtResource("3_fvsor")
+placement = 2
+lifetime = 6.0
+kind = &"lantern"
+visual_id = &"candle"
+params = {
+"radius": 12.0,
+"status": &"revealed_lantern"
+}
+
+[sub_resource type="Resource" id="Resource_fvsor"]
+script = ExtResource("5_6nx3q")
+damage = 0.0
+speed = 22.0
+gravity = 14.0
+radius = 0.2
+lifetime = 3.0
+visual_id = &"candle"
+on_hit_effects = Array[ExtResource("2_8hky3")]([SubResource("Resource_8hky3")])
+
+[sub_resource type="Resource" id="Resource_1cmdf"]
+script = ExtResource("6_pkwmu")
+area_vfx = &"lantern_light"
+sound_fire = &"vesper_lantern_throw"
+anim_tag = &"throw"
+
+[sub_resource type="Resource" id="Resource_6nx3q"]
+script = ExtResource("7_kff1g")
+id = &"vesper_lantern"
+display_name = "Lantern"
+description = "Throw a lantern. Where it lands it lights a 12 m radius for 6 s: enemies inside are revealed to your whole team through walls."
+cooldown = 12.0
+effects = Array[ExtResource("2_8hky3")]([SubResource("Resource_fvsor")])
+presentation = SubResource("Resource_1cmdf")
+ai = SubResource("Resource_xtwcx")
+
+[sub_resource type="Resource" id="Resource_pkwmu"]
+script = ExtResource("1_xtwcx")
+intent = 2
+min_range = 8.0
+max_range = 40.0
+ideal_range = 20.0
+use_when_health_below = 0.45
+cast_priority = 0.4
+
+[sub_resource type="Resource" id="Resource_kff1g"]
+script = ExtResource("6_pkwmu")
+sound_cast = &"vesper_zip_fire"
+sound_loop = &"vesper_zip_loop"
+sound_end = &"vesper_zip_end"
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_rpyg6"]
+script = ExtResource("7_kff1g")
+id = &"vesper_zipline"
+display_name = "Zipline"
+description = "Fire an anchor line to a surface and ride it. Mobility for reaching perches or escaping dives."
+cooldown = 10.0
+active_duration = 2.5
+behavior = ExtResource("8_rpyg6")
+presentation = SubResource("Resource_kff1g")
+ai = SubResource("Resource_pkwmu")
+
+[sub_resource type="Resource" id="Resource_7m3iy"]
+script = ExtResource("9_7m3iy")
+preferred_range = 26.0
+min_range = 10.0
+max_effective_range = 70.0
+aggression = 0.3
+self_preservation = 0.7
+prefers_high_ground = 0.9
+poke_style = true
+ult_style = &"combo_enabler"
+strafe_style = &"crouch"
+
+[sub_resource type="Resource" id="Resource_32vv7"]
+script = ExtResource("10_32vv7")
+footstep_set = &"boots_light"
+ult_stinger = &"ult_vesper"
+ult_stinger_enemy = &"ult_vesper_enemy"
+
+[sub_resource type="Resource" id="Resource_yewef"]
+script = ExtResource("11_yewef")
+
+[sub_resource type="Resource" id="Resource_ej6ka"]
+script = ExtResource("12_ej6ka")
+footstep_interval = 0.4
+
+[sub_resource type="Resource" id="Resource_mtnn1"]
+script = ExtResource("1_xtwcx")
+max_range = 80.0
+ideal_range = 28.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_ctioh"]
+script = ExtResource("14_ctioh")
+damage = 55.0
+range = 150.0
+spread_moving_deg = 0.9
+spread_airborne_deg = 2.5
+falloff_start = 35.0
+falloff_end = 60.0
+falloff_min = 0.5
+
+[sub_resource type="Resource" id="Resource_5otm2"]
+script = ExtResource("6_pkwmu")
+muzzle_vfx = &"muzzle_generic"
+tracer_style = &"bullet"
+sound_fire = &"vesper_fire"
+sound_tail = &"vesper_tail"
+camera_shake = 0.06
+camera_kick_pitch = 1.6
+camera_kick_yaw_random = 0.35
+viewmodel_kick = 0.09
+viewmodel_kick_rot = 4.0
+
+[sub_resource type="Resource" id="Resource_2b5yq"]
+script = ExtResource("7_kff1g")
+id = &"vesper_rifle"
+display_name = "Surveyor Rifle"
+description = "Semi-automatic hitscan rifle. 55 damage, headshots deal double. Falloff beyond 35 m."
+trigger = 1
+fire_rate = 2.4
+resource = 1
+ammo = 8
+reload_time = 1.4
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_8hky3")]([SubResource("Resource_ctioh")])
+presentation = SubResource("Resource_5otm2")
+ai = SubResource("Resource_mtnn1")
+
+[sub_resource type="Resource" id="Resource_gqgps"]
+script = ExtResource("1_xtwcx")
+min_range = 20.0
+max_range = 80.0
+ideal_range = 40.0
+cast_priority = 0.3
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_qeo0c"]
+script = ExtResource("6_pkwmu")
+sound_cast = &"vesper_focus_on"
+sound_end = &"vesper_focus_off"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_te1tr"]
+script = ExtResource("13_mtnn1")
+id = &"vesper_focused"
+display_name = "Focused"
+duration = 0.5
+cleansable = false
+speed_mult = 0.6
+damage_dealt_mult = 1.55
+color = Color(1, 0.8, 0.4, 1)
+
+[sub_resource type="Resource" id="Resource_hqiqb"]
+script = ExtResource("7_kff1g")
+id = &"vesper_focus"
+display_name = "Focus"
+description = "Hold to steady your aim: movement slows to 60% and the next rifle shot within the window deals 85 damage."
+trigger = 2
+usable_while_silenced = true
+is_weapon = true
+self_status_while_active = SubResource("Resource_te1tr")
+presentation = SubResource("Resource_qeo0c")
+ai = SubResource("Resource_gqgps")
+
+[sub_resource type="Resource" id="Resource_pmiu5"]
+script = ExtResource("1_xtwcx")
+intent = 10
+min_range = 10.0
+max_range = 70.0
+ideal_range = 30.0
+needs_enemies_in_radius = 2
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_dcfap"]
+script = ExtResource("6_pkwmu")
+cast_vfx = &"ult_burst"
+loop_vfx = &"long_night_glow"
+sound_cast = &"vesper_ult"
+sound_loop = &"vesper_ult_loop"
+voice_line = &"vesper_ult_line"
+voice_line_enemy = &"vesper_ult_line_enemy"
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_s8gb1"]
+script = ExtResource("13_mtnn1")
+id = &"vesper_long_night_status"
+display_name = "Long Night"
+duration = 8.0
+cleansable = false
+cooldown_rate_mult = 1.5
+color = Color(0.9, 0.7, 0.3, 1)
+
+[sub_resource type="Resource" id="Resource_iuwhh"]
+script = ExtResource("7_kff1g")
+id = &"vesper_long_night"
+display_name = "Long Night"
+description = "For 8 s: no reload, no falloff, and every enemy you hit is revealed to your team for 4 s."
+active_duration = 8.0
+resource = 2
+ult_cost = 1650.0
+self_status_while_active = SubResource("Resource_s8gb1")
+behavior = ExtResource("16_2b5yq")
+presentation = SubResource("Resource_dcfap")
+ai = SubResource("Resource_pmiu5")
+
+[sub_resource type="Resource" id="Resource_sn4dl"]
+script = ExtResource("17_gqgps")
+build = 0
+height = 1.82
+head = 2
+extras = Array[int]([1, 2])
+primary_color = Color(0.32, 0.28, 0.26, 1)
+secondary_color = Color(0.16, 0.15, 0.17, 1)
+accent_color = Color(0.98, 0.78, 0.35, 1)
+emissive_color = Color(1, 0.75, 0.3, 1)
+emissive_strength = 2.0
+weapon_scale = 1.15
+arms_color = Color(0.28, 0.25, 0.24, 1)
+silhouette_notes = "Tall and narrow: hood, long cloak, long rifle. Reads as a sniper at any distance."
+
+[resource]
+script = ExtResource("15_5otm2")
+id = &"vesper"
+display_name = "Vesper"
+codename = "The Lamplighter"
+sort_order = 10
+tagline = "Light finds everyone."
+lore = "Vesper ran salvage routes on the dark side of the Ring for eleven years, navigating by the glow of lantern buoys she planted herself. When the Charters started paying for Cores, she brought the lanterns down with her. Her rifle is a converted surveying laser; her calm is not an act."
+playstyle = "Hold long sightlines, tag targets with the Lantern so your team can see them coming, and punish anyone who peeks. You are weakest up close: keep the zipline for escapes."
+movement = SubResource("Resource_ej6ka")
+hitbox = SubResource("Resource_yewef")
+primary = SubResource("Resource_2b5yq")
+secondary = SubResource("Resource_hqiqb")
+ability_1 = SubResource("Resource_6nx3q")
+ability_2 = SubResource("Resource_rpyg6")
+ultimate = SubResource("Resource_iuwhh")
+visual = SubResource("Resource_sn4dl")
+audio = SubResource("Resource_32vv7")
+theme_color = Color(0.98, 0.78, 0.35, 1)
+ai = SubResource("Resource_7m3iy")
+counters = Array[StringName]([&"sable", &"harrier", &"wisp"])
+countered_by = Array[StringName]([&"cathedral", &"ballast", &"rook"])
+synergies = Array[StringName]([&"bombard", &"coil", &"lumen"])
+unique_mechanic = "Lantern: throws a lamp that REVEALS all enemies in a 12 m radius through walls for 6 s to your entire team."
+difficulty = 2

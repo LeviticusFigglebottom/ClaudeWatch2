@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3 uid="uid://rf_notifications"]
+[ext_resource type="Script" path="res://src/ui/screens/Notifications.gd" id="1"]
+[node name="Notifications" type="Control"]
+script = ExtResource("1")

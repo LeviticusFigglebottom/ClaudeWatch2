@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://rf_map_data_test_range"]
+
+[ext_resource type="Script" path="res://src/data/MapData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"test_range"
+display_name = "Training Range"
+location = "Charter proving yard"
+time_of_day = "Midday"
+description = "A walled proving yard with a central pad, two elevated platforms and target dummies. Warm up here."
+scene_path = "res://src/maps/test_range/TestRange.tscn"
+supported_modes = Array[StringName]([&"control"])
+color_story = "Neutral concrete, amber guide-lines."
+sort_order = 100

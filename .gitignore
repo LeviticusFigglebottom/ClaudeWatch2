@@ -1,0 +1,10 @@
+.godot/
+*.import
+!assets/**/*.import
+/export/
+/build/
+/sim_out/
+/screenshots/
+*.tmp
+__pycache__/
+.import/
