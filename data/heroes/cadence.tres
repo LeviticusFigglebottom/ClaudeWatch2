@@ -1,0 +1,330 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_lw42y"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_ukb7c"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="3_hyc4h"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="4_efoxw"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="5_n083p"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="6_nkqc0"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="7_4ka0l"]
+[ext_resource type="Script" path="res://src/heroes/abilities/CadenceDiscordEffect.gd" id="8_rcsrd"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="9_75s71"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="10_tvfk5"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/CadenceBehavior.gd" id="11_g724a"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="12_1k3ed"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="13_db33b"]
+[ext_resource type="Script" path="res://src/heroes/abilities/CadenceBeatHealEffect.gd" id="14_lprni"]
+[ext_resource type="Script" path="res://src/heroes/abilities/CadenceBassEffect.gd" id="15_668pd"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="16_ptvtf"]
+[ext_resource type="Script" path="res://src/heroes/abilities/CadenceGrooveBehavior.gd" id="17_yo8u3"]
+[ext_resource type="Script" path="res://src/abilities/effects/CleanseEffect.gd" id="18_b6grt"]
+[ext_resource type="Script" path="res://src/abilities/effects/HealEffect.gd" id="19_w3vg7"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="20_c46d2"]
+
+[sub_resource type="Resource" id="Resource_lw42y"]
+script = ExtResource("1_lw42y")
+intent = 8
+max_range = 10.0
+ideal_range = 6.0
+needs_line_of_sight = false
+needs_allies_in_radius = 1
+combo_tags = Array[StringName]([&"speed"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_ukb7c"]
+script = ExtResource("3_hyc4h")
+radius = 10.0
+heal = 20.0
+min_fraction = 0.6
+requires_los = false
+vfx_id = &"cadence_crescendo"
+
+[sub_resource type="Resource" id="Resource_hyc4h"]
+script = ExtResource("5_n083p")
+id = &"cadence_crescendo"
+display_name = "Crescendo"
+duration = 3.0
+cleansable = false
+speed_mult = 1.3
+color = Color(1, 0.6, 0.85, 1)
+
+[sub_resource type="Resource" id="Resource_efoxw"]
+script = ExtResource("4_efoxw")
+status = SubResource("Resource_hyc4h")
+who = 5
+radius = 10.0
+requires_los = false
+
+[sub_resource type="Resource" id="Resource_n083p"]
+script = ExtResource("6_nkqc0")
+cast_vfx = &"cadence_crescendo_cast"
+area_vfx = &"cadence_crescendo"
+sound_fire = &"cadence_crescendo_fire"
+camera_shake = 0.04
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_nkqc0"]
+script = ExtResource("7_4ka0l")
+id = &"cadence_crescendo"
+display_name = "Crescendo"
+description = "A swelling chord: allies within 10 m (and Cadence) are healed for 20 and move 30% faster for 3 s."
+cooldown = 10.0
+effects = Array[ExtResource("2_ukb7c")]([SubResource("Resource_ukb7c"), SubResource("Resource_efoxw")])
+presentation = SubResource("Resource_n083p")
+ai = SubResource("Resource_lw42y")
+
+[sub_resource type="Resource" id="Resource_4ka0l"]
+script = ExtResource("1_lw42y")
+max_range = 15.0
+ideal_range = 8.0
+needs_enemies_in_radius = 1
+combo_tags = Array[StringName]([&"amp"])
+cast_priority = 0.65
+
+[sub_resource type="Resource" id="Resource_rcsrd"]
+script = ExtResource("5_n083p")
+id = &"cadence_discord"
+display_name = "Discord"
+duration = 4.0
+is_debuff = true
+damage_taken_mult = 1.25
+color = Color(0.75, 0.2, 0.9, 1)
+
+[sub_resource type="Resource" id="Resource_75s71"]
+script = ExtResource("8_rcsrd")
+status = SubResource("Resource_rcsrd")
+
+[sub_resource type="Resource" id="Resource_tvfk5"]
+script = ExtResource("6_nkqc0")
+cast_vfx = &"cadence_discord_cast"
+sound_fire = &"cadence_discord_fire"
+camera_shake = 0.06
+camera_kick_pitch = 0.8
+anim_tag = &"throw"
+
+[sub_resource type="Resource" id="Resource_g724a"]
+script = ExtResource("7_4ka0l")
+id = &"cadence_discord"
+display_name = "Discord"
+description = "A dissonant blast in a 60 degree cone, 15 m: every enemy caught takes 25% more damage for 4 s."
+cooldown = 9.0
+effects = Array[ExtResource("2_ukb7c")]([SubResource("Resource_75s71")])
+presentation = SubResource("Resource_tvfk5")
+ai = SubResource("Resource_4ka0l")
+
+[sub_resource type="Resource" id="Resource_1k3ed"]
+script = ExtResource("9_75s71")
+aggression = 0.35
+self_preservation = 0.7
+prefers_high_ground = 0.4
+sticks_to_tank = 0.7
+heals = true
+heal_range = 9.0
+ult_style = &"save"
+aim_difficulty_scale = 1.2
+
+[sub_resource type="Resource" id="Resource_db33b"]
+script = ExtResource("10_tvfk5")
+ult_stinger = &"ult_cadence"
+ult_stinger_enemy = &"ult_cadence_enemy"
+callout_tone = &"radio_b"
+
+[sub_resource type="Resource" id="Resource_lprni"]
+script = ExtResource("12_1k3ed")
+
+[sub_resource type="Resource" id="Resource_668pd"]
+script = ExtResource("13_db33b")
+
+[sub_resource type="Resource" id="Resource_ptvtf"]
+script = ExtResource("1_lw42y")
+max_range = 34.0
+ideal_range = 14.0
+spam_ok = true
+telegraph_seconds = 0.3
+
+[sub_resource type="Resource" id="Resource_yo8u3"]
+script = ExtResource("14_lprni")
+
+[sub_resource type="Resource" id="Resource_b6grt"]
+script = ExtResource("15_668pd")
+damage = 45.0
+speed = 30.0
+radius = 0.25
+lifetime = 3.0
+splash_radius = 2.0
+splash_damage = 30.0
+splash_min_fraction = 0.4
+knockback = 2.0
+visual_id = &"orb"
+on_hit_effects = Array[ExtResource("2_ukb7c")]([SubResource("Resource_yo8u3")])
+
+[sub_resource type="Resource" id="Resource_w3vg7"]
+script = ExtResource("6_nkqc0")
+muzzle_vfx = &"cadence_bass_muzzle"
+tracer_color = Color(0.95, 0.45, 0.8, 1)
+impact_vfx = &"cadence_bass_impact"
+impact_decal = &"scorch"
+projectile_vfx = &"orb"
+sound_fire = &"cadence_bass_fire"
+sound_tail = &"cadence_bass_tail"
+sound_impact = &"cadence_bass_impact"
+camera_shake = 0.1
+camera_kick_pitch = 1.4
+camera_kick_yaw_random = 0.4
+kick_recovery = 9.0
+viewmodel_kick = 0.14
+viewmodel_kick_rot = 6.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_c46d2"]
+script = ExtResource("7_4ka0l")
+id = &"cadence_bass"
+display_name = "Bassline"
+description = "Bass-cannon. A slow, heavy shell: 45 damage plus 30 splash in 2 m. Shots fired ON THE BEAT (120 bpm) deal 1.5x and heal allies within 4 m of the impact for 30."
+trigger = 1
+fire_rate = 1.5
+resource = 1
+ammo = 6
+reload_time = 1.6
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_ukb7c")]([SubResource("Resource_b6grt")])
+presentation = SubResource("Resource_w3vg7")
+ai = SubResource("Resource_ptvtf")
+
+[sub_resource type="Resource" id="Resource_j2lef"]
+script = ExtResource("1_lw42y")
+intent = 1
+max_range = 9.0
+ideal_range = 6.0
+needs_line_of_sight = false
+target_ally = true
+combo_tags = Array[StringName]([&"aura"])
+cast_priority = 0.8
+
+[sub_resource type="Resource" id="Resource_3bmsn"]
+script = ExtResource("6_nkqc0")
+loop_vfx = &"cadence_aura"
+self_glow = Color(0.95, 0.4, 0.8, 0.6)
+sound_cast = &"cadence_groove_cast"
+sound_loop = &"cadence_groove_loop"
+sound_end = &"cadence_groove_end"
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_3qe6k"]
+script = ExtResource("5_n083p")
+id = &"cadence_groove"
+display_name = "Groove"
+duration = 0.6
+cleansable = false
+color = Color(0.95, 0.45, 0.8, 1)
+
+[sub_resource type="Resource" id="Resource_xbr0o"]
+script = ExtResource("7_4ka0l")
+id = &"cadence_groove"
+display_name = "Groove"
+description = "Toggle. While the groove is on, every beat (twice a second) heals allies within 9 m for 12 and Cadence for 6. Fire Bassline on the beat and the next pulse heals double."
+trigger = 3
+self_status_while_active = SubResource("Resource_3qe6k")
+behavior = ExtResource("17_yo8u3")
+presentation = SubResource("Resource_3bmsn")
+ai = SubResource("Resource_j2lef")
+
+[sub_resource type="Resource" id="Resource_olj00"]
+script = ExtResource("1_lw42y")
+intent = 5
+max_range = 14.0
+ideal_range = 8.0
+needs_line_of_sight = false
+needs_allies_in_radius = 2
+combo_tags = Array[StringName]([&"overhealth", &"cleanse"])
+counter_tags = Array[StringName]([&"cleanse"])
+cast_priority = 0.7
+
+[sub_resource type="Resource" id="Resource_2jc1n"]
+script = ExtResource("18_b6grt")
+radius = 14.0
+
+[sub_resource type="Resource" id="Resource_pe0ke"]
+script = ExtResource("19_w3vg7")
+amount = 60.0
+who = 3
+radius = 14.0
+include_self = true
+overhealth = 300.0
+overhealth_cap = 300.0
+
+[sub_resource type="Resource" id="Resource_6gfkd"]
+script = ExtResource("3_hyc4h")
+radius = 14.0
+requires_los = false
+vfx_id = &"cadence_anthem_ring"
+
+[sub_resource type="Resource" id="Resource_655xk"]
+script = ExtResource("6_nkqc0")
+cast_vfx = &"cadence_anthem_cast"
+self_glow = Color(1, 0.5, 0.9, 1)
+sound_fire = &"cadence_anthem_fire"
+sound_cast = &"cadence_anthem_cast"
+voice_line = &"cadence_ult_line"
+voice_line_enemy = &"cadence_ult_line_enemy"
+camera_shake = 0.2
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_ug0yt"]
+script = ExtResource("7_4ka0l")
+id = &"cadence_anthem"
+display_name = "Anthem"
+description = "The drop. Allies within 14 m (Cadence included) are cleansed, healed for 60 and given 300 overhealth. Overhealth decays 2 s after the last hit."
+resource = 2
+ult_cost = 1900.0
+effects = Array[ExtResource("2_ukb7c")]([SubResource("Resource_2jc1n"), SubResource("Resource_pe0ke"), SubResource("Resource_6gfkd")])
+presentation = SubResource("Resource_655xk")
+ai = SubResource("Resource_olj00")
+
+[sub_resource type="Resource" id="Resource_x2uny"]
+script = ExtResource("20_c46d2")
+height = 1.78
+head = 3
+extras = Array[int]([13])
+primary_color = Color(0.34, 0.2, 0.46, 1)
+secondary_color = Color(0.14, 0.11, 0.2, 1)
+accent_color = Color(0.95, 0.4, 0.75, 1)
+emissive_color = Color(0.95, 0.35, 0.8, 1)
+emissive_strength = 2.2
+metallic = 0.25
+roughness = 0.65
+skin_color = Color(0.55, 0.38, 0.3, 1)
+weapon_scale = 1.15
+weapon_style = &"cannon"
+arms_color = Color(0.3, 0.18, 0.4, 1)
+silhouette_notes = "Medium build, bare head with a cropped hair cap, two glowing speaker boxes on the hips and a short fat cannon. Reads as 'sound system' from any angle."
+
+[resource]
+script = ExtResource("16_ptvtf")
+id = &"cadence"
+display_name = "Cadence"
+codename = "The Bassline"
+role = 2
+sort_order = 21
+tagline = "Keep time. Keep breathing."
+lore = "Cadence busked the transit tunnels of the Pearl River Charter with a sub-woofer bolted to a scavenged pressure cannon, and discovered that a crowd that moves together bleeds less. The Charters call it acoustic field therapy. She calls it a set. Her runner contract has one clause: the cannon stays tuned to 120."
+playstyle = "Stand in the middle of your team with the Groove on and let the beat do the healing. Learn the metronome: Bassline shells fired on the beat hit harder, heal around the impact and double the next pulse. Crescendo to reposition the whole team, Discord to open a target, Anthem before the enemy commits."
+health = 220.0
+movement = SubResource("Resource_668pd")
+hitbox = SubResource("Resource_lprni")
+primary = SubResource("Resource_c46d2")
+secondary = SubResource("Resource_xbr0o")
+ability_1 = SubResource("Resource_nkqc0")
+ability_2 = SubResource("Resource_g724a")
+ultimate = SubResource("Resource_ug0yt")
+hero_script = ExtResource("11_g724a")
+visual = SubResource("Resource_x2uny")
+audio = SubResource("Resource_db33b")
+theme_color = Color(0.95, 0.38, 0.72, 1)
+ai = SubResource("Resource_1k3ed")
+counters = Array[StringName]([&"bombard", &"bramble", &"rook"])
+countered_by = Array[StringName]([&"coil", &"wisp", &"sable"])
+synergies = Array[StringName]([&"harrier", &"ballast", &"sable"])
+unique_mechanic = "On the beat: a 120 bpm clock. Groove heals allies within 9 m for 12 on every beat; Bassline shots fired within 66 ms of a beat deal 1.5x, heal allies within 4 m of the impact for 30, and make the next Groove pulse heal 24."
+difficulty = 2

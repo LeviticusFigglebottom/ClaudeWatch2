@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://rf_map_data_nightmarket"]
+
+[ext_resource type="Script" path="res://src/data/MapData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"nightmarket"
+display_name = "Nightmarket Vertical"
+location = "Stacked hab-towers, Pearl River Charter"
+time_of_day = "Night, rain"
+description = "A canyon street between stacked hab-towers. Push the hauler bot along the neon spine from the market plaza to the enemy's metro entrance. Walkways at +4 m and the alleys under them are the flanks; the market deck is the high ground everybody wants."
+scene_path = "res://src/maps/nightmarket/Nightmarket.tscn"
+supported_modes = Array[StringName]([&"push"])
+color_story = "Neon magenta and cyan on wet asphalt, sodium amber under the walkways."
+ambience = &"amb_rain"
+sort_order = 40

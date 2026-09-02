@@ -54,6 +54,14 @@ func _register_commands() -> void:
 			var p := ps.pawn
 			out += "  %-12s T%d %-10s %s hp %.0f pos %s k/d %d/%d ult %.0f%%\n" % [ps.name, ps.team, ps.hero_id, "alive" if p and p.alive else "dead ", p.health.total() if p else 0.0, str(p.global_position.round()) if p else "-", ps.stats.kills, ps.stats.deaths, p.ult_fraction() * 100.0 if p else 0.0]
 		return out)
+	Console.register("perf", "Frame time, memory, render stats", func(_a: PackedStringArray) -> String:
+		var rs := RenderingServer
+		var out := "fps %d  frame %.2f ms  physics %.2f ms\n" % [Engine.get_frames_per_second(), Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0, Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0]
+		out += "mem static %.1f MB  objects %d  nodes %d  orphans %d\n" % [Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0, Performance.get_monitor(Performance.OBJECT_COUNT), Performance.get_monitor(Performance.OBJECT_NODE_COUNT), Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)]
+		out += "draw calls %d  primitives %d  vram %.1f MB\n" % [rs.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME), rs.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME), rs.get_rendering_info(RenderingServer.RENDERING_INFO_VIDEO_MEM_USED) / 1048576.0]
+		if server:
+			out += "server tick %.2f ms  bw out %.1f KB/s  pawns %d proj %d deploy %d" % [server.perf_tick_ms, server.bandwidth_kbps, server.world.pawns.size(), server.world.projectiles.size(), server.world.deployables.size()]
+		return out)
 	Console.register("shot", "shot <path.png>: save a screenshot of the main viewport", func(a: PackedStringArray) -> String:
 		var path := a[0] if a.size() > 0 else "screenshots/shot.png"
 		_take_screenshot(path)

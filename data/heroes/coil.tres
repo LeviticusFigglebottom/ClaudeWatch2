@@ -1,0 +1,349 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_1qpvh"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_q0eno"]
+[ext_resource type="Script" path="res://src/heroes/deployables/CoilTeslaNode.gd" id="3_8xg2y"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="4_ror12"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="5_o4u1s"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="6_7h5l1"]
+[ext_resource type="Script" path="res://src/heroes/abilities/CoilCapacitorBehavior.gd" id="7_3t2r3"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="8_vw8lq"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="9_vgda2"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="10_5lfey"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/CoilBehavior.gd" id="11_e4q8n"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="12_vsuen"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="13_0fjbh"]
+[ext_resource type="Script" path="res://src/abilities/effects/HitscanEffect.gd" id="14_4ddmg"]
+[ext_resource type="Script" path="res://src/heroes/abilities/CoilChainEffect.gd" id="15_k24cy"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="16_g0efk"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="17_x2xia"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="18_7gxdo"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="19_17edy"]
+
+[sub_resource type="Resource" id="Resource_1qpvh"]
+script = ExtResource("1_1qpvh")
+max_range = 12.0
+ideal_range = 6.0
+target_ground = true
+combo_tags = Array[StringName]([&"zone"])
+cast_priority = 0.55
+
+[sub_resource type="Resource" id="Resource_q0eno"]
+script = ExtResource("4_ror12")
+deployable_script = ExtResource("3_8xg2y")
+placement = 3
+max_range = 12.0
+health = 150.0
+lifetime = 12.0
+kind = &"tesla_node"
+visual_id = &"coil_tesla_node"
+params = {
+"damage": 20.0,
+"interval": 0.8,
+"radius": 7.0
+}
+
+[sub_resource type="Resource" id="Resource_8xg2y"]
+script = ExtResource("5_o4u1s")
+cast_vfx = &"coil_tesla_node_cast"
+area_vfx = &"coil_chain_explosion"
+sound_fire = &"coil_tesla_node_fire"
+sound_cast = &"coil_tesla_node_cast"
+sound_loop = &"coil_tesla_node_loop"
+sound_end = &"coil_tesla_node_end"
+anim_tag = &"throw"
+
+[sub_resource type="Resource" id="Resource_ror12"]
+script = ExtResource("6_7h5l1")
+id = &"coil_tesla_node"
+display_name = "Tesla Node"
+description = "Plant a 150 hp pylon (12 s) where you aim, up to 12 m away. Every 0.8 s it zaps the nearest enemy within 7 m for 20 damage, and your Chain can jump through it. 12 s cooldown."
+cooldown = 12.0
+effects = Array[ExtResource("2_q0eno")]([SubResource("Resource_q0eno")])
+presentation = SubResource("Resource_8xg2y")
+ai = SubResource("Resource_1qpvh")
+
+[sub_resource type="Resource" id="Resource_o4u1s"]
+script = ExtResource("1_1qpvh")
+intent = 5
+max_range = 12.0
+ideal_range = 4.0
+needs_line_of_sight = false
+use_when_health_below = 0.65
+combo_tags = Array[StringName]([&"aoe_damage"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_7h5l1"]
+script = ExtResource("5_o4u1s")
+cast_vfx = &"coil_capacitor_cast"
+loop_vfx = &"coil_capacitor_loop"
+end_vfx = &"coil_capacitor_end"
+area_vfx = &"coil_capacitor_explosion"
+self_glow = Color(0.7, 0.5, 1, 0.9)
+sound_cast = &"coil_capacitor_cast"
+sound_loop = &"coil_capacitor_loop"
+sound_end = &"coil_capacitor_end"
+camera_shake = 0.12
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_3t2r3"]
+script = ExtResource("8_vw8lq")
+id = &"coil_capacitor_status"
+display_name = "Capacitor"
+duration = 1.5
+cleansable = false
+vfx_id = &"coil_capacitor_loop"
+color = Color(0.7, 0.5, 1, 1)
+
+[sub_resource type="Resource" id="Resource_vw8lq"]
+script = ExtResource("6_7h5l1")
+id = &"coil_capacitor"
+display_name = "Capacitor"
+description = "For 1.5 s every hit you take is absorbed instead of dealt. When it ends you release the stored damage (up to 250) as a burst in 5 m with knockback. Nothing stored, nothing released. 11 s cooldown."
+cooldown = 11.0
+active_duration = 1.5
+cooldown_starts_on_end = true
+self_status_while_active = SubResource("Resource_3t2r3")
+behavior = ExtResource("7_3t2r3")
+presentation = SubResource("Resource_7h5l1")
+ai = SubResource("Resource_o4u1s")
+
+[sub_resource type="Resource" id="Resource_vgda2"]
+script = ExtResource("9_vgda2")
+preferred_range = 11.0
+min_range = 2.0
+max_effective_range = 25.0
+prefers_high_ground = 0.4
+sticks_to_tank = 0.65
+builds = true
+ult_style = &"counter"
+
+[sub_resource type="Resource" id="Resource_5lfey"]
+script = ExtResource("10_5lfey")
+ult_stinger = &"ult_coil"
+ult_stinger_enemy = &"ult_coil_enemy"
+
+[sub_resource type="Resource" id="Resource_e4q8n"]
+script = ExtResource("12_vsuen")
+
+[sub_resource type="Resource" id="Resource_vsuen"]
+script = ExtResource("13_0fjbh")
+max_speed = 5.6
+mass = 1.05
+
+[sub_resource type="Resource" id="Resource_0fjbh"]
+script = ExtResource("1_1qpvh")
+max_range = 25.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_4ddmg"]
+script = ExtResource("14_4ddmg")
+damage = 30.0
+range = 25.0
+spread_deg = 0.5
+spread_moving_deg = 0.6
+spread_airborne_deg = 1.5
+falloff_start = 25.0
+falloff_end = 25.0
+falloff_min = 1.0
+
+[sub_resource type="Resource" id="Resource_k24cy"]
+script = ExtResource("15_k24cy")
+
+[sub_resource type="Resource" id="Resource_g0efk"]
+script = ExtResource("5_o4u1s")
+muzzle_vfx = &"coil_chain_muzzle"
+tracer_style = &"arc"
+tracer_color = Color(0.75, 0.6, 1, 1)
+tracer_width = 0.035
+impact_vfx = &"coil_chain_impact"
+impact_decal = &"scorch"
+sound_fire = &"coil_chain_fire"
+sound_tail = &"coil_chain_tail"
+sound_impact = &"coil_chain_impact"
+camera_shake = 0.05
+camera_kick_pitch = 1.0
+camera_kick_yaw_random = 0.3
+kick_recovery = 14.0
+viewmodel_kick = 0.05
+viewmodel_kick_rot = 2.0
+
+[sub_resource type="Resource" id="Resource_x2xia"]
+script = ExtResource("6_7h5l1")
+id = &"coil_chain"
+display_name = "Arc Gauntlet"
+description = "Hitscan lightning: 30 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to up to two more enemies within 6 m of the target for 21 and 15 damage. 12 cells, 1.4 s recharge."
+trigger = 1
+fire_rate = 4.0
+resource = 1
+ammo = 12
+reload_time = 1.4
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_q0eno")]([SubResource("Resource_4ddmg"), SubResource("Resource_k24cy")])
+presentation = SubResource("Resource_g0efk")
+ai = SubResource("Resource_0fjbh")
+
+[sub_resource type="Resource" id="Resource_7gxdo"]
+script = ExtResource("1_1qpvh")
+min_range = 6.0
+max_range = 40.0
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_17edy"]
+script = ExtResource("14_4ddmg")
+damage = 70.0
+range = 40.0
+spread_moving_deg = 0.4
+falloff_start = 40.0
+falloff_min = 1.0
+knockback = 3.0
+
+[sub_resource type="Resource" id="Resource_33u0f"]
+script = ExtResource("15_k24cy")
+radius = 8.0
+base_damage = 70.0
+
+[sub_resource type="Resource" id="Resource_tf8i2"]
+script = ExtResource("5_o4u1s")
+muzzle_vfx = &"coil_lance_muzzle"
+tracer_style = &"bolt"
+tracer_color = Color(0.9, 0.8, 1, 1)
+tracer_width = 0.06
+impact_vfx = &"coil_chain_impact"
+impact_decal = &"scorch"
+sound_fire = &"coil_lance_fire"
+sound_tail = &"coil_lance_tail"
+sound_impact = &"coil_lance_impact"
+camera_shake = 0.14
+camera_kick_pitch = 2.6
+camera_kick_yaw_random = 0.4
+kick_recovery = 8.0
+viewmodel_kick = 0.14
+viewmodel_kick_rot = 5.5
+
+[sub_resource type="Resource" id="Resource_rnah3"]
+script = ExtResource("6_7h5l1")
+id = &"coil_lance"
+display_name = "Arc Lance"
+description = "Overcharge the gauntlet into a 40 m hitscan bolt: 70 damage, headshots double, then chains to two more enemies within 8 m for 49 and 35. 7 s cooldown."
+cooldown = 7.0
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_q0eno")]([SubResource("Resource_17edy"), SubResource("Resource_33u0f")])
+presentation = SubResource("Resource_tf8i2")
+ai = SubResource("Resource_7gxdo")
+
+[sub_resource type="Resource" id="Resource_hbb6h"]
+script = ExtResource("1_1qpvh")
+intent = 6
+max_range = 14.0
+ideal_range = 8.0
+needs_line_of_sight = false
+needs_enemies_in_radius = 2
+hold_for_combo = true
+combo_tags = Array[StringName]([&"silence", &"slow", &"cc"])
+counter_tags = Array[StringName]([&"engage"])
+cast_priority = 0.7
+telegraph_seconds = 0.4
+
+[sub_resource type="Resource" id="Resource_ndm3p"]
+script = ExtResource("17_x2xia")
+radius = 14.0
+damage = 80.0
+min_fraction = 0.8
+damage_type = 3
+vfx_id = &"coil_blackout_explosion"
+
+[sub_resource type="Resource" id="Resource_padnh"]
+script = ExtResource("8_vw8lq")
+id = &"coil_blackout_status"
+display_name = "Blackout"
+duration = 3.0
+is_debuff = true
+is_crowd_control = true
+speed_mult = 0.7
+silenced = true
+vfx_id = &"coil_blackout_loop"
+color = Color(0.35, 0.2, 0.6, 1)
+sound_apply = &"coil_blackout_impact"
+
+[sub_resource type="Resource" id="Resource_hn5q1"]
+script = ExtResource("18_7gxdo")
+status = SubResource("Resource_padnh")
+who = 3
+radius = 14.0
+
+[sub_resource type="Resource" id="Resource_lkr41"]
+script = ExtResource("5_o4u1s")
+cast_vfx = &"coil_blackout_cast"
+end_vfx = &"coil_blackout_end"
+area_vfx = &"coil_blackout_explosion"
+self_glow = Color(0.4, 0.2, 0.8, 1)
+sound_fire = &"coil_blackout_fire"
+sound_cast = &"coil_blackout_cast"
+sound_end = &"coil_blackout_end"
+sound_impact = &"coil_blackout_impact"
+voice_line = &"coil_ult_line"
+voice_line_enemy = &"coil_ult_line_enemy"
+camera_shake = 0.35
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_2qmbk"]
+script = ExtResource("6_7h5l1")
+id = &"coil_blackout"
+display_name = "Blackout"
+description = "After a 0.4 s wind-up, every enemy within 14 m you can see takes 80 damage and is SILENCED and slowed to 70% speed for 3 s. Weapons still work. The answer to an enemy ultimate."
+cast_time = 0.4
+resource = 2
+ult_cost = 1800.0
+effects = Array[ExtResource("2_q0eno")]([SubResource("Resource_ndm3p"), SubResource("Resource_hn5q1")])
+presentation = SubResource("Resource_lkr41")
+ai = SubResource("Resource_hbb6h")
+
+[sub_resource type="Resource" id="Resource_4mts4"]
+script = ExtResource("19_17edy")
+height = 1.84
+shoulder_width = 0.58
+head = 9
+extras = Array[int]([4, 5])
+primary_color = Color(0.2, 0.18, 0.26, 1)
+secondary_color = Color(0.85, 0.55, 0.2, 1)
+accent_color = Color(0.62, 0.42, 1, 1)
+emissive_color = Color(0.7, 0.5, 1, 1)
+emissive_strength = 2.4
+metallic = 0.5
+roughness = 0.5
+weapon_scale = 1.35
+weapon_style = &"gauntlet"
+arms_color = Color(0.85, 0.55, 0.2, 1)
+stance = &"brace"
+silhouette_notes = "Boxy welder's helmet with one antenna, canisters on the back, one oversized gauntlet on the right arm glowing violet. Orange safety-jacket sleeves. Reads as 'industrial' next to the cloaked and winged strikers."
+
+[resource]
+script = ExtResource("16_g0efk")
+id = &"coil"
+display_name = "Coil"
+codename = "The Welder"
+sort_order = 13
+tagline = "Stand together. Please."
+lore = "Coil welded hull plate in the Nightmarket towers, the neon stacks where the Pearl River Charter grows upward because it cannot grow out. Her gauntlet is a plasma welder with the safety filed off; the Tesla nodes are the same cheap lamp-posts she used to fix. She took the Runner contract for the money and stayed because nobody else on a drop site knew how the grid worked."
+playstyle = "Find the clump. Every shot on one target arcs to two more within 6 m, so aim at whoever is standing closest to the others. Drop a Tesla Node where the enemy has to pass and chain through it, pop Capacitor when the whole team turns on you and hand it back as a burst, and save Blackout for the moment the enemy commits to an ultimate."
+health = 225.0
+movement = SubResource("Resource_vsuen")
+hitbox = SubResource("Resource_e4q8n")
+primary = SubResource("Resource_x2xia")
+secondary = SubResource("Resource_rnah3")
+ability_1 = SubResource("Resource_ror12")
+ability_2 = SubResource("Resource_vw8lq")
+ultimate = SubResource("Resource_2qmbk")
+hero_script = ExtResource("11_e4q8n")
+visual = SubResource("Resource_4mts4")
+audio = SubResource("Resource_5lfey")
+theme_color = Color(0.62, 0.42, 1, 1)
+ai = SubResource("Resource_vgda2")
+counters = Array[StringName]([&"cathedral", &"cadence", &"suture"])
+countered_by = Array[StringName]([&"cathedral", &"tallow", &"suture"])
+synergies = Array[StringName]([&"rook", &"ballast", &"vesper"])
+unique_mechanic = "Chain: lightning from the gauntlet jumps from the enemy you hit to up to two more enemies within 6 m (70% then 50% damage). Friendly Tesla Nodes act as relays the chain can pass through."
+difficulty = 2

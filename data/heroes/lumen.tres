@@ -1,0 +1,315 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_32bpe"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_gp2uf"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="3_78iyj"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="4_4egda"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="5_kxunc"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="6_kp3is"]
+[ext_resource type="Script" path="res://src/heroes/deployables/LumenMirror.gd" id="7_ceuoh"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="8_v488t"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="9_ytmtp"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="10_8aj5q"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/LumenBehavior.gd" id="11_7ir5j"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="12_gi5k6"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="13_furq1"]
+[ext_resource type="Script" path="res://src/heroes/abilities/LumenBeamEffect.gd" id="14_c62vj"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="15_5povs"]
+[ext_resource type="Script" path="res://src/heroes/abilities/SutureAimedAllyGate.gd" id="16_64t45"]
+[ext_resource type="Script" path="res://src/abilities/effects/HealEffect.gd" id="17_1dime"]
+[ext_resource type="Script" path="res://src/heroes/abilities/LumenSunstrokeEffect.gd" id="18_q18g2"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="19_suuxw"]
+
+[sub_resource type="Resource" id="Resource_32bpe"]
+script = ExtResource("1_32bpe")
+intent = 8
+max_range = 20.0
+needs_line_of_sight = false
+needs_allies_in_radius = 2
+combo_tags = Array[StringName]([&"multi_heal"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_gp2uf"]
+script = ExtResource("4_4egda")
+id = &"lumen_prism"
+display_name = "Prism"
+duration = 4.0
+cleansable = false
+color = Color(1, 0.85, 0.5, 1)
+
+[sub_resource type="Resource" id="Resource_78iyj"]
+script = ExtResource("3_78iyj")
+status = SubResource("Resource_gp2uf")
+
+[sub_resource type="Resource" id="Resource_4egda"]
+script = ExtResource("5_kxunc")
+cast_vfx = &"lumen_prism_cast"
+self_glow = Color(1, 0.85, 0.5, 0.8)
+sound_fire = &"lumen_prism_fire"
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_kxunc"]
+script = ExtResource("6_kp3is")
+id = &"lumen_prism"
+display_name = "Prism"
+description = "For 4 s the beam passes through the prism and splits: it heals or burns up to 3 targets inside a 25 degree cone, each at 75% strength."
+cooldown = 12.0
+effects = Array[ExtResource("2_gp2uf")]([SubResource("Resource_78iyj")])
+presentation = SubResource("Resource_4egda")
+ai = SubResource("Resource_32bpe")
+
+[sub_resource type="Resource" id="Resource_kp3is"]
+script = ExtResource("1_32bpe")
+intent = 7
+min_range = 2.0
+max_range = 14.0
+ideal_range = 7.0
+needs_line_of_sight = false
+target_ground = true
+cast_priority = 0.45
+
+[sub_resource type="Resource" id="Resource_ceuoh"]
+script = ExtResource("8_v488t")
+deployable_script = ExtResource("7_ceuoh")
+placement = 3
+max_range = 14.0
+health = 120.0
+lifetime = 15.0
+max_instances = 2
+kind = &"mirror"
+visual_id = &"mirror"
+params = {
+"height": 1.8,
+"width": 1.4
+}
+face_caster = true
+
+[sub_resource type="Resource" id="Resource_v488t"]
+script = ExtResource("5_kxunc")
+cast_vfx = &"lumen_refract_cast"
+sound_fire = &"lumen_refract_fire"
+anim_tag = &"throw"
+
+[sub_resource type="Resource" id="Resource_ytmtp"]
+script = ExtResource("6_kp3is")
+id = &"lumen_refract"
+display_name = "Refract"
+description = "Place a mirror (120 hp, 15 s, two at a time) where you aim, facing you. Mirror Beam reflects off it, so you can heal around corners and over cover. Enemies can shoot it down."
+cooldown = 8.0
+charges = 2
+effects = Array[ExtResource("2_gp2uf")]([SubResource("Resource_ceuoh")])
+presentation = SubResource("Resource_v488t")
+ai = SubResource("Resource_kp3is")
+
+[sub_resource type="Resource" id="Resource_8aj5q"]
+script = ExtResource("9_ytmtp")
+preferred_range = 11.0
+min_range = 2.0
+max_effective_range = 25.0
+aggression = 0.3
+self_preservation = 0.7
+prefers_high_ground = 0.6
+sticks_to_tank = 0.7
+heals = true
+heal_range = 22.0
+builds = true
+ult_style = &"combo_enabler"
+
+[sub_resource type="Resource" id="Resource_7ir5j"]
+script = ExtResource("10_8aj5q")
+footstep_set = &"boots_light"
+ult_stinger = &"ult_lumen"
+ult_stinger_enemy = &"ult_lumen_enemy"
+callout_tone = &"radio_c"
+
+[sub_resource type="Resource" id="Resource_gi5k6"]
+script = ExtResource("12_gi5k6")
+
+[sub_resource type="Resource" id="Resource_furq1"]
+script = ExtResource("13_furq1")
+footstep_interval = 0.4
+
+[sub_resource type="Resource" id="Resource_c62vj"]
+script = ExtResource("1_32bpe")
+intent = 1
+max_range = 25.0
+target_ally = true
+cast_priority = 0.6
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_5povs"]
+script = ExtResource("5_kxunc")
+muzzle_vfx = &"lumen_beam_muzzle"
+tracer_style = &"beam"
+tracer_color = Color(1, 0.92, 0.6, 1)
+tracer_width = 0.06
+impact_vfx = &"lumen_beam_impact"
+impact_decal = &""
+self_glow = Color(1, 0.9, 0.5, 0.35)
+sound_fire = &"lumen_beam_fire"
+sound_cast = &"lumen_beam_cast"
+sound_loop = &"lumen_beam_loop"
+sound_end = &"lumen_beam_end"
+viewmodel_kick = 0.02
+viewmodel_kick_rot = 0.6
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_64t45"]
+script = ExtResource("14_c62vj")
+
+[sub_resource type="Resource" id="Resource_1dime"]
+script = ExtResource("6_kp3is")
+id = &"lumen_beam"
+display_name = "Mirror Beam"
+description = "Hold: a beam of light up to 25 m that heals the first ally it touches for 65/s or burns the first enemy for 55/s. It reflects off Refract mirrors (up to 3 bounces), so it can reach around corners."
+trigger = 2
+usable_while_silenced = true
+is_weapon = true
+tick_effects = Array[ExtResource("2_gp2uf")]([SubResource("Resource_64t45")])
+presentation = SubResource("Resource_5povs")
+ai = SubResource("Resource_c62vj")
+
+[sub_resource type="Resource" id="Resource_q18g2"]
+script = ExtResource("1_32bpe")
+intent = 1
+max_range = 25.0
+target_ally = true
+cast_priority = 0.7
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_suuxw"]
+script = ExtResource("17_1dime")
+amount = 70.0
+who = 4
+
+[sub_resource type="Resource" id="Resource_at5or"]
+script = ExtResource("5_kxunc")
+cast_vfx = &"lumen_glint_cast"
+sound_fire = &"lumen_glint_fire"
+viewmodel_kick = 0.04
+anim_tag = &"cast"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_5k3ur"]
+script = ExtResource("6_kp3is")
+id = &"lumen_glint"
+display_name = "Glint"
+description = "Flash the staff at an ally: heals them for 70 instantly (25 m). Only fires with an ally under the crosshair."
+cooldown = 5.0
+effects = Array[ExtResource("2_gp2uf")]([SubResource("Resource_suuxw")])
+behavior = ExtResource("16_64t45")
+presentation = SubResource("Resource_at5or")
+ai = SubResource("Resource_q18g2")
+
+[sub_resource type="Resource" id="Resource_m2qps"]
+script = ExtResource("1_32bpe")
+ideal_range = 12.0
+needs_enemies_in_radius = 2
+needs_allies_in_radius = 1
+combo_tags = Array[StringName]([&"blind", &"aoe_damage", &"heal"])
+cast_priority = 0.7
+
+[sub_resource type="Resource" id="Resource_q1vq8"]
+script = ExtResource("5_kxunc")
+tracer_style = &"beam"
+tracer_color = Color(1, 0.97, 0.8, 1)
+tracer_width = 0.5
+impact_vfx = &"lumen_beam_impact"
+cast_vfx = &"lumen_sunstroke_cast"
+loop_vfx = &"lumen_sunstroke_loop"
+end_vfx = &"lumen_sunstroke_end"
+self_glow = Color(1, 0.95, 0.7, 1)
+sound_fire = &"lumen_sunstroke_fire"
+sound_cast = &"lumen_sunstroke_cast"
+sound_loop = &"lumen_sunstroke_loop"
+sound_end = &"lumen_sunstroke_end"
+voice_line = &"lumen_ult_line"
+voice_line_enemy = &"lumen_ult_line_enemy"
+camera_shake = 0.12
+anim_tag = &"ult"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_4f21g"]
+script = ExtResource("4_4egda")
+id = &"lumen_sunstroke"
+display_name = "Sunstroke"
+duration = 3.0
+cleansable = false
+speed_mult = 0.5
+color = Color(1, 0.97, 0.8, 1)
+
+[sub_resource type="Resource" id="Resource_xub1j"]
+script = ExtResource("4_4egda")
+id = &"lumen_blind"
+display_name = "Blinded"
+duration = 1.5
+is_debuff = true
+is_crowd_control = true
+speed_mult = 0.6
+revealed = true
+color = Color(1, 1, 0.8, 1)
+sound_apply = &"lumen_blind_apply"
+
+[sub_resource type="Resource" id="Resource_o1hg4"]
+script = ExtResource("18_q18g2")
+enemy_status = SubResource("Resource_xub1j")
+
+[sub_resource type="Resource" id="Resource_tc15n"]
+script = ExtResource("6_kp3is")
+id = &"lumen_sunstroke"
+display_name = "Sunstroke"
+description = "3 s: a blazing beam as wide as a doorway, 30 m. Enemies in it burn for 120/s and are blinded (60% speed, revealed); allies in it are healed for 100/s. Lumen moves at half speed while channelling."
+active_duration = 3.0
+resource = 2
+ult_cost = 1750.0
+blocks_primary_while_active = true
+self_status_while_active = SubResource("Resource_4f21g")
+tick_effects = Array[ExtResource("2_gp2uf")]([SubResource("Resource_o1hg4")])
+presentation = SubResource("Resource_q1vq8")
+ai = SubResource("Resource_m2qps")
+
+[sub_resource type="Resource" id="Resource_qmaph"]
+script = ExtResource("19_suuxw")
+build = 0
+height = 1.76
+head = 4
+extras = Array[int]([14])
+primary_color = Color(0.92, 0.9, 0.84, 1)
+secondary_color = Color(0.36, 0.32, 0.44, 1)
+accent_color = Color(1, 0.8, 0.35, 1)
+emissive_color = Color(1, 0.95, 0.7, 1)
+emissive_strength = 2.6
+metallic = 0.2
+roughness = 0.5
+weapon_scale = 1.05
+weapon_style = &"staff"
+arms_color = Color(0.82, 0.8, 0.76, 1)
+silhouette_notes = "Light build, glowing glass dome for a head, a floating prism above the shoulders and a tall staff. Pale coat, gold trim: reads as 'light' even in shadow."
+
+[resource]
+script = ExtResource("15_5povs")
+id = &"lumen"
+display_name = "Lumen"
+codename = "The Refractor"
+role = 2
+sort_order = 22
+tagline = "Every angle is a way in."
+lore = "Lumen spent a decade in the Meridian Station optics lab coaxing sunlight through kilometres of salvaged Ring glass to grow crops in the dark. When the lab was sold for scrap she kept one thing: the staff, a coherent-light emitter that can be steered with mirrors. She heals the way she farmed - by finding the angle nobody else saw."
+playstyle = "Hold Mirror Beam on whoever needs it; it burns enemies just as well. Place Refract mirrors at corners so the beam can reach allies you cannot see, and pop Prism when the team clumps to heal three at once. Sunstroke is both a blind and a big heal: fire it down the lane where the fight is."
+movement = SubResource("Resource_furq1")
+hitbox = SubResource("Resource_gi5k6")
+primary = SubResource("Resource_1dime")
+secondary = SubResource("Resource_5k3ur")
+ability_1 = SubResource("Resource_kxunc")
+ability_2 = SubResource("Resource_ytmtp")
+ultimate = SubResource("Resource_tc15n")
+hero_script = ExtResource("11_7ir5j")
+visual = SubResource("Resource_qmaph")
+audio = SubResource("Resource_7ir5j")
+theme_color = Color(1, 0.9, 0.5, 1)
+ai = SubResource("Resource_8aj5q")
+counters = Array[StringName]([&"bombard", &"rook", &"ballast"])
+countered_by = Array[StringName]([&"harrier", &"wisp", &"sable"])
+synergies = Array[StringName]([&"vesper", &"cathedral", &"cairn"])
+unique_mechanic = "Bouncing beam: Mirror Beam reflects off Refract mirrors (up to 3 bounces), healing the first ally / burning the first enemy along the full folded path. Prism splits it into up to 3 targets in a 25 degree cone."
+difficulty = 3

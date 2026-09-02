@@ -4,8 +4,10 @@ class_name PropLibrary
 static var _cache: Dictionary = {}
 
 
+## `rel_path` is "<kit>/<model>"; the .glb extension is optional and Kenney's dashes may be written
+## either way, so "city_kit_roads/construction-cone" and ".../construction_cone.glb" both resolve.
 static func instance(rel_path: String) -> Node3D:
-	var path := "res://assets/models/%s" % rel_path
+	var path := _resolve(rel_path)
 	if not _cache.has(path):
 		if ResourceLoader.exists(path):
 			_cache[path] = load(path)
@@ -17,6 +19,14 @@ static func instance(rel_path: String) -> Node3D:
 		return null
 	var node := scene.instantiate() as Node3D
 	return node
+
+
+static func _resolve(rel_path: String) -> String:
+	var base := "res://assets/models/%s" % rel_path.replace("-", "_")
+	for cand: String in [base, base + ".glb", base + ".gltf"]:
+		if ResourceLoader.exists(cand):
+			return cand
+	return base if base.get_extension() != "" else base + ".glb"
 
 
 static func add_box_collision(node: Node3D, static_root: StaticBody3D, pos: Vector3, yaw: float, scale_f: float) -> void:

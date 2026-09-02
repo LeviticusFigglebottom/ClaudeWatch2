@@ -1,0 +1,422 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_83bkm"]
+[ext_resource type="Script" path="res://src/heroes/abilities/RookLiftBehavior.gd" id="2_74mpm"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="3_ydnvt"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="4_hlw5q"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="5_7jfij"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="6_5fmjb"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="7_xgfdr"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="8_eussn"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="9_n6lrl"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/RookBehavior.gd" id="10_b8eul"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="11_sn64h"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="12_8ce37"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="13_abjh5"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="14_hrtfr"]
+[ext_resource type="Script" path="res://src/abilities/effects/KnockbackEffect.gd" id="15_yjuiv"]
+[ext_resource type="Script" path="res://src/heroes/deployables/RookGroundZero.gd" id="16_i845e"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="17_d72a0"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="18_i2eal"]
+
+[sub_resource type="Resource" id="Resource_83bkm"]
+script = ExtResource("1_83bkm")
+intent = 6
+min_range = 2.0
+max_range = 12.0
+ideal_range = 7.0
+hold_for_combo = true
+combo_tags = Array[StringName]([&"lift", &"root", &"setup"])
+cast_priority = 0.75
+telegraph_seconds = 0.15
+
+[sub_resource type="Resource" id="Resource_74mpm"]
+script = ExtResource("5_7jfij")
+id = &"rook_lifted"
+display_name = "Lifted"
+duration = 1.6
+is_debuff = true
+is_crowd_control = true
+tags = Array[StringName]([&"displace", &"root"])
+speed_mult = 0.0
+rooted = true
+airborne = true
+color = Color(0.7, 0.55, 1, 1)
+
+[sub_resource type="Resource" id="Resource_ydnvt"]
+script = ExtResource("4_hlw5q")
+status = SubResource("Resource_74mpm")
+who = 1
+enabled = false
+
+[sub_resource type="Resource" id="Resource_hlw5q"]
+script = ExtResource("6_5fmjb")
+muzzle_vfx = &"rook_lift"
+cast_vfx = &"rook_lift"
+sound_fire = &"rook_lift_fire"
+sound_cast = &"rook_lift_cast"
+sound_end = &"rook_lift_end"
+camera_shake = 0.15
+viewmodel_kick = 0.1
+viewmodel_kick_rot = 4.0
+anim_tag = &"cast"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_7jfij"]
+script = ExtResource("7_xgfdr")
+id = &"rook_lift"
+display_name = "Lift"
+description = "Cut gravity in a 35 degree cone to 12 m: every enemy caught floats helplessly for 1.6 s. They can still shoot, but cannot move, jump or escape. Unstoppable enemies are immune."
+cooldown = 12.0
+cast_time = 0.15
+recovery = 0.3
+effects = Array[ExtResource("3_ydnvt")]([SubResource("Resource_ydnvt")])
+behavior = ExtResource("2_74mpm")
+presentation = SubResource("Resource_hlw5q")
+ai = SubResource("Resource_83bkm")
+
+[sub_resource type="Resource" id="Resource_5fmjb"]
+script = ExtResource("1_83bkm")
+intent = 5
+max_range = 16.0
+ideal_range = 5.0
+use_when_health_below = 0.7
+counter_tags = Array[StringName]([&"displace", &"pull", &"root"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_xgfdr"]
+script = ExtResource("6_5fmjb")
+cast_vfx = &"rook_density_cast"
+loop_vfx = &"rook_density_loop"
+self_glow = Color(0.98, 0.6, 0.2, 1)
+sound_cast = &"rook_density_cast"
+sound_loop = &"rook_density_loop"
+sound_end = &"rook_density_end"
+camera_shake = 0.12
+viewmodel_kick = 0.08
+viewmodel_kick_rot = 2.0
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_eussn"]
+script = ExtResource("5_7jfij")
+id = &"rook_density"
+display_name = "Dense"
+duration = 3.0
+cleansable = false
+speed_mult = 0.85
+damage_taken_mult = 0.7
+gravity_mult = 2.5
+unstoppable = true
+color = Color(0.98, 0.6, 0.2, 1)
+
+[sub_resource type="Resource" id="Resource_n6lrl"]
+script = ExtResource("7_xgfdr")
+id = &"rook_density"
+display_name = "Density"
+description = "Triple your mass for 3 s: 30% less damage taken, unstoppable, 2.5x gravity, 85% speed. Land on enemies from height while dense to slam them for 45."
+cooldown = 10.0
+recovery = 0.1
+active_duration = 3.0
+cancel_on_cc = false
+self_status_while_active = SubResource("Resource_eussn")
+presentation = SubResource("Resource_xgfdr")
+ai = SubResource("Resource_5fmjb")
+
+[sub_resource type="Resource" id="Resource_b8eul"]
+script = ExtResource("8_eussn")
+preferred_range = 13.0
+min_range = 4.0
+max_effective_range = 28.0
+aggression = 0.4
+self_preservation = 0.55
+prefers_high_ground = 0.6
+sticks_to_tank = 0.0
+ult_style = &"combo_payoff"
+aim_difficulty_scale = 1.3
+
+[sub_resource type="Resource" id="Resource_sn64h"]
+script = ExtResource("9_n6lrl")
+ult_stinger = &"ult_rook"
+ult_stinger_enemy = &"ult_rook_enemy"
+voice_pitch = 1.05
+callout_tone = &"radio_c"
+
+[sub_resource type="Resource" id="Resource_8ce37"]
+script = ExtResource("11_sn64h")
+head_radius = 0.22
+head_height = 1.7
+head_crouch_height = 1.1
+body_radius = 0.44
+body_top = 1.4
+body_crouch_top = 0.9
+
+[sub_resource type="Resource" id="Resource_abjh5"]
+script = ExtResource("12_8ce37")
+max_speed = 5.2
+ground_accel = 54.0
+air_control = 0.45
+air_friction = 0.3
+jump_velocity = 6.8
+gravity_mult = 0.85
+capsule_height = 1.95
+eye_height = 1.66
+crouch_eye_height = 1.05
+camera_bob_scale = 0.6
+footstep_interval = 0.5
+slow_fall = true
+slow_fall_terminal = 5.5
+
+[sub_resource type="Resource" id="Resource_hrtfr"]
+script = ExtResource("1_83bkm")
+min_range = 4.0
+ideal_range = 14.0
+needs_line_of_sight = false
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_yjuiv"]
+script = ExtResource("13_abjh5")
+damage = 55.0
+speed = 24.0
+gravity = 9.0
+radius = 0.25
+splash_radius = 3.0
+splash_damage = 45.0
+splash_min_fraction = 0.4
+knockback = 3.0
+visual_id = &"mortar"
+lob_arc = true
+
+[sub_resource type="Resource" id="Resource_i845e"]
+script = ExtResource("6_5fmjb")
+muzzle_vfx = &"rook_mortar_muzzle"
+tracer_color = Color(0.7, 0.55, 1, 1)
+impact_vfx = &"rook_mortar_impact"
+impact_decal = &"scorch"
+projectile_vfx = &"mortar"
+sound_fire = &"rook_mortar_fire"
+sound_tail = &"rook_mortar_tail"
+sound_impact = &"rook_mortar_impact"
+camera_shake = 0.14
+camera_kick_pitch = 3.0
+camera_kick_yaw_random = 0.3
+kick_recovery = 8.0
+viewmodel_kick = 0.2
+viewmodel_kick_rot = 7.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_d72a0"]
+script = ExtResource("7_xgfdr")
+id = &"rook_mortar"
+display_name = "Gravity Mortar"
+description = "Lobs a gravity shell at 24 m/s in a high arc: 55 damage on a direct hit, 45 splash within 3 m. Slow, generous, arcs over any wall."
+trigger = 1
+fire_rate = 1.1
+resource = 1
+ammo = 5
+reload_time = 1.8
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_ydnvt")]([SubResource("Resource_yjuiv")])
+presentation = SubResource("Resource_i845e")
+ai = SubResource("Resource_hrtfr")
+
+[sub_resource type="Resource" id="Resource_i2eal"]
+script = ExtResource("1_83bkm")
+intent = 6
+min_range = 5.0
+max_range = 26.0
+ideal_range = 13.0
+needs_line_of_sight = false
+combo_tags = Array[StringName]([&"pull", &"group"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_won31"]
+script = ExtResource("15_yjuiv")
+radius = 4.5
+force = 8.0
+upward = 0.35
+pull = true
+requires_los = false
+center_on_point = true
+
+[sub_resource type="Resource" id="Resource_ujlmd"]
+script = ExtResource("5_7jfij")
+id = &"rook_singularity_slow"
+display_name = "Crushed"
+duration = 1.2
+is_debuff = true
+is_crowd_control = true
+tags = Array[StringName]([&"slow"])
+speed_mult = 0.5
+color = Color(0.6, 0.42, 0.98, 1)
+
+[sub_resource type="Resource" id="Resource_iuobd"]
+script = ExtResource("4_hlw5q")
+status = SubResource("Resource_ujlmd")
+who = 3
+radius = 4.5
+requires_los = false
+center_on_point = true
+
+[sub_resource type="Resource" id="Resource_iaorf"]
+script = ExtResource("13_abjh5")
+damage = 40.0
+speed = 26.0
+gravity = 9.0
+radius = 0.25
+splash_radius = 3.0
+splash_damage = 30.0
+splash_min_fraction = 0.5
+visual_id = &"orb"
+on_hit_effects = Array[ExtResource("3_ydnvt")]([SubResource("Resource_won31"), SubResource("Resource_iuobd")])
+lob_arc = true
+
+[sub_resource type="Resource" id="Resource_0q38a"]
+script = ExtResource("6_5fmjb")
+muzzle_vfx = &"rook_mortar_muzzle"
+tracer_color = Color(0.5, 0.3, 1, 1)
+impact_vfx = &"rook_mortar_impact"
+projectile_vfx = &"orb"
+sound_fire = &"rook_singularity_fire"
+sound_tail = &"rook_singularity_tail"
+sound_impact = &"rook_singularity_impact"
+camera_shake = 0.14
+camera_kick_pitch = 3.2
+camera_kick_yaw_random = 0.3
+viewmodel_kick = 0.2
+viewmodel_kick_rot = 7.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_dbbn7"]
+script = ExtResource("7_xgfdr")
+id = &"rook_singularity"
+display_name = "Singularity Shell"
+description = "Fire a collapsing shell: 40 damage on hit, 30 splash, and every enemy within 4.5 m of the impact is yanked toward it and slowed to 50% for 1.2 s. Groups them for the mortar."
+cooldown = 7.0
+recovery = 0.3
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_ydnvt")]([SubResource("Resource_iaorf")])
+presentation = SubResource("Resource_0q38a")
+ai = SubResource("Resource_i2eal")
+
+[sub_resource type="Resource" id="Resource_godw7"]
+script = ExtResource("1_83bkm")
+intent = 9
+min_range = 4.0
+max_range = 22.0
+ideal_range = 12.0
+needs_line_of_sight = false
+target_ground = true
+needs_enemies_in_radius = 2
+combo_tags = Array[StringName]([&"aoe_damage", &"payoff"])
+cast_priority = 0.75
+telegraph_seconds = 2.5
+
+[sub_resource type="Resource" id="Resource_0d375"]
+script = ExtResource("17_d72a0")
+deployable_script = ExtResource("16_i845e")
+placement = 3
+max_range = 22.0
+kind = &"rook_well"
+visual_id = &"rook_well"
+params = {
+"charge_time": 2.5,
+"damage": 200.0,
+"radius": 8.0,
+"slow": "rook_well_slow"
+}
+
+[sub_resource type="Resource" id="Resource_apekp"]
+script = ExtResource("5_7jfij")
+id = &"rook_well_slow"
+display_name = "Event Horizon"
+duration = 0.4
+is_debuff = true
+is_crowd_control = true
+tags = Array[StringName]([&"slow", &"pull"])
+speed_mult = 0.55
+color = Color(0.5, 0.3, 1, 1)
+
+[sub_resource type="Resource" id="Resource_1xv07"]
+script = ExtResource("4_hlw5q")
+status = SubResource("Resource_apekp")
+who = 1
+enabled = false
+
+[sub_resource type="Resource" id="Resource_t4jjn"]
+script = ExtResource("6_5fmjb")
+cast_vfx = &"rook_ground_zero"
+area_vfx = &"rook_ground_zero_pull"
+self_glow = Color(0.6, 0.42, 0.98, 1)
+sound_cast = &"rook_ground_zero_cast"
+sound_loop = &"rook_ground_zero_loop"
+sound_end = &"rook_ground_zero_end"
+voice_line = &"rook_ult_line"
+voice_line_enemy = &"rook_ult_line_enemy"
+camera_shake = 0.3
+viewmodel_kick = 0.12
+viewmodel_kick_rot = 4.0
+anim_tag = &"ult"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_e0wos"]
+script = ExtResource("7_xgfdr")
+id = &"rook_ground_zero"
+display_name = "Ground Zero"
+description = "Drop a gravity well where you aim (within 22 m). For 2.5 s every enemy within 8 m is dragged toward the center and slowed; then it detonates for 200 damage (120 at the edge) and throws them into the air. The payoff for any pull, root or slow."
+recovery = 0.4
+resource = 2
+ult_cost = 2000.0
+effects = Array[ExtResource("3_ydnvt")]([SubResource("Resource_0d375"), SubResource("Resource_1xv07")])
+presentation = SubResource("Resource_t4jjn")
+ai = SubResource("Resource_godw7")
+
+[sub_resource type="Resource" id="Resource_v5680"]
+script = ExtResource("18_i2eal")
+height = 1.9
+shoulder_width = 0.62
+head = 9
+extras = Array[int]([3, 7])
+primary_color = Color(0.82, 0.84, 0.9, 1)
+secondary_color = Color(0.2, 0.18, 0.3, 1)
+accent_color = Color(0.98, 0.6, 0.2, 1)
+emissive_color = Color(0.6, 0.42, 0.98, 1)
+emissive_strength = 2.4
+metallic = 0.7
+roughness = 0.3
+weapon_scale = 1.2
+weapon_style = &"mortar"
+arms_color = Color(0.3, 0.28, 0.4, 1)
+stance = &"hover"
+silhouette_notes = "White station-panel plating with amber warning stripes, a boxy antenna head, twin field coils on the back and a violet gravity ring floating above the shoulders. A stubby mortar held low. Reads as a hovering machine, not a soldier."
+
+[resource]
+script = ExtResource("14_hrtfr")
+id = &"rook"
+display_name = "Rook"
+codename = "The Engineer"
+role = 0
+sort_order = 5
+tagline = "Down is a suggestion."
+lore = "Rook kept Meridian Station's gravity plating alive for six years after the rest of the segment went dark, alone with the hum and a workshop full of field coils. When the Charters finally sent a salvage team she met them at the airlock in a hover-frame she had built from the station's own bones, and asked, politely, what they were offering. She has never fully trusted the ground since. She does not need to."
+playstyle = "Hold a zone and make it expensive to enter. Mortar shells arc over cover and punish groups; Lift freezes a whole cone of divers in the air where your strikers can pick them off. Density when you are focused: 30% less damage, unstoppable, and landing on someone hurts them. Ground Zero is the payoff for any pull or slow: everything in 8 m is dragged to the center and detonated."
+health = 350.0
+shield = 200.0
+movement = SubResource("Resource_abjh5")
+hitbox = SubResource("Resource_8ce37")
+primary = SubResource("Resource_d72a0")
+secondary = SubResource("Resource_dbbn7")
+ability_1 = SubResource("Resource_7jfij")
+ability_2 = SubResource("Resource_n6lrl")
+ultimate = SubResource("Resource_e0wos")
+hero_script = ExtResource("10_b8eul")
+visual = SubResource("Resource_v5680")
+audio = SubResource("Resource_sn64h")
+theme_color = Color(0.6, 0.42, 0.98, 1)
+ai = SubResource("Resource_b8eul")
+counters = Array[StringName]([&"harrier", &"sable", &"ricochet", &"wisp"])
+countered_by = Array[StringName]([&"kiln", &"tallow", &"suture", &"cathedral"])
+synergies = Array[StringName]([&"bombard", &"coil", &"ballast", &"vesper"])
+unique_mechanic = "Lift: every enemy in a 35 degree cone within 12 m floats helplessly for 1.6 s. They can still aim, shoot and use abilities, but cannot move or jump. Unstoppable enemies are immune."
+difficulty = 3

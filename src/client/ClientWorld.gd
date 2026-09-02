@@ -274,7 +274,7 @@ func _present(kind: StringName, pl: Dictionary, predicted: bool) -> void:
 			_spawn_projectile_visual(pl, predicted)
 		&"projectile_impact":
 			var id := int(pl["id"])
-			var pv: ProjectileVisual = projectile_visuals.get(id)
+			var pv := _projectile_visual(id)
 			var visual: StringName = pl.get("visual", &"bolt")
 			var color := pv.color if pv else Color(1, 0.8, 0.4)
 			vfx.projectile_impact(visual, pl["pos"], pl["normal"], color, float(pl.get("splash", 0.0)))
@@ -283,16 +283,16 @@ func _present(kind: StringName, pl: Dictionary, predicted: bool) -> void:
 				pv.finish()
 				projectile_visuals.erase(id)
 		&"projectile_bounce":
-			var pv: ProjectileVisual = projectile_visuals.get(int(pl["id"]))
+			var pv := _projectile_visual(int(pl["id"]))
 			if pv:
 				pv.on_bounce(pl["pos"], pl["vel"])
 			audio.play_3d(&"bounce", pl["pos"], &"SFX")
 		&"projectile_stuck":
-			var pv: ProjectileVisual = projectile_visuals.get(int(pl["id"]))
+			var pv := _projectile_visual(int(pl["id"]))
 			if pv:
 				pv.stick(pl["pos"], w.get_pawn(int(pl.get("to", -1))))
 		&"projectile_expire":
-			var pv: ProjectileVisual = projectile_visuals.get(int(pl["id"]))
+			var pv := _projectile_visual(int(pl["id"]))
 			if pv:
 				pv.finish()
 				projectile_visuals.erase(int(pl["id"]))
@@ -504,6 +504,16 @@ func _has_hitscan(ab: AbilityData) -> bool:
 	return false
 
 
+## Projectile visuals are pooled by id; entries can outlive their node (queue_free on impact),
+## so every lookup must drop stale references rather than assigning a freed instance.
+func _projectile_visual(id: int) -> ProjectileVisual:
+	var v: Variant = projectile_visuals.get(id)
+	if v == null or not is_instance_valid(v):
+		projectile_visuals.erase(id)
+		return null
+	return v as ProjectileVisual
+
+
 func _on_ult_used(p: Pawn, pres: AbilityPresentation) -> void:
 	var friendly := local_pawn != null and p.team == local_pawn.team or (local_pawn == null and p.team == client.team)
 	var line := pres.voice_line if friendly else pres.voice_line_enemy
@@ -550,8 +560,8 @@ func _adopt_predicted_projectile(pl: Dictionary) -> void:
 	# Match the server's projectile id to the visual we spawned on prediction; if none, spawn now.
 	var key := str(pl["vel"]) + str(pl.get("visual", ""))
 	for id: Variant in projectile_visuals.keys():
-		var pv: ProjectileVisual = projectile_visuals[id]
-		if is_instance_valid(pv) and pv.has_meta("predicted") and pv.predicted_key == key:
+		var pv := _projectile_visual(int(id))
+		if pv != null and pv.has_meta("predicted") and pv.predicted_key == key:
 			projectile_visuals.erase(id)
 			projectile_visuals[int(pl["id"])] = pv
 			pv.remove_meta("predicted")

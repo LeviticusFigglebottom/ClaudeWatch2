@@ -1,0 +1,330 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_2x28x"]
+[ext_resource type="Script" path="res://src/heroes/abilities/SutureTetherBehavior.gd" id="2_jhpaq"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="3_tdvc0"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="4_de4tg"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="5_drurc"]
+[ext_resource type="Script" path="res://src/abilities/effects/HealEffect.gd" id="6_y107q"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="7_nfrhg"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="8_1jmnn"]
+[ext_resource type="Script" path="res://src/heroes/abilities/SutureAimedAllyGate.gd" id="9_jl4xc"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="10_g4qrn"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="11_34cpc"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/SutureBehavior.gd" id="12_6ggd3"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="13_vv10s"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="14_l4mkd"]
+[ext_resource type="Script" path="res://src/abilities/effects/HitscanEffect.gd" id="15_84dr1"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="16_spfx8"]
+[ext_resource type="Script" path="res://src/heroes/abilities/SutureHealingShellEffect.gd" id="17_qxvfq"]
+[ext_resource type="Script" path="res://src/abilities/effects/CleanseEffect.gd" id="18_xco3m"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="19_bearb"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="20_jpgyl"]
+
+[sub_resource type="Resource" id="Resource_2x28x"]
+script = ExtResource("1_2x28x")
+intent = 8
+max_range = 25.0
+target_ally = true
+needs_allies_in_radius = 1
+combo_tags = Array[StringName]([&"tether"])
+cast_priority = 0.65
+
+[sub_resource type="Resource" id="Resource_jhpaq"]
+script = ExtResource("5_drurc")
+id = &"suture_tether"
+display_name = "Tethered"
+duration = 6.0
+cleansable = false
+color = Color(0.6, 1, 0.85, 1)
+
+[sub_resource type="Resource" id="Resource_tdvc0"]
+script = ExtResource("4_de4tg")
+status = SubResource("Resource_jhpaq")
+who = 1
+
+[sub_resource type="Resource" id="Resource_de4tg"]
+script = ExtResource("6_y107q")
+amount = 30.0
+who = 4
+
+[sub_resource type="Resource" id="Resource_drurc"]
+script = ExtResource("7_nfrhg")
+cast_vfx = &"suture_tether_cast"
+sound_fire = &"suture_tether_fire"
+anim_tag = &"cast"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_y107q"]
+script = ExtResource("8_1jmnn")
+id = &"suture_tether"
+display_name = "Tether"
+description = "Link the aimed ally for 6 s and heal them for 30. The two most recently tethered allies (or one ally and Suture) share every point of healing Suture puts into either of them."
+cooldown = 10.0
+effects = Array[ExtResource("3_tdvc0")]([SubResource("Resource_tdvc0"), SubResource("Resource_de4tg")])
+behavior = ExtResource("2_jhpaq")
+presentation = SubResource("Resource_drurc")
+ai = SubResource("Resource_2x28x")
+
+[sub_resource type="Resource" id="Resource_nfrhg"]
+script = ExtResource("1_2x28x")
+intent = 8
+max_range = 25.0
+target_ally = true
+needs_allies_in_radius = 1
+combo_tags = Array[StringName]([&"speed", &"damage_buff"])
+cast_priority = 0.55
+
+[sub_resource type="Resource" id="Resource_1jmnn"]
+script = ExtResource("5_drurc")
+id = &"suture_adrenaline"
+display_name = "Adrenaline"
+duration = 4.0
+cleansable = false
+speed_mult = 1.25
+fire_rate_mult = 1.25
+color = Color(1, 0.6, 0.4, 1)
+sound_apply = &"suture_adrenaline_apply"
+
+[sub_resource type="Resource" id="Resource_jl4xc"]
+script = ExtResource("4_de4tg")
+status = SubResource("Resource_1jmnn")
+who = 1
+
+[sub_resource type="Resource" id="Resource_g4qrn"]
+script = ExtResource("7_nfrhg")
+cast_vfx = &"suture_adrenaline_cast"
+sound_fire = &"suture_adrenaline_fire"
+anim_tag = &"throw"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_34cpc"]
+script = ExtResource("8_1jmnn")
+id = &"suture_adrenaline"
+display_name = "Adrenaline"
+description = "Inject the aimed ally: +25% fire rate and +25% move speed for 4 s."
+cooldown = 12.0
+effects = Array[ExtResource("3_tdvc0")]([SubResource("Resource_jl4xc")])
+behavior = ExtResource("9_jl4xc")
+presentation = SubResource("Resource_g4qrn")
+ai = SubResource("Resource_nfrhg")
+
+[sub_resource type="Resource" id="Resource_6ggd3"]
+script = ExtResource("10_g4qrn")
+preferred_range = 10.0
+min_range = 2.0
+aggression = 0.3
+self_preservation = 0.7
+prefers_high_ground = 0.4
+sticks_to_tank = 0.7
+heals = true
+heal_range = 20.0
+ult_style = &"save"
+
+[sub_resource type="Resource" id="Resource_vv10s"]
+script = ExtResource("11_34cpc")
+ult_stinger = &"ult_suture"
+ult_stinger_enemy = &"ult_suture_enemy"
+
+[sub_resource type="Resource" id="Resource_l4mkd"]
+script = ExtResource("13_vv10s")
+
+[sub_resource type="Resource" id="Resource_84dr1"]
+script = ExtResource("14_l4mkd")
+
+[sub_resource type="Resource" id="Resource_spfx8"]
+script = ExtResource("1_2x28x")
+ideal_range = 12.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_qxvfq"]
+script = ExtResource("15_84dr1")
+damage = 12.0
+range = 60.0
+spread_deg = 1.4
+spread_moving_deg = 1.2
+spread_airborne_deg = 2.5
+bloom_per_shot_deg = 0.15
+bloom_max_deg = 1.5
+falloff_start = 18.0
+falloff_end = 35.0
+falloff_min = 0.5
+hit_allies = true
+ally_heal = 6.0
+
+[sub_resource type="Resource" id="Resource_xco3m"]
+script = ExtResource("7_nfrhg")
+muzzle_vfx = &"muzzle_generic"
+tracer_style = &"bullet"
+tracer_color = Color(0.75, 1, 0.9, 1)
+tracer_width = 0.02
+impact_vfx = &"suture_staple_impact"
+sound_fire = &"suture_stapler_fire"
+sound_tail = &"suture_stapler_tail"
+camera_shake = 0.015
+camera_kick_pitch = 0.35
+camera_kick_yaw_random = 0.2
+kick_recovery = 16.0
+viewmodel_kick = 0.03
+viewmodel_kick_rot = 1.5
+crosshair = &"cross"
+
+[sub_resource type="Resource" id="Resource_bearb"]
+script = ExtResource("8_1jmnn")
+id = &"suture_stapler"
+display_name = "Stapler"
+description = "Rapid hitscan stapler: 12 damage, 9 shots/s, 30 staples. Staples fired into an ally close wounds for 6 each."
+trigger = 1
+fire_rate = 9.0
+resource = 1
+ammo = 30
+reload_time = 1.3
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_tdvc0")]([SubResource("Resource_qxvfq")])
+presentation = SubResource("Resource_xco3m")
+ai = SubResource("Resource_spfx8")
+
+[sub_resource type="Resource" id="Resource_jpgyl"]
+script = ExtResource("1_2x28x")
+intent = 1
+max_range = 20.0
+ideal_range = 8.0
+target_ally = true
+cast_priority = 0.75
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_ed3bs"]
+script = ExtResource("17_qxvfq")
+heal = 45.0
+heal_self = true
+burst_vfx = &"suture_bandage_burst"
+damage = 15.0
+speed = 35.0
+radius = 0.15
+lifetime = 0.6
+count = 3
+spread_deg = 6.0
+visual_id = &"flare"
+
+[sub_resource type="Resource" id="Resource_66du4"]
+script = ExtResource("7_nfrhg")
+muzzle_vfx = &"suture_volley_muzzle"
+tracer_color = Color(0.6, 1, 0.85, 1)
+impact_vfx = &"suture_bandage_burst"
+impact_decal = &""
+projectile_vfx = &"flare"
+sound_fire = &"suture_volley_fire"
+sound_tail = &"suture_volley_tail"
+camera_shake = 0.03
+camera_kick_pitch = 0.8
+camera_kick_yaw_random = 0.3
+viewmodel_kick = 0.08
+viewmodel_kick_rot = 3.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_eemaw"]
+script = ExtResource("8_1jmnn")
+id = &"suture_volley"
+display_name = "Bandage Volley"
+description = "Fire three bandage shells (6 degree spread, 21 m). Each shell bursts on the first ally, enemy or surface it meets: allies within 3 m are healed for 45, an enemy hit directly takes 15. Shoot the floor at your feet to patch yourself for half."
+cooldown = 2.5
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_tdvc0")]([SubResource("Resource_ed3bs")])
+presentation = SubResource("Resource_66du4")
+ai = SubResource("Resource_jpgyl")
+
+[sub_resource type="Resource" id="Resource_n6ick"]
+script = ExtResource("1_2x28x")
+intent = 1
+max_range = 10.0
+ideal_range = 6.0
+needs_line_of_sight = false
+target_ally = true
+needs_allies_in_radius = 2
+combo_tags = Array[StringName]([&"cleanse", &"full_heal"])
+counter_tags = Array[StringName]([&"cleanse"])
+cast_priority = 0.75
+
+[sub_resource type="Resource" id="Resource_en6un"]
+script = ExtResource("18_xco3m")
+radius = 10.0
+
+[sub_resource type="Resource" id="Resource_gul65"]
+script = ExtResource("6_y107q")
+amount = 999.0
+who = 3
+radius = 10.0
+include_self = true
+
+[sub_resource type="Resource" id="Resource_tb7ji"]
+script = ExtResource("19_bearb")
+radius = 10.0
+requires_los = false
+vfx_id = &"suture_triage_ring"
+
+[sub_resource type="Resource" id="Resource_geh7o"]
+script = ExtResource("7_nfrhg")
+cast_vfx = &"suture_triage_cast"
+self_glow = Color(0.6, 1, 0.85, 1)
+sound_fire = &"suture_triage_fire"
+sound_cast = &"suture_triage_cast"
+voice_line = &"suture_ult_line"
+voice_line_enemy = &"suture_ult_line_enemy"
+camera_shake = 0.15
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_dwbep"]
+script = ExtResource("8_1jmnn")
+id = &"suture_triage"
+display_name = "Triage"
+description = "Everyone within 10 m, Suture included, is cleansed and healed to full."
+resource = 2
+ult_cost = 1600.0
+effects = Array[ExtResource("3_tdvc0")]([SubResource("Resource_en6un"), SubResource("Resource_gul65"), SubResource("Resource_tb7ji")])
+presentation = SubResource("Resource_geh7o")
+ai = SubResource("Resource_n6ick")
+
+[sub_resource type="Resource" id="Resource_rjd5m"]
+script = ExtResource("20_jpgyl")
+height = 1.8
+extras = Array[int]([2])
+primary_color = Color(0.88, 0.86, 0.8, 1)
+secondary_color = Color(0.32, 0.36, 0.4, 1)
+accent_color = Color(0.9, 0.28, 0.32, 1)
+emissive_color = Color(0.5, 1, 0.8, 1)
+emissive_strength = 1.8
+weapon_style = &"launcher"
+arms_color = Color(0.3, 0.33, 0.36, 1)
+stance = &"brace"
+silhouette_notes = "Medium build in an off-white coat with a red cross accent, round helmet with a mint visor, a boxy medkit backpack and a drum-fed launcher. Reads as 'medic' at a glance."
+
+[resource]
+script = ExtResource("16_spfx8")
+id = &"suture"
+display_name = "Suture"
+codename = "The Medic"
+role = 2
+sort_order = 23
+tagline = "Hold still. This part hurts."
+lore = "Suture ran a rooftop clinic in the Nightmarket towers where the only anaesthetic was speed. Her stapler-gun closes a wound in one shot and her bandage shells were made for patching people who will not stop moving. She took the runner contract because the Charters pay in medical stock, and because somebody on every drop is going to need her."
+playstyle = "Tether the bulwark and the striker who is taking the most fire, then every bandage you land on one of them heals both. Bandage Volley is your main heal: shoot it AT the ally, the shells burst on contact. Staple enemies to keep the pressure up, staple allies in a pinch. Adrenaline on your best duelist; Triage when the fight turns."
+health = 225.0
+movement = SubResource("Resource_84dr1")
+hitbox = SubResource("Resource_l4mkd")
+primary = SubResource("Resource_bearb")
+secondary = SubResource("Resource_eemaw")
+ability_1 = SubResource("Resource_y107q")
+ability_2 = SubResource("Resource_34cpc")
+ultimate = SubResource("Resource_dwbep")
+hero_script = ExtResource("12_6ggd3")
+visual = SubResource("Resource_rjd5m")
+audio = SubResource("Resource_vv10s")
+theme_color = Color(0.55, 0.92, 0.75, 1)
+ai = SubResource("Resource_6ggd3")
+counters = Array[StringName]([&"bramble", &"kiln", &"coil"])
+countered_by = Array[StringName]([&"wisp", &"ballast", &"rook"])
+synergies = Array[StringName]([&"ballast", &"cathedral", &"kiln"])
+unique_mechanic = "Tether: links the two most recently tethered allies (or one ally and Suture) for 6 s. Every point of healing Suture puts into one end of the tether is copied to the other end."
+difficulty = 2

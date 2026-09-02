@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3 uid="uid://rf_post_match"]
+[ext_resource type="Script" path="res://src/ui/screens/PostMatch.gd" id="1"]
+[node name="PostMatch" type="Control"]
+script = ExtResource("1")

@@ -1,0 +1,393 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_1bxll"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_k1h25"]
+[ext_resource type="Script" path="res://src/heroes/deployables/CathedralWall.gd" id="3_03rc7"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="4_1p1md"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="5_yk5e1"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="6_sevib"]
+[ext_resource type="Script" path="res://src/abilities/effects/DashEffect.gd" id="7_psq0m"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="8_4s62m"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="9_rni1f"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="10_5f1k8"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="11_6i8ie"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/CathedralBehavior.gd" id="12_2esqf"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="13_6x4ud"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="14_qhr8m"]
+[ext_resource type="Script" path="res://src/abilities/effects/MeleeEffect.gd" id="15_aey0l"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="16_1fs0d"]
+[ext_resource type="Script" path="res://src/heroes/deployables/BarrierDome.gd" id="17_te0if"]
+[ext_resource type="Script" path="res://src/abilities/effects/CleanseEffect.gd" id="18_a7fyf"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="19_u4b0l"]
+[ext_resource type="Script" path="res://src/abilities/effects/HealEffect.gd" id="20_kxc8s"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="21_m2dvo"]
+
+[sub_resource type="Resource" id="Resource_1bxll"]
+script = ExtResource("1_1bxll")
+intent = 5
+max_range = 22.0
+ideal_range = 6.0
+needs_enemies_in_radius = 1
+use_when_health_below = 0.8
+combo_tags = Array[StringName]([&"barrier"])
+counter_tags = Array[StringName]([&"hitscan", &"poke"])
+cast_priority = 0.75
+
+[sub_resource type="Resource" id="Resource_k1h25"]
+script = ExtResource("4_1p1md")
+deployable_script = ExtResource("3_03rc7")
+health = 700.0
+lifetime = 8.0
+kind = &"cathedral_wall"
+visual_id = &"cathedral_wall"
+params = {
+"heal_per_second": 15.0,
+"heal_radius": 4.0,
+"height": 3.2,
+"width": 6.0
+}
+
+[sub_resource type="Resource" id="Resource_03rc7"]
+script = ExtResource("5_yk5e1")
+muzzle_vfx = &"deploy_place"
+cast_vfx = &"cast_generic"
+sound_fire = &"cathedral_wall_fire"
+sound_cast = &"cathedral_wall_cast"
+sound_end = &"cathedral_wall_end"
+camera_shake = 0.1
+viewmodel_kick = 0.08
+viewmodel_kick_rot = 3.0
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_1p1md"]
+script = ExtResource("6_sevib")
+id = &"cathedral_wall"
+display_name = "Stained-glass Wall"
+description = "Plant a 6 m wide, 3.2 m tall window 3 m in front of you for 8 s (700 hp). Enemy shots break on the glass; every ally standing within 4 m behind it heals 15 hp per second."
+cooldown = 12.0
+recovery = 0.2
+effects = Array[ExtResource("2_k1h25")]([SubResource("Resource_k1h25")])
+presentation = SubResource("Resource_03rc7")
+ai = SubResource("Resource_1bxll")
+
+[sub_resource type="Resource" id="Resource_yk5e1"]
+script = ExtResource("1_1bxll")
+intent = 4
+min_range = 2.0
+max_range = 9.0
+ideal_range = 5.0
+combo_tags = Array[StringName]([&"dot"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_sevib"]
+script = ExtResource("7_psq0m")
+speed = 15.0
+direction = 4
+vertical_boost = 2.5
+preserve_momentum = 0.2
+
+[sub_resource type="Resource" id="Resource_psq0m"]
+script = ExtResource("8_4s62m")
+id = &"cathedral_incense"
+display_name = "Incense"
+is_debuff = true
+tags = Array[StringName]([&"dot", &"burn"])
+dot_dps = 10.0
+color = Color(1, 0.7, 0.35, 1)
+
+[sub_resource type="Resource" id="Resource_4s62m"]
+script = ExtResource("9_rni1f")
+radius = 4.0
+damage = 70.0
+min_fraction = 0.6
+knockback = 4.0
+enemy_status = SubResource("Resource_psq0m")
+vfx_id = &"cathedral_censer_explosion"
+delay = 0.4
+
+[sub_resource type="Resource" id="Resource_rni1f"]
+script = ExtResource("5_yk5e1")
+impact_vfx = &"explosion"
+cast_vfx = &"cathedral_censer"
+sound_fire = &"cathedral_censer_fire"
+sound_cast = &"cathedral_censer_cast"
+sound_impact = &"cathedral_censer_impact"
+camera_shake = 0.16
+camera_kick_pitch = 1.5
+camera_kick_yaw_random = 0.3
+viewmodel_kick = 0.1
+viewmodel_kick_rot = 4.0
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_5f1k8"]
+script = ExtResource("6_sevib")
+id = &"cathedral_censer"
+display_name = "Censer"
+description = "Swing the censer and lunge forward; 0.4 s later burning incense bursts around you: 70 damage within 4 m, enemies knocked back and set burning for 10 damage per second over 2 s."
+cooldown = 9.0
+recovery = 0.3
+effects = Array[ExtResource("2_k1h25")]([SubResource("Resource_sevib"), SubResource("Resource_4s62m")])
+presentation = SubResource("Resource_rni1f")
+ai = SubResource("Resource_yk5e1")
+
+[sub_resource type="Resource" id="Resource_6i8ie"]
+script = ExtResource("10_5f1k8")
+preferred_range = 2.4
+min_range = 0.0
+max_effective_range = 9.0
+aggression = 0.55
+prefers_high_ground = 0.2
+sticks_to_tank = 0.0
+melee_brawler = true
+builds = true
+ult_style = &"counter"
+ult_min_targets = 1
+
+[sub_resource type="Resource" id="Resource_2esqf"]
+script = ExtResource("11_6i8ie")
+footstep_set = &"boots_heavy"
+ult_stinger = &"ult_cathedral"
+ult_stinger_enemy = &"ult_cathedral_enemy"
+callout_tone = &"radio_c"
+
+[sub_resource type="Resource" id="Resource_6x4ud"]
+script = ExtResource("13_6x4ud")
+head_radius = 0.22
+head_height = 1.72
+head_crouch_height = 1.1
+body_radius = 0.45
+body_top = 1.42
+body_crouch_top = 0.9
+
+[sub_resource type="Resource" id="Resource_qhr8m"]
+script = ExtResource("14_qhr8m")
+max_speed = 5.1
+ground_accel = 52.0
+air_control = 0.3
+jump_velocity = 6.3
+capsule_height = 1.95
+eye_height = 1.68
+crouch_eye_height = 1.05
+landing_recovery = 0.12
+footstep_interval = 0.48
+
+[sub_resource type="Resource" id="Resource_aey0l"]
+script = ExtResource("1_1bxll")
+max_range = 3.4
+ideal_range = 2.2
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_1fs0d"]
+script = ExtResource("8_4s62m")
+id = &"cathedral_weight"
+display_name = "Weight of Glass"
+duration = 1.0
+is_debuff = true
+is_crowd_control = true
+tags = Array[StringName]([&"slow"])
+speed_mult = 0.8
+color = Color(0.9, 0.8, 0.5, 1)
+
+[sub_resource type="Resource" id="Resource_te0if"]
+script = ExtResource("15_aey0l")
+damage = 70.0
+range = 3.0
+arc_deg = 90.0
+knockback = 3.0
+max_targets = 3
+hit_status = SubResource("Resource_1fs0d")
+delay = 0.12
+
+[sub_resource type="Resource" id="Resource_a7fyf"]
+script = ExtResource("5_yk5e1")
+tracer_color = Color(1, 0.9, 0.6, 1)
+impact_vfx = &"cathedral_mace_impact"
+sound_fire = &"cathedral_mace_fire"
+sound_tail = &"cathedral_mace_tail"
+sound_impact = &"cathedral_mace_impact"
+camera_shake = 0.12
+camera_kick_pitch = 1.2
+camera_kick_yaw_random = 0.4
+kick_recovery = 8.0
+viewmodel_kick = 0.12
+viewmodel_kick_rot = 6.0
+anim_tag = &"melee"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_u4b0l"]
+script = ExtResource("6_sevib")
+id = &"cathedral_mace"
+display_name = "Reliquary Mace"
+description = "A slow, wide swing: 70 damage to up to three enemies in a 90 degree arc within 3 m, and they are slowed to 80% for a second. Each enemy struck heals you for 8."
+trigger = 1
+fire_rate = 1.1
+reload_time = 0.0
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_k1h25")]([SubResource("Resource_te0if")])
+presentation = SubResource("Resource_a7fyf")
+ai = SubResource("Resource_aey0l")
+
+[sub_resource type="Resource" id="Resource_kxc8s"]
+script = ExtResource("1_1bxll")
+intent = 5
+min_range = 3.5
+ideal_range = 14.0
+use_when_health_below = 0.9
+cast_priority = 0.4
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_m2dvo"]
+script = ExtResource("5_yk5e1")
+self_glow = Color(0.95, 0.9, 0.7, 1)
+sound_cast = &"cathedral_guard_cast"
+sound_loop = &"cathedral_guard_loop"
+sound_end = &"cathedral_guard_end"
+anim_tag = &"cast"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_2q0h1"]
+script = ExtResource("8_4s62m")
+id = &"cathedral_guard"
+display_name = "Guard"
+duration = 0.0
+cleansable = false
+speed_mult = 0.7
+damage_taken_mult = 0.6
+color = Color(0.95, 0.9, 0.7, 1)
+
+[sub_resource type="Resource" id="Resource_ej6np"]
+script = ExtResource("6_sevib")
+id = &"cathedral_guard"
+display_name = "Guard"
+description = "Hold to raise the shield: you take 40% less damage from all sides but move at 70% speed and cannot swing. Hold it while closing the distance; drop it to strike."
+trigger = 2
+usable_while_silenced = true
+blocks_primary_while_active = true
+is_weapon = true
+self_status_while_active = SubResource("Resource_2q0h1")
+presentation = SubResource("Resource_m2dvo")
+ai = SubResource("Resource_kxc8s")
+
+[sub_resource type="Resource" id="Resource_5ea3q"]
+script = ExtResource("1_1bxll")
+intent = 5
+max_range = 12.0
+ideal_range = 4.0
+needs_allies_in_radius = 1
+use_when_health_below = 0.5
+counter_tags = Array[StringName]([&"cleanse", &"barrier", &"engage"])
+cast_priority = 0.8
+
+[sub_resource type="Resource" id="Resource_8wnp5"]
+script = ExtResource("4_1p1md")
+deployable_script = ExtResource("17_te0if")
+placement = 2
+health = 1500.0
+lifetime = 6.0
+kind = &"barrier_dome"
+visual_id = &"cathedral_sanctuary"
+params = {
+"radius": 6.0
+}
+
+[sub_resource type="Resource" id="Resource_l8ikn"]
+script = ExtResource("18_a7fyf")
+radius = 6.0
+
+[sub_resource type="Resource" id="Resource_2aypk"]
+script = ExtResource("8_4s62m")
+id = &"cathedral_sanctified"
+display_name = "Sanctified"
+duration = 0.5
+cleansable = false
+invulnerable = true
+color = Color(1, 0.95, 0.7, 1)
+
+[sub_resource type="Resource" id="Resource_v8ilh"]
+script = ExtResource("19_u4b0l")
+status = SubResource("Resource_2aypk")
+who = 5
+requires_los = false
+
+[sub_resource type="Resource" id="Resource_056gd"]
+script = ExtResource("20_kxc8s")
+amount = 60.0
+who = 3
+radius = 6.0
+include_self = true
+
+[sub_resource type="Resource" id="Resource_h46j7"]
+script = ExtResource("5_yk5e1")
+cast_vfx = &"cathedral_sanctuary"
+self_glow = Color(1, 0.9, 0.6, 1)
+sound_cast = &"cathedral_sanctuary_cast"
+sound_loop = &"cathedral_sanctuary_loop"
+sound_end = &"cathedral_sanctuary_end"
+voice_line = &"cathedral_ult_line"
+voice_line_enemy = &"cathedral_ult_line_enemy"
+camera_shake = 0.25
+viewmodel_kick = 0.1
+viewmodel_kick_rot = 4.0
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_rfeut"]
+script = ExtResource("6_sevib")
+id = &"cathedral_sanctuary"
+display_name = "Sanctuary"
+description = "Raise a 6 m dome around you for 6 s (1500 hp) that blocks all enemy fire from outside. On cast every ally inside is cleansed, healed for 60 and made invulnerable for 0.5 s: the answer to an enemy ultimate."
+recovery = 0.4
+resource = 2
+ult_cost = 1900.0
+effects = Array[ExtResource("2_k1h25")]([SubResource("Resource_8wnp5"), SubResource("Resource_l8ikn"), SubResource("Resource_v8ilh"), SubResource("Resource_056gd")])
+presentation = SubResource("Resource_h46j7")
+ai = SubResource("Resource_5ea3q")
+
+[sub_resource type="Resource" id="Resource_tsiw4"]
+script = ExtResource("21_m2dvo")
+build = 2
+height = 1.95
+shoulder_width = 0.6
+head = 8
+extras = Array[int]([9, 1])
+primary_color = Color(0.92, 0.9, 0.84, 1)
+secondary_color = Color(0.36, 0.22, 0.4, 1)
+accent_color = Color(0.85, 0.66, 0.28, 1)
+emissive_color = Color(1, 0.85, 0.45, 1)
+emissive_strength = 1.8
+metallic = 0.15
+roughness = 0.4
+skin_color = Color(0.6, 0.42, 0.32, 1)
+weapon_scale = 1.3
+weapon_style = &"shield_mace"
+arms_color = Color(0.9, 0.88, 0.82, 1)
+silhouette_notes = "Bright ceramic plate under a dark purple cloak, a five-point crown, a banner rising over one shoulder and a heavy mace. The only bulwark whose silhouette is pale."
+
+[resource]
+script = ExtResource("16_1fs0d")
+id = &"cathedral"
+display_name = "Cathedral"
+codename = "Mother Seraphine"
+role = 0
+sort_order = 2
+tagline = "Stand behind me and be whole."
+lore = "Seraphine took her vows in a chapel built inside the nave of a fallen relay station, where the stained glass was cut from the station's own solar panels. When the Charters began fighting over Cores she walked out of the chapel carrying its window on her back. She does not preach. She plants the glass, lifts the mace, and everyone behind her gets to keep breathing."
+playstyle = "Pick the spot the fight will happen and put the Wall there first; your team heals behind it while it soaks. Hold Guard while closing distance, then swing the mace in wide arcs to hit everyone at once. Censer punishes anyone who steps around the glass. Save Sanctuary to erase an enemy ultimate: it blocks, cleanses and makes everyone inside briefly untouchable."
+health = 400.0
+armor = 200.0
+movement = SubResource("Resource_qhr8m")
+hitbox = SubResource("Resource_6x4ud")
+primary = SubResource("Resource_u4b0l")
+secondary = SubResource("Resource_ej6np")
+ability_1 = SubResource("Resource_1p1md")
+ability_2 = SubResource("Resource_5f1k8")
+ultimate = SubResource("Resource_rfeut")
+hero_script = ExtResource("12_2esqf")
+visual = SubResource("Resource_tsiw4")
+audio = SubResource("Resource_2esqf")
+theme_color = Color(0.98, 0.84, 0.5, 1)
+ai = SubResource("Resource_6i8ie")
+counters = Array[StringName]([&"vesper", &"coil", &"bombard", &"lumen"])
+countered_by = Array[StringName]([&"harrier", &"sable", &"wisp", &"ricochet"])
+synergies = Array[StringName]([&"vesper", &"suture", &"tallow", &"bombard"])
+unique_mechanic = "Stained-glass Wall: a 700 hp barrier that blocks enemy fire for 8 s AND heals every ally standing within 4 m behind it for 15 hp/s."

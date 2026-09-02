@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3 uid="uid://rf_scoreboard"]
+[ext_resource type="Script" path="res://src/ui/screens/Scoreboard.gd" id="1"]
+[node name="Scoreboard" type="Control"]
+script = ExtResource("1")

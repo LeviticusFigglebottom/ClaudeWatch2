@@ -1,0 +1,396 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_hu8jt"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_v1isr"]
+[ext_resource type="Script" path="res://src/heroes/deployables/KilnVent.gd" id="3_a3prx"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="4_h2mgc"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="5_tkac7"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="6_84uq3"]
+[ext_resource type="Script" path="res://src/heroes/deployables/KilnSlag.gd" id="7_udk2l"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="8_swid1"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="9_w1kpv"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/KilnBehavior.gd" id="10_171mk"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="11_fi1mm"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="12_gtcx3"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="13_rldui"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="14_d0em5"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="15_5qhd8"]
+[ext_resource type="Script" path="res://src/abilities/effects/HitscanEffect.gd" id="16_tcdp6"]
+[ext_resource type="Script" path="res://src/abilities/effects/ResourceEffect.gd" id="17_ilfo6"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="18_qvmwx"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="19_s20j4"]
+
+[sub_resource type="Resource" id="Resource_hu8jt"]
+script = ExtResource("1_hu8jt")
+intent = 7
+max_range = 10.0
+ideal_range = 3.0
+needs_line_of_sight = false
+target_ground = true
+combo_tags = Array[StringName]([&"mobility", &"high_ground"])
+
+[sub_resource type="Resource" id="Resource_v1isr"]
+script = ExtResource("4_h2mgc")
+deployable_script = ExtResource("3_a3prx")
+placement = 3
+max_range = 10.0
+lifetime = 5.0
+kind = &"vent"
+visual_id = &"kiln_vent"
+params = {
+"launch": 13.5,
+"radius": 1.6
+}
+
+[sub_resource type="Resource" id="Resource_a3prx"]
+script = ExtResource("5_tkac7")
+muzzle_vfx = &"deploy_place"
+cast_vfx = &"cast_generic"
+sound_fire = &"kiln_vent_fire"
+sound_cast = &"kiln_vent_cast"
+sound_end = &"kiln_vent_end"
+camera_shake = 0.06
+viewmodel_kick = 0.06
+viewmodel_kick_rot = 2.0
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_h2mgc"]
+script = ExtResource("6_84uq3")
+id = &"kiln_vent"
+display_name = "Vent"
+description = "Costs 30 Heat. Blow a vent grate into the ground where you aim (within 10 m) for 5 s: any ally (you included) who steps on it is launched about 4 m straight up. Reaches ledges, slabs and rooftops."
+cooldown = 8.0
+recovery = 0.2
+resource = 3
+hero_resource_cost = 30.0
+effects = Array[ExtResource("2_v1isr")]([SubResource("Resource_v1isr")])
+presentation = SubResource("Resource_a3prx")
+ai = SubResource("Resource_hu8jt")
+
+[sub_resource type="Resource" id="Resource_tkac7"]
+script = ExtResource("1_hu8jt")
+intent = 5
+max_range = 16.0
+ideal_range = 4.0
+use_when_health_below = 0.7
+combo_tags = Array[StringName]([&"barrier", &"high_ground"])
+counter_tags = Array[StringName]([&"hitscan", &"poke"])
+cast_priority = 0.7
+
+[sub_resource type="Resource" id="Resource_84uq3"]
+script = ExtResource("4_h2mgc")
+deployable_script = ExtResource("7_udk2l")
+health = 600.0
+lifetime = 6.0
+kind = &"slag"
+visual_id = &"kiln_slag"
+params = {
+"height": 1.5,
+"width": 4.2
+}
+
+[sub_resource type="Resource" id="Resource_udk2l"]
+script = ExtResource("5_tkac7")
+muzzle_vfx = &"smoke_puff"
+cast_vfx = &"cast_generic"
+sound_fire = &"kiln_slag_fire"
+sound_cast = &"kiln_slag_cast"
+sound_end = &"kiln_slag_end"
+camera_shake = 0.12
+viewmodel_kick = 0.08
+viewmodel_kick_rot = 3.0
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_swid1"]
+script = ExtResource("6_84uq3")
+id = &"kiln_slag"
+display_name = "Slag Cast"
+description = "Costs 40 Heat. Pour a 4.2 m wide, 1.5 m tall slag wall 3 m in front of you for 6 s (600 hp). It blocks shots and movement for both teams, and the step on your side lets you climb on top of it."
+cooldown = 10.0
+recovery = 0.25
+resource = 3
+hero_resource_cost = 40.0
+effects = Array[ExtResource("2_v1isr")]([SubResource("Resource_84uq3")])
+presentation = SubResource("Resource_udk2l")
+ai = SubResource("Resource_tkac7")
+
+[sub_resource type="Resource" id="Resource_w1kpv"]
+script = ExtResource("8_swid1")
+preferred_range = 9.0
+min_range = 0.0
+max_effective_range = 24.0
+aggression = 0.65
+self_preservation = 0.4
+prefers_high_ground = 0.3
+sticks_to_tank = 0.0
+builds = true
+aim_difficulty_scale = 1.1
+
+[sub_resource type="Resource" id="Resource_171mk"]
+script = ExtResource("9_w1kpv")
+footstep_set = &"boots_heavy"
+ult_stinger = &"ult_kiln"
+ult_stinger_enemy = &"ult_kiln_enemy"
+voice_pitch = 0.7
+callout_tone = &"radio_b"
+
+[sub_resource type="Resource" id="Resource_fi1mm"]
+script = ExtResource("11_fi1mm")
+head_radius = 0.22
+head_height = 1.88
+head_crouch_height = 1.2
+body_radius = 0.48
+body_top = 1.55
+body_crouch_top = 0.95
+
+[sub_resource type="Resource" id="Resource_gtcx3"]
+script = ExtResource("12_gtcx3")
+max_speed = 5.0
+backpedal_mult = 0.85
+ground_accel = 48.0
+air_control = 0.28
+jump_velocity = 6.0
+capsule_height = 2.1
+crouch_height = 1.4
+eye_height = 1.8
+crouch_eye_height = 1.15
+landing_recovery = 0.2
+footstep_interval = 0.55
+
+[sub_resource type="Resource" id="Resource_rldui"]
+script = ExtResource("1_hu8jt")
+max_range = 28.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_d0em5"]
+script = ExtResource("13_rldui")
+id = &"kiln_burn"
+display_name = "Burning"
+is_debuff = true
+tags = Array[StringName]([&"dot", &"burn"])
+dot_dps = 10.0
+color = Color(1, 0.5, 0.15, 1)
+
+[sub_resource type="Resource" id="Resource_5qhd8"]
+script = ExtResource("14_d0em5")
+damage = 65.0
+speed = 55.0
+gravity = 3.0
+radius = 0.14
+lifetime = 2.5
+hit_status = SubResource("Resource_d0em5")
+visual_id = &"plasma"
+
+[sub_resource type="Resource" id="Resource_tcdp6"]
+script = ExtResource("5_tkac7")
+muzzle_vfx = &"kiln_slug_muzzle"
+tracer_color = Color(1, 0.6, 0.2, 1)
+impact_vfx = &"kiln_slug_impact"
+impact_decal = &"scorch"
+projectile_vfx = &"plasma"
+sound_fire = &"kiln_slug_fire"
+sound_tail = &"kiln_slug_tail"
+sound_impact = &"kiln_slug_impact"
+camera_shake = 0.1
+camera_kick_pitch = 2.4
+camera_kick_yaw_random = 0.5
+kick_recovery = 10.0
+viewmodel_kick = 0.14
+viewmodel_kick_rot = 5.5
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_ilfo6"]
+script = ExtResource("6_84uq3")
+id = &"kiln_slug"
+display_name = "Slug Thrower"
+description = "Lobs molten slugs at 55 m/s: 65 damage on hit and the target burns for 10 damage per second over 2 s. Slight drop past 20 m."
+trigger = 1
+fire_rate = 1.8
+resource = 1
+ammo = 8
+reload_time = 1.7
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_v1isr")]([SubResource("Resource_5qhd8")])
+presentation = SubResource("Resource_tcdp6")
+ai = SubResource("Resource_rldui")
+
+[sub_resource type="Resource" id="Resource_qvmwx"]
+script = ExtResource("1_hu8jt")
+max_range = 8.0
+ideal_range = 4.0
+combo_tags = Array[StringName]([&"dot"])
+cast_priority = 0.65
+
+[sub_resource type="Resource" id="Resource_s20j4"]
+script = ExtResource("16_tcdp6")
+damage = 10.0
+range = 9.0
+pellets = 9
+spread_deg = 30.0
+falloff_start = 4.5
+falloff_end = 9.0
+falloff_min = 0.35
+headshot = false
+knockback = 2.5
+hit_status = SubResource("Resource_d0em5")
+
+[sub_resource type="Resource" id="Resource_ub3fr"]
+script = ExtResource("5_tkac7")
+muzzle_vfx = &"kiln_blast_muzzle"
+tracer_style = &"beam"
+tracer_color = Color(1, 0.55, 0.15, 1)
+tracer_width = 0.08
+impact_vfx = &"kiln_slug_impact"
+impact_decal = &"scorch"
+sound_fire = &"kiln_blast_fire"
+sound_tail = &"kiln_blast_tail"
+sound_impact = &"kiln_blast_impact"
+camera_shake = 0.16
+camera_kick_pitch = 1.4
+camera_kick_yaw_random = 0.6
+viewmodel_kick = 0.18
+viewmodel_kick_rot = 4.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_ryufy"]
+script = ExtResource("6_84uq3")
+id = &"kiln_blast"
+display_name = "Furnace Blast"
+description = "Open the furnace door: a 30 degree cone of flame to 8 m, 9 gouts of 10 damage that set enemies burning. Brutal inside 5 m, a warm breeze past 9."
+cooldown = 4.0
+recovery = 0.35
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_v1isr")]([SubResource("Resource_s20j4")])
+presentation = SubResource("Resource_ub3fr")
+ai = SubResource("Resource_qvmwx")
+
+[sub_resource type="Resource" id="Resource_4v5t2"]
+script = ExtResource("1_hu8jt")
+intent = 4
+max_range = 12.0
+ideal_range = 5.0
+needs_enemies_in_radius = 2
+combo_tags = Array[StringName]([&"engage"])
+counter_tags = Array[StringName]([&"displace", &"root"])
+cast_priority = 0.7
+
+[sub_resource type="Resource" id="Resource_4kdnw"]
+script = ExtResource("17_ilfo6")
+hero_resource_delta = 100.0
+
+[sub_resource type="Resource" id="Resource_x8cm6"]
+script = ExtResource("18_qvmwx")
+damage = 50.0
+min_fraction = 0.6
+knockback = 5.0
+enemy_status = SubResource("Resource_d0em5")
+vfx_id = &"kiln_meltdown_explosion"
+
+[sub_resource type="Resource" id="Resource_tuji6"]
+script = ExtResource("5_tkac7")
+cast_vfx = &"kiln_meltdown"
+loop_vfx = &"kiln_meltdown_loop"
+end_vfx = &"smoke_puff"
+area_vfx = &"kiln_meltdown_ground"
+self_glow = Color(1, 0.45, 0.1, 1)
+sound_cast = &"kiln_meltdown_cast"
+sound_loop = &"kiln_meltdown_loop"
+sound_end = &"kiln_meltdown_end"
+voice_line = &"kiln_ult_line"
+voice_line_enemy = &"kiln_ult_line_enemy"
+camera_shake = 0.35
+viewmodel_kick = 0.12
+viewmodel_kick_rot = 4.0
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_wmufi"]
+script = ExtResource("13_rldui")
+id = &"kiln_meltdown"
+display_name = "Meltdown"
+duration = 8.0
+cleansable = false
+speed_mult = 1.1
+unstoppable = true
+overhealth_on_apply = 300.0
+overhealth_max = 300.0
+color = Color(1, 0.45, 0.1, 1)
+
+[sub_resource type="Resource" id="Resource_inqcw"]
+script = ExtResource("18_qvmwx")
+radius = 4.5
+damage = 10.0
+min_fraction = 0.6
+enemy_status = SubResource("Resource_d0em5")
+vfx_id = &"kiln_meltdown_ground"
+
+[sub_resource type="Resource" id="Resource_7hio5"]
+script = ExtResource("6_84uq3")
+id = &"kiln_meltdown"
+display_name = "Meltdown"
+description = "For 8 s the furnace runs open: +300 overhealth, unstoppable, 10% faster, Heat refilled, and the ground within 4.5 m of you burns for 40 damage per second and sets enemies alight. Casting it scorches everything within 5 m for 50."
+recovery = 0.3
+active_duration = 8.0
+tick_interval = 0.25
+resource = 2
+ult_cost = 1750.0
+cancel_on_cc = false
+self_status_while_active = SubResource("Resource_wmufi")
+effects = Array[ExtResource("2_v1isr")]([SubResource("Resource_4kdnw"), SubResource("Resource_x8cm6")])
+tick_effects = Array[ExtResource("2_v1isr")]([SubResource("Resource_inqcw")])
+presentation = SubResource("Resource_tuji6")
+ai = SubResource("Resource_4v5t2")
+
+[sub_resource type="Resource" id="Resource_xqppi"]
+script = ExtResource("19_s20j4")
+build = 3
+height = 2.15
+shoulder_width = 0.68
+head = 5
+extras = Array[int]([5])
+primary_color = Color(0.3, 0.24, 0.2, 1)
+secondary_color = Color(0.16, 0.12, 0.1, 1)
+accent_color = Color(0.72, 0.45, 0.22, 1)
+emissive_color = Color(1, 0.45, 0.1, 1)
+emissive_strength = 3.2
+metallic = 0.5
+roughness = 0.7
+weapon_scale = 1.35
+weapon_style = &"cannon"
+arms_color = Color(0.28, 0.22, 0.18, 1)
+stance = &"hunched"
+silhouette_notes = "The biggest thing on the field: a hunched iron body with a furnace-door lantern for a head that glows orange, two heat canisters on the back and a stubby cannon. Blocks a doorway by standing in it."
+
+[resource]
+script = ExtResource("15_5qhd8")
+id = &"kiln"
+display_name = "Kiln"
+codename = "Unit K-17"
+role = 0
+sort_order = 3
+tagline = "Every fight is a foundry."
+lore = "K-17 was a foundry golem in the Ruhr Charter's salvage smelters, poured to pull white-hot reactor plate out of the melt by hand. When the smelters shut down the crew could not bring themselves to scrap it, so they taught it to walk the drop sites instead. Kiln does not know it is not a person. Nobody on its team has ever wanted to correct it. It builds cover the way other people breathe: because there is heat inside and it has to go somewhere."
+playstyle = "Trade damage to build Heat, then spend it on terrain: Slag Cast a wall you and your team can stand on, Vent an ally onto a ledge nobody expected them to reach. Fight close so the slugs and the Furnace Blast connect; the burn does the rest. Meltdown when you are surrounded: 300 overhealth, unstoppable, and everything near you burns."
+health = 425.0
+armor = 175.0
+movement = SubResource("Resource_gtcx3")
+hitbox = SubResource("Resource_fi1mm")
+primary = SubResource("Resource_ilfo6")
+secondary = SubResource("Resource_ryufy")
+ability_1 = SubResource("Resource_h2mgc")
+ability_2 = SubResource("Resource_swid1")
+ultimate = SubResource("Resource_7hio5")
+hero_script = ExtResource("10_171mk")
+hero_resource_name = "Heat"
+hero_resource_max = 100.0
+hero_resource_regen = -4.0
+visual = SubResource("Resource_xqppi")
+audio = SubResource("Resource_171mk")
+theme_color = Color(1, 0.5, 0.15, 1)
+ai = SubResource("Resource_w1kpv")
+counters = Array[StringName]([&"ballast", &"sable", &"bramble", &"tallow"])
+countered_by = Array[StringName]([&"suture", &"vesper", &"bombard", &"harrier"])
+synergies = Array[StringName]([&"harrier", &"vesper", &"cadence", &"cairn"])
+unique_mechanic = "Heat: a 0-100 resource built by dealing (0.3/pt) and taking (0.15/pt) damage that decays 4/s. Vent costs 30 heat, Slag Cast costs 40. Meltdown refills it."
+difficulty = 2

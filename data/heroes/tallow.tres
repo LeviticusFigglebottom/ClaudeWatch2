@@ -1,0 +1,398 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_j75dt"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_ybixe"]
+[ext_resource type="Script" path="res://src/heroes/deployables/TallowCandle.gd" id="3_xbyg5"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="4_h8ysf"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="5_31wxa"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="6_jicpc"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="7_l3p2j"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="8_tfj0u"]
+[ext_resource type="Script" path="res://src/heroes/abilities/TallowSnuffEffect.gd" id="9_u1jrw"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="10_o0re6"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="11_l3p1q"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/TallowBehavior.gd" id="12_1vmq7"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="13_8nyfh"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="14_ni4li"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="15_ovqag"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="16_dbbej"]
+[ext_resource type="Script" path="res://src/heroes/abilities/TallowHealBoltEffect.gd" id="17_fib20"]
+[ext_resource type="Script" path="res://src/abilities/effects/CleanseEffect.gd" id="18_gelus"]
+[ext_resource type="Script" path="res://src/heroes/deployables/TallowVigilWard.gd" id="19_avq74"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="20_y0o5k"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="21_vr2gr"]
+
+[sub_resource type="Resource" id="Resource_j75dt"]
+script = ExtResource("1_j75dt")
+intent = 8
+max_range = 12.0
+ideal_range = 4.0
+needs_line_of_sight = false
+target_ground = true
+needs_allies_in_radius = 1
+cast_priority = 0.7
+
+[sub_resource type="Resource" id="Resource_ybixe"]
+script = ExtResource("4_h8ysf")
+deployable_script = ExtResource("3_xbyg5")
+placement = 3
+max_range = 12.0
+health = 60.0
+lifetime = 25.0
+max_instances = 3
+kind = &"wick"
+visual_id = &"tallow_candle"
+params = {
+"burn": &"tallow_candle_burn",
+"burn_radius": 1.5,
+"hps": 18.0,
+"interval": 0.25,
+"radius": 6.0,
+"snuff_time": 0.75
+}
+
+[sub_resource type="Resource" id="Resource_xbyg5"]
+script = ExtResource("6_jicpc")
+id = &"tallow_candle_burn"
+display_name = "Scorched"
+duration = 1.5
+is_debuff = true
+dot_dps = 12.0
+color = Color(1, 0.55, 0.2, 1)
+
+[sub_resource type="Resource" id="Resource_h8ysf"]
+script = ExtResource("5_31wxa")
+status = SubResource("Resource_xbyg5")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_31wxa"]
+script = ExtResource("7_l3p2j")
+cast_vfx = &"tallow_flame_hit"
+area_vfx = &"tallow_candle_glow"
+sound_fire = &"tallow_wicks_fire"
+sound_loop = &"tallow_wicks_loop"
+sound_end = &"tallow_wicks_end"
+anim_tag = &"throw"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_jicpc"]
+script = ExtResource("8_tfj0u")
+id = &"tallow_wicks"
+display_name = "Wicks"
+description = "Place a candle (up to three, 25 s each). Allies within 6 m are healed 18 per second. An enemy who walks onto a candle is burned for 12 per second and snuffs it after a moment."
+cooldown = 6.0
+charges = 3
+effects = Array[ExtResource("2_ybixe")]([SubResource("Resource_ybixe"), SubResource("Resource_h8ysf")])
+presentation = SubResource("Resource_31wxa")
+ai = SubResource("Resource_j75dt")
+
+[sub_resource type="Resource" id="Resource_l3p2j"]
+script = ExtResource("1_j75dt")
+intent = 1
+max_range = 25.0
+target_ally = true
+use_when_health_below = 0.5
+counter_tags = Array[StringName]([&"cleanse", &"dot", &"root"])
+cast_priority = 0.75
+
+[sub_resource type="Resource" id="Resource_tfj0u"]
+script = ExtResource("6_jicpc")
+id = &"tallow_snuffed"
+display_name = "Snuffed"
+duration = 1.0
+cleansable = false
+invulnerable = true
+color = Color(1, 0.95, 0.8, 1)
+sound_apply = &"tallow_snuff_apply"
+
+[sub_resource type="Resource" id="Resource_u1jrw"]
+script = ExtResource("9_u1jrw")
+status = SubResource("Resource_tfj0u")
+
+[sub_resource type="Resource" id="Resource_o0re6"]
+script = ExtResource("7_l3p2j")
+cast_vfx = &"smoke_puff"
+area_vfx = &"tallow_snuff"
+sound_fire = &"tallow_snuff_fire"
+sound_tail = &"tallow_snuff_tail"
+anim_tag = &"cast"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_l3p1q"]
+script = ExtResource("8_tfj0u")
+id = &"tallow_snuff"
+display_name = "Snuff"
+description = "Pinch out the ally under your crosshair (or yourself): cleansed of every debuff, healed 30, and invulnerable for 1 s."
+cooldown = 12.0
+effects = Array[ExtResource("2_ybixe")]([SubResource("Resource_u1jrw")])
+presentation = SubResource("Resource_o0re6")
+ai = SubResource("Resource_l3p2j")
+
+[sub_resource type="Resource" id="Resource_1vmq7"]
+script = ExtResource("10_o0re6")
+aggression = 0.25
+self_preservation = 0.75
+prefers_high_ground = 0.3
+sticks_to_tank = 0.85
+heals = true
+heal_range = 25.0
+builds = true
+ult_style = &"save"
+aim_difficulty_scale = 1.1
+
+[sub_resource type="Resource" id="Resource_8nyfh"]
+script = ExtResource("11_l3p1q")
+footstep_volume = 0.85
+ult_stinger = &"ult_tallow"
+ult_stinger_enemy = &"ult_tallow_enemy"
+
+[sub_resource type="Resource" id="Resource_ni4li"]
+script = ExtResource("13_8nyfh")
+
+[sub_resource type="Resource" id="Resource_ovqag"]
+script = ExtResource("14_ni4li")
+
+[sub_resource type="Resource" id="Resource_dbbej"]
+script = ExtResource("1_j75dt")
+ideal_range = 12.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_fib20"]
+script = ExtResource("6_jicpc")
+id = &"tallow_burn"
+display_name = "Burning"
+is_debuff = true
+dot_dps = 10.0
+color = Color(1, 0.5, 0.15, 1)
+
+[sub_resource type="Resource" id="Resource_gelus"]
+script = ExtResource("15_ovqag")
+damage = 28.0
+lifetime = 2.5
+hit_status = SubResource("Resource_fib20")
+visual_id = &"flare"
+
+[sub_resource type="Resource" id="Resource_avq74"]
+script = ExtResource("7_l3p2j")
+muzzle_vfx = &"tallow_flame_muzzle"
+tracer_style = &"bolt"
+tracer_color = Color(1, 0.62, 0.25, 1)
+tracer_width = 0.035
+impact_vfx = &"tallow_flame_hit"
+impact_decal = &"scorch"
+projectile_vfx = &"flare"
+sound_fire = &"tallow_bolt_fire"
+sound_tail = &"tallow_bolt_tail"
+sound_impact = &"tallow_bolt_impact"
+camera_shake = 0.03
+camera_kick_pitch = 0.8
+camera_kick_yaw_random = 0.2
+kick_recovery = 14.0
+viewmodel_kick = 0.05
+viewmodel_kick_rot = 2.0
+
+[sub_resource type="Resource" id="Resource_y0o5k"]
+script = ExtResource("8_tfj0u")
+id = &"tallow_bolt"
+display_name = "Flame Bolt"
+description = "A bolt of candle-fire: 28 damage and a 10 per second burn for 2 s. 12 bolts, 1.4 s reload."
+trigger = 1
+fire_rate = 3.0
+resource = 1
+ammo = 12
+reload_time = 1.4
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_ybixe")]([SubResource("Resource_gelus")])
+presentation = SubResource("Resource_avq74")
+ai = SubResource("Resource_dbbej")
+
+[sub_resource type="Resource" id="Resource_vr2gr"]
+script = ExtResource("1_j75dt")
+intent = 1
+target_ally = true
+cast_priority = 0.6
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_nps1j"]
+script = ExtResource("17_fib20")
+damage = 12.0
+radius = 0.28
+lifetime = 1.6
+visual_id = &"candle"
+
+[sub_resource type="Resource" id="Resource_fs83x"]
+script = ExtResource("7_l3p2j")
+muzzle_vfx = &"tallow_flame_muzzle"
+tracer_style = &"bolt"
+tracer_color = Color(1, 0.9, 0.6, 1)
+tracer_width = 0.04
+impact_vfx = &"heal_burst"
+impact_decal = &""
+projectile_vfx = &"candle"
+sound_fire = &"tallow_wax_fire"
+sound_tail = &"tallow_wax_tail"
+sound_impact = &"tallow_wax_impact"
+camera_shake = 0.02
+camera_kick_pitch = 0.5
+camera_kick_yaw_random = 0.15
+kick_recovery = 14.0
+viewmodel_kick = 0.04
+viewmodel_kick_rot = 1.5
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_0p2u8"]
+script = ExtResource("8_tfj0u")
+id = &"tallow_wax"
+display_name = "Wax Bolt"
+description = "A warm wax bolt that heals the first ally it touches for 45 (or every ally within 2.5 m of where it lands). Enemies it hits take 12. No ammo."
+trigger = 1
+fire_rate = 2.4
+reload_time = 0.0
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_ybixe")]([SubResource("Resource_nps1j")])
+presentation = SubResource("Resource_fs83x")
+ai = SubResource("Resource_vr2gr")
+
+[sub_resource type="Resource" id="Resource_tf048"]
+script = ExtResource("1_j75dt")
+intent = 5
+max_range = 12.0
+ideal_range = 6.0
+needs_line_of_sight = false
+needs_allies_in_radius = 1
+hold_for_combo = true
+counter_tags = Array[StringName]([&"aoe_damage", &"engage"])
+cast_priority = 0.75
+
+[sub_resource type="Resource" id="Resource_8duvm"]
+script = ExtResource("18_gelus")
+radius = 12.0
+
+[sub_resource type="Resource" id="Resource_dpgim"]
+script = ExtResource("6_jicpc")
+id = &"tallow_vigil"
+display_name = "Vigil"
+duration = 5.0
+cleansable = false
+damage_taken_mult = 0.3
+hot_hps = 30.0
+color = Color(1, 0.85, 0.5, 1)
+sound_apply = &"tallow_vigil_apply"
+
+[sub_resource type="Resource" id="Resource_77c2g"]
+script = ExtResource("5_31wxa")
+status = SubResource("Resource_dpgim")
+who = 5
+radius = 12.0
+requires_los = false
+
+[sub_resource type="Resource" id="Resource_sqlj4"]
+script = ExtResource("4_h8ysf")
+deployable_script = ExtResource("19_avq74")
+placement = 2
+lifetime = 5.0
+kind = &"vigil_ward"
+visual_id = &"tallow_vigil_ward"
+params = {
+"radius": 12.0,
+"status": &"tallow_vigil",
+"threshold": 30.0,
+"trigger": &"tallow_last_light"
+}
+
+[sub_resource type="Resource" id="Resource_cnh2e"]
+script = ExtResource("20_y0o5k")
+radius = 12.0
+requires_los = false
+vfx_id = &"tallow_vigil_ring"
+
+[sub_resource type="Resource" id="Resource_bbq8r"]
+script = ExtResource("6_jicpc")
+id = &"tallow_last_light"
+display_name = "Last Light"
+duration = 1.0
+stacking = 3
+cleansable = false
+invulnerable = true
+color = Color(1, 1, 0.9, 1)
+sound_apply = &"tallow_last_light_apply"
+
+[sub_resource type="Resource" id="Resource_f4r0u"]
+script = ExtResource("5_31wxa")
+status = SubResource("Resource_bbq8r")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_e637s"]
+script = ExtResource("7_l3p2j")
+cast_vfx = &"tallow_vigil_cast"
+area_vfx = &"tallow_vigil_ring"
+sound_fire = &"tallow_vigil_fire"
+sound_cast = &"tallow_vigil_cast"
+sound_end = &"tallow_vigil_end"
+voice_line = &"tallow_ult_line"
+voice_line_enemy = &"tallow_ult_line_enemy"
+camera_shake = 0.12
+anim_tag = &"ult"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_d8pqv"]
+script = ExtResource("8_tfj0u")
+id = &"tallow_vigil"
+display_name = "Vigil"
+description = "For 5 s every ally within 12 m keeps their light: 70% damage reduction, 30 healing per second, cleansed, and a Last Light that makes them briefly untouchable if they would fall. Tallow herself cannot drop below 1 hp."
+cast_time = 0.25
+resource = 2
+ult_cost = 1900.0
+cancel_on_cc = false
+effects = Array[ExtResource("2_ybixe")]([SubResource("Resource_8duvm"), SubResource("Resource_77c2g"), SubResource("Resource_sqlj4"), SubResource("Resource_cnh2e"), SubResource("Resource_f4r0u")])
+presentation = SubResource("Resource_e637s")
+ai = SubResource("Resource_tf048")
+
+[sub_resource type="Resource" id="Resource_i37dt"]
+script = ExtResource("21_vr2gr")
+height = 1.78
+shoulder_width = 0.52
+head = 3
+extras = Array[int]([12])
+primary_color = Color(0.9, 0.82, 0.68, 1)
+secondary_color = Color(0.45, 0.3, 0.22, 1)
+accent_color = Color(1, 0.6, 0.25, 1)
+emissive_color = Color(1, 0.72, 0.35, 1)
+emissive_strength = 2.6
+metallic = 0.05
+roughness = 0.8
+skin_color = Color(0.78, 0.6, 0.48, 1)
+weapon_scale = 1.1
+weapon_style = &"lantern"
+arms_color = Color(0.85, 0.76, 0.62, 1)
+silhouette_notes = "Pale wax-colored coat, bare head, three candle flames riding the shoulders, a boxy lantern in the off hand. Warm and lit from within at any distance."
+
+[resource]
+script = ExtResource("16_dbbej")
+id = &"tallow"
+display_name = "Tallow"
+codename = "The Chandler"
+role = 2
+sort_order = 30
+tagline = "Light is a thing you leave behind."
+lore = "Tallow ran the last candle works in the Adriatic Charter's drowned quarter, where the power failed more nights than not. Her candles burn on rendered kelp-fat and a pinch of reactor ash, and they burn hot enough to matter. She hires out because a Charter with a Core has no need for candles, and she would like that to be true everywhere."
+playstyle = "Place candles where your team will actually stand, not where they are now: a doorway, the cart, the high ground. Heal with the wax bolt between fights, burn divers with the flame bolt, and hold Snuff for the ally about to eat a stun. Vigil turns a lost fight into a stalemate for 5 s; use it when the enemy commits."
+movement = SubResource("Resource_ovqag")
+hitbox = SubResource("Resource_ni4li")
+primary = SubResource("Resource_y0o5k")
+secondary = SubResource("Resource_0p2u8")
+ability_1 = SubResource("Resource_jicpc")
+ability_2 = SubResource("Resource_l3p1q")
+ultimate = SubResource("Resource_d8pqv")
+hero_script = ExtResource("12_1vmq7")
+visual = SubResource("Resource_i37dt")
+audio = SubResource("Resource_8nyfh")
+theme_color = Color(1, 0.72, 0.38, 1)
+ai = SubResource("Resource_1vmq7")
+counters = Array[StringName]([&"bramble", &"coil", &"kiln"])
+countered_by = Array[StringName]([&"sable", &"harrier", &"wisp"])
+synergies = Array[StringName]([&"sable", &"cathedral", &"ballast"])
+unique_mechanic = "Wicks: up to three candles (25 s) that heal allies within 6 m for 18 hp/s. An enemy who walks onto one is burned and, after a moment of contact, snuffs it."
+difficulty = 2

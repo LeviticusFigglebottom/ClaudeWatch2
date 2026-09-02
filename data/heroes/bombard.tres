@@ -1,0 +1,360 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_4os8x"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_wekx4"]
+[ext_resource type="Script" path="res://src/heroes/deployables/BombardSpotterDrone.gd" id="3_u1kbw"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="4_fqyiy"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="5_1mesk"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="6_hy560"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="7_hvev6"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="8_ffq67"]
+[ext_resource type="Script" path="res://src/abilities/effects/DashEffect.gd" id="9_gqm5e"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="10_4ad0q"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="11_012s8"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/BombardBehavior.gd" id="12_wrnj2"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="13_rmocy"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="14_i4r4b"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="15_7ikwg"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="16_3idsv"]
+[ext_resource type="Script" path="res://src/heroes/abilities/BombardAirburstEffect.gd" id="17_7km1f"]
+[ext_resource type="Script" path="res://src/heroes/abilities/BombardBarrageBehavior.gd" id="18_0t1ig"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="19_o1rmv"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="20_tjm0g"]
+
+[sub_resource type="Resource" id="Resource_4os8x"]
+script = ExtResource("1_4os8x")
+intent = 10
+min_range = 6.0
+max_range = 35.0
+ideal_range = 20.0
+needs_line_of_sight = false
+target_ground = true
+combo_tags = Array[StringName]([&"reveal"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_wekx4"]
+script = ExtResource("4_fqyiy")
+deployable_script = ExtResource("3_u1kbw")
+placement = 3
+max_range = 35.0
+lifetime = 8.0
+kind = &"spotter"
+visual_id = &"spotter_drone"
+params = {
+"hover": 4.0,
+"interval": 0.5,
+"radius": 10.0,
+"status": &"bombard_spotted"
+}
+
+[sub_resource type="Resource" id="Resource_u1kbw"]
+script = ExtResource("6_hy560")
+id = &"bombard_spotted"
+display_name = "Spotted"
+duration = 1.2
+is_debuff = true
+revealed = true
+color = Color(1, 0.7, 0.25, 1)
+
+[sub_resource type="Resource" id="Resource_fqyiy"]
+script = ExtResource("5_1mesk")
+status = SubResource("Resource_u1kbw")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_1mesk"]
+script = ExtResource("7_hvev6")
+cast_vfx = &"cast_generic"
+area_vfx = &"bombard_spotter_light"
+sound_fire = &"bombard_spotter_fire"
+sound_loop = &"bombard_spotter_loop"
+sound_end = &"bombard_spotter_end"
+anim_tag = &"throw"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_hy560"]
+script = ExtResource("8_ffq67")
+id = &"bombard_spotter"
+display_name = "Spotter Drone"
+description = "Launch a drone to a point up to 35 m away. For 8 s it hovers 4 m up and reveals every enemy within 10 m to your whole team through walls."
+cooldown = 14.0
+effects = Array[ExtResource("2_wekx4")]([SubResource("Resource_wekx4"), SubResource("Resource_fqyiy")])
+presentation = SubResource("Resource_1mesk")
+ai = SubResource("Resource_4os8x")
+
+[sub_resource type="Resource" id="Resource_hvev6"]
+script = ExtResource("1_4os8x")
+intent = 3
+max_range = 8.0
+ideal_range = 3.0
+needs_line_of_sight = false
+use_when_health_below = 0.5
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_ffq67"]
+script = ExtResource("9_gqm5e")
+speed = 7.5
+direction = 3
+vertical_boost = 9.5
+
+[sub_resource type="Resource" id="Resource_gqm5e"]
+script = ExtResource("7_hvev6")
+cast_vfx = &"explosion"
+sound_fire = &"bombard_kick_fire"
+sound_tail = &"bombard_kick_tail"
+camera_shake = 0.22
+camera_kick_pitch = 3.0
+viewmodel_kick = 0.1
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_4ad0q"]
+script = ExtResource("8_ffq67")
+id = &"bombard_kick"
+display_name = "Kick Charge"
+description = "Fire a charge at your feet and ride the recoil up and backward about 8 m. Your only answer to a dive, and the quickest way onto a perch."
+cooldown = 11.0
+effects = Array[ExtResource("2_wekx4")]([SubResource("Resource_ffq67")])
+presentation = SubResource("Resource_gqm5e")
+ai = SubResource("Resource_hvev6")
+
+[sub_resource type="Resource" id="Resource_012s8"]
+script = ExtResource("10_4ad0q")
+preferred_range = 24.0
+min_range = 8.0
+max_effective_range = 45.0
+aggression = 0.25
+self_preservation = 0.7
+prefers_high_ground = 1.0
+sticks_to_tank = 0.35
+poke_style = true
+ult_style = &"zone"
+strafe_style = &"crouch"
+aim_difficulty_scale = 1.3
+
+[sub_resource type="Resource" id="Resource_wrnj2"]
+script = ExtResource("11_012s8")
+footstep_volume = 1.1
+ult_stinger = &"ult_bombard"
+ult_stinger_enemy = &"ult_bombard_enemy"
+
+[sub_resource type="Resource" id="Resource_rmocy"]
+script = ExtResource("13_rmocy")
+
+[sub_resource type="Resource" id="Resource_i4r4b"]
+script = ExtResource("14_i4r4b")
+max_speed = 5.3
+ground_accel = 55.0
+air_control = 0.3
+jump_velocity = 6.0
+mass = 1.15
+footstep_interval = 0.46
+
+[sub_resource type="Resource" id="Resource_7ikwg"]
+script = ExtResource("1_4os8x")
+min_range = 6.0
+max_range = 50.0
+ideal_range = 24.0
+spam_ok = true
+telegraph_seconds = 0.9
+
+[sub_resource type="Resource" id="Resource_3idsv"]
+script = ExtResource("15_7ikwg")
+speed = 28.0
+gravity = 14.0
+radius = 0.18
+lifetime = 6.0
+splash_radius = 3.5
+splash_damage = 60.0
+splash_min_fraction = 0.35
+knockback = 2.5
+spawn_offset = Vector3(0.3, -0.1, -0.5)
+visual_id = &"mortar"
+lob_arc = true
+
+[sub_resource type="Resource" id="Resource_7km1f"]
+script = ExtResource("7_hvev6")
+muzzle_vfx = &"bombard_mortar_muzzle"
+tracer_style = &"shell"
+tracer_color = Color(1, 0.72, 0.35, 1)
+tracer_width = 0.05
+impact_vfx = &"explosion"
+impact_decal = &"scorch"
+projectile_vfx = &"mortar"
+sound_fire = &"bombard_mortar_fire"
+sound_tail = &"bombard_mortar_tail"
+sound_impact = &"bombard_mortar_impact"
+camera_shake = 0.14
+camera_kick_pitch = 2.8
+camera_kick_yaw_random = 0.5
+kick_recovery = 9.0
+viewmodel_kick = 0.16
+viewmodel_kick_rot = 6.0
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_0t1ig"]
+script = ExtResource("8_ffq67")
+id = &"bombard_mortar"
+display_name = "Field Mortar"
+description = "Lob a mortar shell. 60 direct damage plus 60 splash in 3.5 m. The reticle shows where it lands, even through walls. 4 shells, 2.2 s reload."
+trigger = 1
+fire_rate = 1.1
+resource = 1
+ammo = 4
+reload_time = 2.2
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_wekx4")]([SubResource("Resource_3idsv")])
+presentation = SubResource("Resource_7km1f")
+ai = SubResource("Resource_7ikwg")
+
+[sub_resource type="Resource" id="Resource_o1rmv"]
+script = ExtResource("1_4os8x")
+min_range = 8.0
+max_range = 40.0
+ideal_range = 22.0
+needs_line_of_sight = false
+cast_priority = 0.65
+telegraph_seconds = 0.8
+
+[sub_resource type="Resource" id="Resource_tjm0g"]
+script = ExtResource("17_7km1f")
+damage = 30.0
+speed = 28.0
+gravity = 14.0
+radius = 0.18
+lifetime = 1.5
+splash_radius = 4.5
+splash_damage = 90.0
+splash_min_fraction = 0.4
+knockback = 3.0
+explode_on_expire = true
+spawn_offset = Vector3(0.3, -0.1, -0.5)
+visual_id = &"mortar"
+lob_arc = true
+
+[sub_resource type="Resource" id="Resource_no4mx"]
+script = ExtResource("7_hvev6")
+muzzle_vfx = &"bombard_mortar_muzzle"
+tracer_style = &"shell"
+tracer_color = Color(1, 0.85, 0.45, 1)
+tracer_width = 0.05
+impact_vfx = &"bombard_airburst_flash"
+impact_decal = &""
+projectile_vfx = &"mortar"
+sound_fire = &"bombard_airburst_fire"
+sound_tail = &"bombard_airburst_tail"
+sound_impact = &"bombard_airburst_impact"
+camera_shake = 0.16
+camera_kick_pitch = 3.2
+camera_kick_yaw_random = 0.6
+kick_recovery = 9.0
+viewmodel_kick = 0.18
+viewmodel_kick_rot = 7.0
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_0l8vv"]
+script = ExtResource("8_ffq67")
+id = &"bombard_airburst"
+display_name = "Airburst"
+description = "Fire a shell with a proximity fuse: it bursts in the air when it passes above an enemy, dealing 90 splash damage in 4.5 m with no cover to hide behind."
+cooldown = 8.0
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_wekx4")]([SubResource("Resource_tjm0g")])
+presentation = SubResource("Resource_no4mx")
+ai = SubResource("Resource_o1rmv")
+
+[sub_resource type="Resource" id="Resource_eqnoo"]
+script = ExtResource("1_4os8x")
+intent = 9
+min_range = 8.0
+max_range = 40.0
+ideal_range = 24.0
+needs_line_of_sight = false
+target_ground = true
+needs_enemies_in_radius = 2
+combo_tags = Array[StringName]([&"aoe_damage"])
+cast_priority = 0.7
+telegraph_seconds = 0.7
+
+[sub_resource type="Resource" id="Resource_hk6yu"]
+script = ExtResource("19_o1rmv")
+radius = 10.0
+requires_los = false
+center_on_aim_hit = true
+max_aim_distance = 45.0
+vfx_id = &"bombard_barrage_mark"
+
+[sub_resource type="Resource" id="Resource_n1211"]
+script = ExtResource("7_hvev6")
+cast_vfx = &"bombard_barrage_cast"
+loop_vfx = &"bombard_barrage_loop"
+area_vfx = &"bombard_barrage_mark"
+sound_cast = &"bombard_barrage_cast"
+sound_loop = &"bombard_barrage_loop"
+sound_end = &"bombard_barrage_end"
+sound_impact = &"bombard_barrage_impact"
+voice_line = &"bombard_ult_line"
+voice_line_enemy = &"bombard_ult_line_enemy"
+camera_shake = 0.3
+anim_tag = &"ult"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_8wsfc"]
+script = ExtResource("8_ffq67")
+id = &"bombard_barrage"
+display_name = "Barrage"
+description = "Mark a 10 m area up to 45 m away. Over the next 3 s, twelve shells fall on it from above: 70 direct, 70 splash each. Cover does not help."
+active_duration = 3.4
+resource = 2
+ult_cost = 1800.0
+cancel_on_cc = false
+effects = Array[ExtResource("2_wekx4")]([SubResource("Resource_hk6yu")])
+behavior = ExtResource("18_0t1ig")
+presentation = SubResource("Resource_n1211")
+ai = SubResource("Resource_eqnoo")
+
+[sub_resource type="Resource" id="Resource_njlap"]
+script = ExtResource("20_tjm0g")
+height = 1.9
+shoulder_width = 0.64
+extras = Array[int]([2, 4])
+primary_color = Color(0.42, 0.44, 0.32, 1)
+secondary_color = Color(0.22, 0.2, 0.16, 1)
+accent_color = Color(0.82, 0.62, 0.24, 1)
+emissive_color = Color(1, 0.62, 0.2, 1)
+emissive_strength = 1.8
+metallic = 0.45
+roughness = 0.65
+weapon_scale = 1.25
+weapon_style = &"mortar"
+arms_color = Color(0.36, 0.36, 0.3, 1)
+stance = &"brace"
+silhouette_notes = "Broad shoulders, round helmet, a square ammo pack and a stubby mortar tube held at the hip. Reads as artillery: wide, planted, not fast."
+
+[resource]
+script = ExtResource("16_3idsv")
+id = &"bombard"
+display_name = "Bombard"
+codename = "The Spotter"
+sort_order = 15
+tagline = "You don't need to see it. I do."
+lore = "Bombard called fire for the Andean Charter's border militia until a ceasefire made her obsolete. She kept the mortar, rebuilt the spotter drone from a weather satellite that fell in her yard, and hires out to whoever holds the high ground. She talks to her shells while they're in the air."
+playstyle = "Sit behind cover on high ground and drop shells where the reticle says they land: you never need a sightline. Tag the fight with the Spotter drone, airburst anyone hiding behind a wall, and save Barrage for a held point. You are helpless when dived: Kick Charge is your only way out."
+health = 225.0
+movement = SubResource("Resource_i4r4b")
+hitbox = SubResource("Resource_rmocy")
+primary = SubResource("Resource_0t1ig")
+secondary = SubResource("Resource_0l8vv")
+ability_1 = SubResource("Resource_hy560")
+ability_2 = SubResource("Resource_4ad0q")
+ultimate = SubResource("Resource_8wsfc")
+hero_script = ExtResource("12_wrnj2")
+visual = SubResource("Resource_njlap")
+audio = SubResource("Resource_wrnj2")
+theme_color = Color(0.86, 0.64, 0.24, 1)
+ai = SubResource("Resource_012s8")
+counters = Array[StringName]([&"cathedral", &"rook", &"cairn", &"kiln"])
+countered_by = Array[StringName]([&"harrier", &"sable", &"wisp"])
+synergies = Array[StringName]([&"vesper", &"rook", &"cairn"])
+unique_mechanic = "Indirect fire: the mortar's predicted landing point is drawn as a world-space reticle visible through walls, so every shell can be lobbed over cover blind."
+difficulty = 3

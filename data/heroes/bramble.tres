@@ -1,0 +1,392 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_dmjeo"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_bid57"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="3_iqopn"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="4_fvkh4"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="5_6eb46"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="6_4ajlv"]
+[ext_resource type="Script" path="res://src/heroes/deployables/BrambleThicket.gd" id="7_2d2c4"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="8_fry4u"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="9_o1c3t"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="10_mtuw8"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="11_w6nfu"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/BrambleBehavior.gd" id="12_am7ll"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="13_vlt8v"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="14_8wro5"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="15_ikye6"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="16_pb4w2"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="17_dkbb2"]
+
+[sub_resource type="Resource" id="Resource_dmjeo"]
+script = ExtResource("1_dmjeo")
+intent = 6
+min_range = 3.0
+max_range = 26.0
+ideal_range = 12.0
+combo_tags = Array[StringName]([&"root"])
+cast_priority = 0.65
+telegraph_seconds = 0.5
+
+[sub_resource type="Resource" id="Resource_bid57"]
+script = ExtResource("3_iqopn")
+id = &"bramble_snare"
+display_name = "Snared"
+is_debuff = true
+is_crowd_control = true
+rooted = true
+color = Color(0.3, 0.7, 0.2, 1)
+sound_apply = &"bramble_snare_apply"
+
+[sub_resource type="Resource" id="Resource_iqopn"]
+script = ExtResource("4_fvkh4")
+damage = 40.0
+speed = 35.0
+gravity = 6.0
+radius = 0.22
+lifetime = 3.0
+splash_radius = 1.6
+splash_damage = 20.0
+splash_min_fraction = 0.5
+hit_status = SubResource("Resource_bid57")
+visual_id = &"orb"
+lob_arc = true
+
+[sub_resource type="Resource" id="Resource_fvkh4"]
+script = ExtResource("5_6eb46")
+muzzle_vfx = &"muzzle_generic"
+tracer_style = &"arc"
+tracer_color = Color(0.45, 0.9, 0.35, 1)
+impact_vfx = &"bramble_vine_burst"
+projectile_vfx = &"orb"
+sound_fire = &"bramble_snare_fire"
+sound_tail = &"bramble_snare_tail"
+sound_impact = &"bramble_snare_impact"
+camera_shake = 0.05
+camera_kick_pitch = 1.4
+camera_kick_yaw_random = 0.3
+viewmodel_kick = 0.08
+viewmodel_kick_rot = 3.0
+anim_tag = &"throw"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_6eb46"]
+script = ExtResource("6_4ajlv")
+id = &"bramble_snare"
+display_name = "Snare"
+description = "Lob a vine seed. On hit it deals 40 and roots the target for 2 s. Cleansable."
+cooldown = 10.0
+effects = Array[ExtResource("2_bid57")]([SubResource("Resource_iqopn")])
+presentation = SubResource("Resource_fvkh4")
+ai = SubResource("Resource_dmjeo")
+
+[sub_resource type="Resource" id="Resource_4ajlv"]
+script = ExtResource("1_dmjeo")
+intent = 6
+max_range = 9.0
+ideal_range = 4.0
+combo_tags = Array[StringName]([&"zone"])
+
+[sub_resource type="Resource" id="Resource_2d2c4"]
+script = ExtResource("8_fry4u")
+deployable_script = ExtResource("7_2d2c4")
+distance = 4.0
+health = 300.0
+lifetime = 8.0
+kind = &"thicket"
+visual_id = &"thicket_wall"
+params = {
+"band": 1.2,
+"dps": 20.0,
+"entry_damage": 30.0,
+"height": 2.2,
+"slow": &"bramble_thicket_slow",
+"trample": 60.0,
+"width": 6.0
+}
+
+[sub_resource type="Resource" id="Resource_fry4u"]
+script = ExtResource("3_iqopn")
+id = &"bramble_thicket_slow"
+display_name = "Thorned"
+duration = 0.8
+is_debuff = true
+speed_mult = 0.5
+color = Color(0.4, 0.6, 0.2, 1)
+
+[sub_resource type="Resource" id="Resource_o1c3t"]
+script = ExtResource("9_o1c3t")
+status = SubResource("Resource_fry4u")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_mtuw8"]
+script = ExtResource("5_6eb46")
+cast_vfx = &"bramble_vine_burst"
+area_vfx = &"bramble_thicket_zone"
+sound_fire = &"bramble_thicket_fire"
+sound_loop = &"bramble_thicket_loop"
+sound_end = &"bramble_thicket_end"
+camera_shake = 0.06
+anim_tag = &"cast"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_w6nfu"]
+script = ExtResource("6_4ajlv")
+id = &"bramble_thicket"
+display_name = "Thicket"
+description = "Grow a 6 m thorn hedge in front of you for 8 s. Enemies crossing it take 30 on entry, 20 per second inside, and are slowed to half. Trampling wears it down (300 hp)."
+cooldown = 12.0
+effects = Array[ExtResource("2_bid57")]([SubResource("Resource_2d2c4"), SubResource("Resource_o1c3t")])
+presentation = SubResource("Resource_mtuw8")
+ai = SubResource("Resource_4ajlv")
+
+[sub_resource type="Resource" id="Resource_am7ll"]
+script = ExtResource("10_mtuw8")
+preferred_range = 14.0
+min_range = 4.0
+max_effective_range = 32.0
+self_preservation = 0.55
+ult_style = &"zone"
+aim_difficulty_scale = 1.15
+
+[sub_resource type="Resource" id="Resource_vlt8v"]
+script = ExtResource("11_w6nfu")
+footstep_volume = 0.9
+ult_stinger = &"ult_bramble"
+ult_stinger_enemy = &"ult_bramble_enemy"
+
+[sub_resource type="Resource" id="Resource_8wro5"]
+script = ExtResource("13_vlt8v")
+
+[sub_resource type="Resource" id="Resource_ikye6"]
+script = ExtResource("14_8wro5")
+max_speed = 5.7
+ground_accel = 62.0
+air_control = 0.4
+jump_velocity = 6.6
+footstep_interval = 0.4
+
+[sub_resource type="Resource" id="Resource_pb4w2"]
+script = ExtResource("1_dmjeo")
+max_range = 40.0
+ideal_range = 14.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_dkbb2"]
+script = ExtResource("4_fvkh4")
+damage = 22.0
+speed = 60.0
+radius = 0.1
+lifetime = 2.5
+headshot = true
+spawn_offset = Vector3(0.2, -0.12, -0.35)
+visual_id = &"thorn"
+
+[sub_resource type="Resource" id="Resource_35twq"]
+script = ExtResource("3_iqopn")
+id = &"bramble_root"
+display_name = "Rooted"
+duration = 1.2
+is_debuff = true
+is_crowd_control = true
+rooted = true
+color = Color(0.4, 0.8, 0.25, 1)
+sound_apply = &"bramble_root_apply"
+
+[sub_resource type="Resource" id="Resource_d0sll"]
+script = ExtResource("9_o1c3t")
+status = SubResource("Resource_35twq")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_g7idt"]
+script = ExtResource("5_6eb46")
+muzzle_vfx = &"muzzle_generic"
+tracer_style = &"bolt"
+tracer_color = Color(0.6, 1, 0.4, 1)
+tracer_width = 0.025
+projectile_vfx = &"thorn"
+sound_fire = &"bramble_thorns_fire"
+sound_tail = &"bramble_thorns_tail"
+sound_impact = &"bramble_thorns_impact"
+camera_shake = 0.03
+camera_kick_pitch = 0.9
+camera_kick_yaw_random = 0.2
+kick_recovery = 14.0
+viewmodel_kick = 0.05
+viewmodel_kick_rot = 2.5
+
+[sub_resource type="Resource" id="Resource_72d62"]
+script = ExtResource("6_4ajlv")
+id = &"bramble_thorns"
+display_name = "Thorn Bow"
+description = "Rapid thorns: 22 damage, 5 per second, headshots deal double. Your third consecutive hit on the same target roots it for 1.2 s. 20 thorns, 1.5 s reload."
+trigger = 1
+fire_rate = 5.0
+resource = 1
+ammo = 20
+reload_time = 1.5
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_bid57")]([SubResource("Resource_dkbb2"), SubResource("Resource_d0sll")])
+presentation = SubResource("Resource_g7idt")
+ai = SubResource("Resource_pb4w2")
+
+[sub_resource type="Resource" id="Resource_hsmvb"]
+script = ExtResource("1_dmjeo")
+max_range = 12.0
+ideal_range = 5.0
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_0qvau"]
+script = ExtResource("4_fvkh4")
+damage = 16.0
+speed = 55.0
+radius = 0.1
+lifetime = 1.0
+count = 5
+spread_deg = 14.0
+spawn_offset = Vector3(0.2, -0.12, -0.35)
+visual_id = &"thorn"
+
+[sub_resource type="Resource" id="Resource_8vhq0"]
+script = ExtResource("5_6eb46")
+muzzle_vfx = &"muzzle_generic"
+tracer_style = &"bolt"
+tracer_color = Color(0.7, 1, 0.45, 1)
+tracer_width = 0.025
+projectile_vfx = &"thorn"
+sound_fire = &"bramble_fan_fire"
+sound_tail = &"bramble_fan_tail"
+sound_impact = &"bramble_fan_impact"
+camera_shake = 0.06
+camera_kick_pitch = 2.0
+camera_kick_yaw_random = 0.4
+viewmodel_kick = 0.09
+viewmodel_kick_rot = 4.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_c4oqh"]
+script = ExtResource("6_4ajlv")
+id = &"bramble_fan"
+display_name = "Thorn Fan"
+description = "Loose five thorns in a 14 degree fan for 16 each. Every thorn counts toward Roots, so a fan on one target at close range is a root."
+cooldown = 5.0
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_bid57")]([SubResource("Resource_0qvau")])
+presentation = SubResource("Resource_8vhq0")
+ai = SubResource("Resource_hsmvb")
+
+[sub_resource type="Resource" id="Resource_agupa"]
+script = ExtResource("1_dmjeo")
+intent = 9
+max_range = 12.0
+ideal_range = 6.0
+needs_line_of_sight = false
+needs_enemies_in_radius = 2
+combo_tags = Array[StringName]([&"root", &"aoe_cc"])
+cast_priority = 0.7
+telegraph_seconds = 0.3
+
+[sub_resource type="Resource" id="Resource_6rl0f"]
+script = ExtResource("3_iqopn")
+id = &"bramble_overgrowth_bloom"
+display_name = "Bloom"
+duration = 2.5
+cleansable = false
+hot_hps = 60.0
+color = Color(0.7, 1, 0.5, 1)
+
+[sub_resource type="Resource" id="Resource_rdwgk"]
+script = ExtResource("3_iqopn")
+id = &"bramble_overgrowth_root"
+display_name = "Overgrown"
+duration = 2.5
+is_debuff = true
+is_crowd_control = true
+rooted = true
+color = Color(0.35, 0.85, 0.25, 1)
+sound_apply = &"bramble_root_apply"
+
+[sub_resource type="Resource" id="Resource_26fca"]
+script = ExtResource("16_pb4w2")
+radius = 12.0
+damage = 60.0
+min_fraction = 0.8
+requires_los = false
+enemy_status = SubResource("Resource_rdwgk")
+ally_status = SubResource("Resource_6rl0f")
+vfx_id = &"bramble_overgrowth"
+
+[sub_resource type="Resource" id="Resource_t7gdc"]
+script = ExtResource("5_6eb46")
+cast_vfx = &"bramble_overgrowth_cast"
+area_vfx = &"bramble_overgrowth"
+sound_fire = &"bramble_overgrowth_fire"
+sound_cast = &"bramble_overgrowth_cast"
+sound_end = &"bramble_overgrowth_end"
+sound_impact = &"bramble_overgrowth_impact"
+voice_line = &"bramble_ult_line"
+voice_line_enemy = &"bramble_ult_line_enemy"
+camera_shake = 0.25
+anim_tag = &"ult"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_qsppm"]
+script = ExtResource("6_4ajlv")
+id = &"bramble_overgrowth"
+display_name = "Overgrowth"
+description = "Thorn erupts in 12 m: every enemy takes 60 and is rooted for 2.5 s; every ally is healed 150 over 2.5 s. Roots go through cover."
+cast_time = 0.3
+resource = 2
+ult_cost = 1800.0
+cancel_on_cc = false
+effects = Array[ExtResource("2_bid57")]([SubResource("Resource_26fca")])
+presentation = SubResource("Resource_t7gdc")
+ai = SubResource("Resource_agupa")
+
+[sub_resource type="Resource" id="Resource_ulntq"]
+script = ExtResource("17_dkbb2")
+height = 1.84
+shoulder_width = 0.54
+head = 8
+extras = Array[int]([11])
+primary_color = Color(0.24, 0.38, 0.2, 1)
+secondary_color = Color(0.32, 0.22, 0.14, 1)
+accent_color = Color(0.56, 0.82, 0.3, 1)
+emissive_color = Color(0.6, 1, 0.4, 1)
+emissive_strength = 1.4
+metallic = 0.1
+roughness = 0.85
+skin_color = Color(0.62, 0.48, 0.36, 1)
+weapon_scale = 1.1
+weapon_style = &"bow"
+arms_color = Color(0.3, 0.24, 0.16, 1)
+silhouette_notes = "Upright with a spiked crown and a tall bow; vines trail from the shoulders and hips. Reads as a ranger from far, a plant from close."
+
+[resource]
+script = ExtResource("15_ikye6")
+id = &"bramble"
+display_name = "Bramble"
+codename = "The Terraformer"
+sort_order = 17
+tagline = "Stand still. It's easier."
+lore = "Bramble spent a decade seeding the Cascadian seed-vault campus with engineered thorn that could hold a hillside together after the fires. When the Charter that hired her tried to burn it back, the hillside held and the Charter did not. She carries the thorn in a bow now, and still talks about drainage."
+playstyle = "Poke at mid range and stack three thorns on one target to root it, then land the Snare or a Thicket to keep it there for your team. Overgrowth roots a whole fight and heals your side of it. You lose to cleanse and to anyone who out-ranges 30 m."
+movement = SubResource("Resource_ikye6")
+hitbox = SubResource("Resource_8wro5")
+primary = SubResource("Resource_72d62")
+secondary = SubResource("Resource_c4oqh")
+ability_1 = SubResource("Resource_6eb46")
+ability_2 = SubResource("Resource_w6nfu")
+ultimate = SubResource("Resource_qsppm")
+hero_script = ExtResource("12_am7ll")
+visual = SubResource("Resource_ulntq")
+audio = SubResource("Resource_vlt8v")
+theme_color = Color(0.46, 0.74, 0.28, 1)
+ai = SubResource("Resource_am7ll")
+counters = Array[StringName]([&"harrier", &"sable", &"wisp", &"ballast"])
+countered_by = Array[StringName]([&"tallow", &"suture", &"cathedral", &"vesper"])
+synergies = Array[StringName]([&"coil", &"rook", &"bombard"])
+unique_mechanic = "Roots: the third consecutive thorn hit on the same target (within 2 s of the last) roots it for 1.2 s. Switching targets or pausing resets the count."
+difficulty = 2

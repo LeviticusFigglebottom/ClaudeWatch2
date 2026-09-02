@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3 uid="uid://rf_settings_menu"]
+[ext_resource type="Script" path="res://src/ui/screens/SettingsMenu.gd" id="1"]
+[node name="SettingsMenu" type="Control"]
+script = ExtResource("1")

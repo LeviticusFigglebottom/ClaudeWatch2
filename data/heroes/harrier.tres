@@ -1,0 +1,341 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_quki4"]
+[ext_resource type="Script" path="res://src/heroes/abilities/HarrierDiveBehavior.gd" id="2_j02m5"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="3_0hup1"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="4_3wjmh"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="5_bw22d"]
+[ext_resource type="Script" path="res://src/heroes/abilities/HarrierAfterburnBehavior.gd" id="6_pkkbf"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="7_f5l0l"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="8_0aquc"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="9_c08dn"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="10_8uwsd"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/HarrierBehavior.gd" id="11_lgv73"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="12_1vbno"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="13_8wy2t"]
+[ext_resource type="Script" path="res://src/abilities/effects/HitscanEffect.gd" id="14_wlg5m"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="15_d2q87"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="16_whult"]
+[ext_resource type="Script" path="res://src/heroes/abilities/HarrierStrafingRunBehavior.gd" id="17_8y4ve"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="18_ed36d"]
+
+[sub_resource type="Resource" id="Resource_quki4"]
+script = ExtResource("1_quki4")
+max_range = 7.0
+ideal_range = 3.0
+needs_line_of_sight = false
+combo_tags = Array[StringName]([&"aoe_damage"])
+cast_priority = 0.8
+
+[sub_resource type="Resource" id="Resource_j02m5"]
+script = ExtResource("4_3wjmh")
+cast_vfx = &"harrier_dive_cast"
+loop_vfx = &"harrier_dive_loop"
+end_vfx = &"harrier_dive_end"
+area_vfx = &"harrier_dive_explosion"
+self_glow = Color(0.4, 0.85, 1, 0.8)
+sound_cast = &"harrier_dive_cast"
+sound_loop = &"harrier_dive_loop"
+sound_end = &"harrier_dive_end"
+sound_impact = &"harrier_dive_impact"
+camera_shake = 0.3
+anim_tag = &"cast"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_0hup1"]
+script = ExtResource("5_bw22d")
+id = &"harrier_dive"
+display_name = "Dive"
+description = "Only in the air: cut thrust and slam straight down at 30 m/s. Landing deals 80 damage in 4 m and knocks enemies away. 9 s cooldown."
+cooldown = 9.0
+active_duration = 2.5
+cooldown_starts_on_end = true
+cancel_on_cc = false
+behavior = ExtResource("2_j02m5")
+presentation = SubResource("Resource_j02m5")
+ai = SubResource("Resource_quki4")
+
+[sub_resource type="Resource" id="Resource_3wjmh"]
+script = ExtResource("1_quki4")
+intent = 2
+max_range = 40.0
+ideal_range = 15.0
+needs_line_of_sight = false
+use_when_health_below = 0.4
+
+[sub_resource type="Resource" id="Resource_bw22d"]
+script = ExtResource("8_0aquc")
+id = &"harrier_afterburn_status"
+display_name = "Afterburn"
+duration = 3.0
+cleansable = false
+speed_mult = 1.4
+vfx_id = &"harrier_afterburn_loop"
+color = Color(0.4, 0.85, 1, 1)
+
+[sub_resource type="Resource" id="Resource_pkkbf"]
+script = ExtResource("7_f5l0l")
+status = SubResource("Resource_bw22d")
+
+[sub_resource type="Resource" id="Resource_f5l0l"]
+script = ExtResource("4_3wjmh")
+cast_vfx = &"harrier_afterburn_cast"
+self_glow = Color(0.4, 0.85, 1, 0.6)
+sound_fire = &"harrier_afterburn_fire"
+sound_tail = &"harrier_afterburn_tail"
+sound_end = &"harrier_afterburn_end"
+camera_shake = 0.08
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_0aquc"]
+script = ExtResource("5_bw22d")
+id = &"harrier_afterburn"
+display_name = "Afterburn"
+description = "Dump the reserve tank: +40% move speed for 3 s and your Flight fuel refills instantly. 10 s cooldown."
+cooldown = 10.0
+effects = Array[ExtResource("3_0hup1")]([SubResource("Resource_pkkbf")])
+behavior = ExtResource("6_pkkbf")
+presentation = SubResource("Resource_f5l0l")
+ai = SubResource("Resource_3wjmh")
+
+[sub_resource type="Resource" id="Resource_c08dn"]
+script = ExtResource("9_c08dn")
+preferred_range = 9.0
+min_range = 2.0
+max_effective_range = 26.0
+aggression = 0.75
+self_preservation = 0.45
+flanker = true
+dives = true
+prefers_high_ground = 0.65
+sticks_to_tank = 0.2
+ult_min_targets = 1
+strafe_style = &"hover"
+
+[sub_resource type="Resource" id="Resource_8uwsd"]
+script = ExtResource("10_8uwsd")
+footstep_set = &"boots_light"
+footstep_volume = 0.8
+ult_stinger = &"ult_harrier"
+ult_stinger_enemy = &"ult_harrier_enemy"
+jump = &"harrier_jet_jump"
+land = &"harrier_jet_land"
+callout_tone = &"radio_b"
+
+[sub_resource type="Resource" id="Resource_lgv73"]
+script = ExtResource("12_1vbno")
+
+[sub_resource type="Resource" id="Resource_1vbno"]
+script = ExtResource("13_8wy2t")
+max_speed = 6.0
+ground_accel = 65.0
+air_accel = 22.0
+air_control = 0.6
+air_friction = 0.35
+mass = 0.9
+camera_bob_scale = 0.8
+footstep_interval = 0.38
+hover_enabled = true
+hover_thrust = 5.5
+hover_fuel = 3.5
+hover_fuel_regen = 1.2
+
+[sub_resource type="Resource" id="Resource_8wy2t"]
+script = ExtResource("1_quki4")
+ideal_range = 9.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_wlg5m"]
+script = ExtResource("14_wlg5m")
+damage = 7.0
+range = 60.0
+spread_deg = 1.6
+spread_moving_deg = 1.2
+spread_airborne_deg = 0.8
+falloff_start = 15.0
+falloff_end = 30.0
+falloff_min = 0.5
+
+[sub_resource type="Resource" id="Resource_d2q87"]
+script = ExtResource("4_3wjmh")
+muzzle_vfx = &"harrier_smg_muzzle"
+tracer_style = &"bullet"
+tracer_color = Color(0.78, 0.92, 1, 1)
+tracer_width = 0.022
+impact_vfx = &"harrier_smg_impact"
+sound_fire = &"harrier_smg_fire"
+sound_tail = &"harrier_smg_tail"
+sound_impact = &"harrier_smg_impact"
+camera_shake = 0.015
+camera_kick_pitch = 0.32
+camera_kick_yaw_random = 0.28
+kick_recovery = 20.0
+viewmodel_kick = 0.02
+viewmodel_kick_rot = 1.1
+crosshair = &"cross"
+spread_visual_scale = 1.2
+
+[sub_resource type="Resource" id="Resource_whult"]
+script = ExtResource("5_bw22d")
+id = &"harrier_smg"
+display_name = "Twin SMGs"
+description = "Two machine pistols firing together: 7 damage per bullet, 16 bullets per second (112 DPS), headshots double. Accurate to 15 m, falls to half damage by 30 m. 40 rounds, 1.3 s reload."
+trigger = 1
+fire_rate = 16.0
+resource = 1
+ammo = 40
+reload_time = 1.3
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_0hup1")]([SubResource("Resource_wlg5m")])
+presentation = SubResource("Resource_d2q87")
+ai = SubResource("Resource_8wy2t")
+
+[sub_resource type="Resource" id="Resource_8y4ve"]
+script = ExtResource("1_quki4")
+min_range = 3.0
+ideal_range = 9.0
+combo_tags = Array[StringName]([&"aoe_damage"])
+cast_priority = 0.55
+
+[sub_resource type="Resource" id="Resource_ed36d"]
+script = ExtResource("16_whult")
+damage = 35.0
+speed = 45.0
+lifetime = 2.5
+count = 2
+spread_deg = 3.0
+splash_radius = 2.5
+splash_damage = 25.0
+splash_min_fraction = 0.4
+knockback = 2.0
+inherit_velocity = 0.3
+visual_id = &"shell"
+
+[sub_resource type="Resource" id="Resource_ahuru"]
+script = ExtResource("4_3wjmh")
+muzzle_vfx = &"harrier_rockets_muzzle"
+tracer_color = Color(1, 0.7, 0.4, 1)
+impact_vfx = &"explosion"
+impact_decal = &"scorch"
+projectile_vfx = &"shell"
+sound_fire = &"harrier_rockets_fire"
+sound_tail = &"harrier_rockets_tail"
+sound_impact = &"harrier_rockets_impact"
+camera_shake = 0.12
+camera_kick_pitch = 2.4
+camera_kick_yaw_random = 0.5
+kick_recovery = 8.0
+viewmodel_kick = 0.12
+viewmodel_kick_rot = 5.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_ae8qq"]
+script = ExtResource("5_bw22d")
+id = &"harrier_rockets"
+display_name = "Pod Rockets"
+description = "Fire two micro-rockets from the jet-rig pods: 35 damage on a direct hit plus 25 splash damage in 2.5 m. 4 s cooldown."
+cooldown = 4.0
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_0hup1")]([SubResource("Resource_ed36d")])
+presentation = SubResource("Resource_ahuru")
+ai = SubResource("Resource_8y4ve")
+
+[sub_resource type="Resource" id="Resource_3iygv"]
+script = ExtResource("1_quki4")
+max_range = 12.0
+ideal_range = 5.0
+needs_line_of_sight = false
+needs_enemies_in_radius = 1
+combo_tags = Array[StringName]([&"aoe_damage"])
+cast_priority = 0.7
+
+[sub_resource type="Resource" id="Resource_ebvba"]
+script = ExtResource("4_3wjmh")
+cast_vfx = &"harrier_strafing_run_cast"
+loop_vfx = &"harrier_strafing_run_loop"
+end_vfx = &"harrier_strafing_run_end"
+projectile_vfx = &"shell"
+self_glow = Color(1, 0.6, 0.3, 0.9)
+sound_fire = &"harrier_strafing_run_fire"
+sound_cast = &"harrier_strafing_run_cast"
+sound_loop = &"harrier_strafing_run_loop"
+sound_end = &"harrier_strafing_run_end"
+sound_impact = &"harrier_strafing_run_impact"
+voice_line = &"harrier_ult_line"
+voice_line_enemy = &"harrier_ult_line_enemy"
+camera_shake = 0.2
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_1kem5"]
+script = ExtResource("8_0aquc")
+id = &"harrier_strafing_status"
+display_name = "Strafing Run"
+duration = 4.0
+cleansable = false
+speed_mult = 1.5
+color = Color(1, 0.6, 0.3, 1)
+
+[sub_resource type="Resource" id="Resource_vyong"]
+script = ExtResource("5_bw22d")
+id = &"harrier_strafing_run"
+display_name = "Strafing Run"
+description = "For 4 s: +50% speed, bottomless fuel, and a rocket drops straight down from your position every 0.25 s, each dealing 90 damage in 3.5 m. Fly the line you want carpeted."
+active_duration = 4.0
+resource = 2
+ult_cost = 1700.0
+cancel_on_cc = false
+self_status_while_active = SubResource("Resource_1kem5")
+behavior = ExtResource("17_8y4ve")
+presentation = SubResource("Resource_ebvba")
+ai = SubResource("Resource_3iygv")
+
+[sub_resource type="Resource" id="Resource_2wdi2"]
+script = ExtResource("18_ed36d")
+build = 0
+height = 1.78
+shoulder_width = 0.5
+head = 1
+extras = Array[int]([6, 3])
+primary_color = Color(0.9, 0.91, 0.94, 1)
+secondary_color = Color(0.2, 0.24, 0.3, 1)
+accent_color = Color(0.98, 0.55, 0.2, 1)
+emissive_color = Color(0.4, 0.85, 1, 1)
+emissive_strength = 2.5
+metallic = 0.45
+roughness = 0.45
+weapon_scale = 1.05
+weapon_style = &"pistols"
+arms_color = Color(0.22, 0.25, 0.3, 1)
+stance = &"hover"
+silhouette_notes = "Small and winged: visored helmet, swept glowing wings over twin jet cans, a pistol in each hand. Reads as 'the one in the air' at any range; the wing glow doubles as her fuel tell."
+
+[resource]
+script = ExtResource("15_d2q87")
+id = &"harrier"
+display_name = "Harrier"
+codename = "The Courier"
+sort_order = 11
+tagline = "Nothing on the ground can catch me."
+lore = "Harrier ran parcels between the hab-stacks of the Pearl River Charter on a jet-rig she rebuilt from a crashed maintenance drone: three and a half seconds of thrust, then glide, then pray. Couriers who lived learned to land on people. When the Cores started dropping, the Charters worked out that a woman who can deliver anything can also deliver herself, twin SMGs first, into the middle of your backline."
+playstyle = "Hold jump to fly. Take angles nobody else can reach, shred one target with the SMGs, Dive onto whoever is low, and Afterburn out before hitscan finds you. Fuel is your second health bar: never start a fight on an empty tank."
+movement = SubResource("Resource_1vbno")
+hitbox = SubResource("Resource_lgv73")
+primary = SubResource("Resource_whult")
+secondary = SubResource("Resource_ae8qq")
+ability_1 = SubResource("Resource_0hup1")
+ability_2 = SubResource("Resource_0aquc")
+ultimate = SubResource("Resource_vyong")
+hero_script = ExtResource("11_lgv73")
+hero_resource_name = "Fuel"
+hero_resource_max = 3.5
+visual = SubResource("Resource_2wdi2")
+audio = SubResource("Resource_8uwsd")
+theme_color = Color(0.36, 0.78, 0.98, 1)
+ai = SubResource("Resource_c08dn")
+counters = Array[StringName]([&"vesper", &"bombard", &"cairn"])
+countered_by = Array[StringName]([&"vesper", &"coil", &"ballast"])
+synergies = Array[StringName]([&"cadence", &"ferry", &"wisp"])
+unique_mechanic = "Flight: hold jump while airborne to fly on 3.5 s of fuel (refills 1.2 s of fuel per second on the ground). Dive only works in the air, Afterburn refills the tank instantly, Strafing Run makes it bottomless."
+difficulty = 2

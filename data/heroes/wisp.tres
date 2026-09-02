@@ -1,0 +1,315 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_18aj0"]
+[ext_resource type="Script" path="res://src/heroes/abilities/WispMarkBehavior.gd" id="2_k8fu2"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="3_ng1ub"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="4_5cx0e"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="5_wk2ii"]
+[ext_resource type="Script" path="res://src/abilities/effects/TeleportEffect.gd" id="6_ttvsm"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="7_gxlrq"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="8_xtx8p"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="9_j3tso"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="10_c31a1"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="11_4holy"]
+[ext_resource type="Script" path="res://src/abilities/effects/HitscanEffect.gd" id="12_ek86q"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="13_qghei"]
+[ext_resource type="Script" path="res://src/heroes/abilities/WispSwapEffect.gd" id="14_nux1q"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="15_j7oax"]
+[ext_resource type="Script" path="res://src/heroes/abilities/WispDisplacementBehavior.gd" id="16_jc0po"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="17_5kgjw"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="18_f7oqa"]
+
+[sub_resource type="Resource" id="Resource_18aj0"]
+script = ExtResource("1_18aj0")
+intent = 2
+needs_line_of_sight = false
+
+[sub_resource type="Resource" id="Resource_k8fu2"]
+script = ExtResource("4_5cx0e")
+cast_vfx = &"wisp_mark_cast"
+sound_fire = &"wisp_mark_fire"
+sound_tail = &"wisp_mark_tail"
+sound_end = &"wisp_mark_end"
+camera_shake = 0.05
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_ng1ub"]
+script = ExtResource("5_wk2ii")
+id = &"wisp_mark"
+display_name = "Mark"
+description = "Press once to leave a Mark at your feet (lasts 20 s, cannot be destroyed). Press again to Exchange with it: you appear at the Mark and the Mark appears where you stood. 3 s between presses."
+cooldown = 3.0
+behavior = ExtResource("2_k8fu2")
+presentation = SubResource("Resource_k8fu2")
+ai = SubResource("Resource_18aj0")
+
+[sub_resource type="Resource" id="Resource_5cx0e"]
+script = ExtResource("1_18aj0")
+intent = 3
+max_range = 20.0
+ideal_range = 8.0
+needs_line_of_sight = false
+use_when_health_below = 0.45
+
+[sub_resource type="Resource" id="Resource_wk2ii"]
+script = ExtResource("6_ttvsm")
+
+[sub_resource type="Resource" id="Resource_ttvsm"]
+script = ExtResource("4_5cx0e")
+cast_vfx = &"wisp_fold_cast"
+sound_fire = &"wisp_fold_fire"
+sound_tail = &"wisp_fold_tail"
+camera_shake = 0.06
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_gxlrq"]
+script = ExtResource("5_wk2ii")
+id = &"wisp_fold"
+display_name = "Fold"
+description = "Fold 8 m of ground: blink forward along your aim (stops at walls). 7 s cooldown."
+cooldown = 7.0
+effects = Array[ExtResource("3_ng1ub")]([SubResource("Resource_wk2ii")])
+presentation = SubResource("Resource_ttvsm")
+ai = SubResource("Resource_5cx0e")
+
+[sub_resource type="Resource" id="Resource_xtx8p"]
+script = ExtResource("7_gxlrq")
+preferred_range = 14.0
+min_range = 4.0
+max_effective_range = 45.0
+aggression = 0.65
+self_preservation = 0.55
+flanker = true
+dives = true
+sticks_to_tank = 0.25
+ult_style = &"combo_enabler"
+strafe_style = &"jump"
+
+[sub_resource type="Resource" id="Resource_j3tso"]
+script = ExtResource("8_xtx8p")
+footstep_set = &"boots_light"
+footstep_volume = 0.7
+ult_stinger = &"ult_wisp"
+ult_stinger_enemy = &"ult_wisp_enemy"
+callout_tone = &"radio_b"
+
+[sub_resource type="Resource" id="Resource_c31a1"]
+script = ExtResource("9_j3tso")
+
+[sub_resource type="Resource" id="Resource_4holy"]
+script = ExtResource("10_c31a1")
+max_speed = 5.8
+ground_accel = 62.0
+air_control = 0.45
+jump_velocity = 6.6
+mass = 0.9
+camera_bob_scale = 0.9
+footstep_interval = 0.38
+
+[sub_resource type="Resource" id="Resource_ek86q"]
+script = ExtResource("1_18aj0")
+max_range = 50.0
+ideal_range = 14.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_qghei"]
+script = ExtResource("12_ek86q")
+damage = 18.0
+range = 60.0
+spread_deg = 0.3
+spread_moving_deg = 1.0
+spread_airborne_deg = 1.5
+falloff_start = 25.0
+falloff_end = 45.0
+falloff_min = 0.6
+
+[sub_resource type="Resource" id="Resource_nux1q"]
+script = ExtResource("4_5cx0e")
+muzzle_vfx = &"wisp_needle_muzzle"
+tracer_style = &"bolt"
+tracer_color = Color(0.75, 1, 0.9, 1)
+tracer_width = 0.018
+impact_vfx = &"wisp_needle_impact"
+sound_fire = &"wisp_needle_fire"
+sound_tail = &"wisp_needle_tail"
+sound_impact = &"wisp_needle_impact"
+camera_shake = 0.035
+camera_kick_pitch = 0.8
+camera_kick_yaw_random = 0.2
+kick_recovery = 16.0
+viewmodel_kick = 0.05
+viewmodel_kick_rot = 2.2
+
+[sub_resource type="Resource" id="Resource_j7oax"]
+script = ExtResource("5_wk2ii")
+id = &"wisp_needle"
+display_name = "Needle Rifle"
+description = "Three-round hitscan bursts: 18 damage per needle (54 per burst), 2.5 bursts per second, headshots double. Full damage to 25 m, 60% by 45 m. 24 needles, 1.4 s reload."
+trigger = 1
+fire_rate = 2.5
+burst_count = 3
+burst_interval = 0.06
+resource = 1
+ammo = 24
+ammo_per_use = 3
+reload_time = 1.4
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_ng1ub")]([SubResource("Resource_qghei")])
+presentation = SubResource("Resource_nux1q")
+ai = SubResource("Resource_ek86q")
+
+[sub_resource type="Resource" id="Resource_jc0po"]
+script = ExtResource("1_18aj0")
+intent = 4
+min_range = 3.0
+ideal_range = 14.0
+combo_tags = Array[StringName]([&"displace"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_5kgjw"]
+script = ExtResource("11_4holy")
+id = &"wisp_displaced"
+display_name = "Displaced"
+duration = 1.2
+is_debuff = true
+speed_mult = 0.85
+color = Color(0.62, 0.98, 0.85, 1)
+sound_apply = &"wisp_exchange_impact"
+
+[sub_resource type="Resource" id="Resource_f7oqa"]
+script = ExtResource("14_nux1q")
+status = SubResource("Resource_5kgjw")
+
+[sub_resource type="Resource" id="Resource_itpr3"]
+script = ExtResource("15_j7oax")
+damage = 20.0
+speed = 60.0
+lifetime = 1.5
+visual_id = &"needle"
+on_hit_effects = Array[ExtResource("3_ng1ub")]([SubResource("Resource_f7oqa")])
+
+[sub_resource type="Resource" id="Resource_m1u1b"]
+script = ExtResource("4_5cx0e")
+muzzle_vfx = &"wisp_exchange_muzzle"
+tracer_color = Color(0.9, 1, 0.95, 1)
+impact_vfx = &"wisp_needle_impact"
+projectile_vfx = &"needle"
+sound_fire = &"wisp_exchange_fire"
+sound_tail = &"wisp_exchange_tail"
+sound_end = &"wisp_exchange_end"
+sound_impact = &"wisp_exchange_impact"
+camera_shake = 0.05
+camera_kick_pitch = 1.4
+camera_kick_yaw_random = 0.2
+viewmodel_kick = 0.08
+viewmodel_kick_rot = 3.0
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_3p08s"]
+script = ExtResource("5_wk2ii")
+id = &"wisp_exchange"
+display_name = "Exchange"
+description = "Fire a marked needle (60 m/s, 20 damage). If it hits an enemy, you and that enemy trade places. Unstoppable enemies refuse the trade. 9 s cooldown."
+cooldown = 9.0
+effects = Array[ExtResource("3_ng1ub")]([SubResource("Resource_itpr3")])
+presentation = SubResource("Resource_m1u1b")
+ai = SubResource("Resource_jc0po")
+
+[sub_resource type="Resource" id="Resource_65hrr"]
+script = ExtResource("1_18aj0")
+intent = 6
+max_range = 10.0
+ideal_range = 5.0
+needs_line_of_sight = false
+needs_enemies_in_radius = 2
+combo_tags = Array[StringName]([&"displace", &"group"])
+cast_priority = 0.7
+telegraph_seconds = 0.5
+
+[sub_resource type="Resource" id="Resource_6wiat"]
+script = ExtResource("11_4holy")
+id = &"wisp_unfolded"
+display_name = "Unfolded"
+duration = 6.0
+cleansable = false
+overhealth_on_apply = 100.0
+overhealth_max = 100.0
+color = Color(0.62, 0.98, 0.85, 1)
+
+[sub_resource type="Resource" id="Resource_cx3qt"]
+script = ExtResource("17_5kgjw")
+status = SubResource("Resource_6wiat")
+
+[sub_resource type="Resource" id="Resource_wqcey"]
+script = ExtResource("4_5cx0e")
+cast_vfx = &"wisp_displacement_cast"
+end_vfx = &"wisp_displacement_end"
+area_vfx = &"wisp_displacement_explosion"
+self_glow = Color(0.62, 0.98, 0.85, 1)
+sound_fire = &"wisp_displacement_fire"
+sound_cast = &"wisp_displacement_cast"
+sound_end = &"wisp_displacement_end"
+sound_impact = &"wisp_displacement_impact"
+voice_line = &"wisp_ult_line"
+voice_line_enemy = &"wisp_ult_line_enemy"
+camera_shake = 0.25
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_6ost2"]
+script = ExtResource("5_wk2ii")
+id = &"wisp_displacement"
+display_name = "Displacement"
+description = "After a 0.5 s fold, every enemy within 10 m you can see is teleported to a random point 8-12 m behind you, and you gain 100 overhealth. Unstoppable enemies are immune. Turn your back to your team and pull the fight into it."
+cast_time = 0.5
+resource = 2
+ult_cost = 1900.0
+effects = Array[ExtResource("3_ng1ub")]([SubResource("Resource_cx3qt")])
+behavior = ExtResource("16_jc0po")
+presentation = SubResource("Resource_wqcey")
+ai = SubResource("Resource_65hrr")
+
+[sub_resource type="Resource" id="Resource_ophti"]
+script = ExtResource("18_f7oqa")
+build = 0
+height = 1.8
+shoulder_width = 0.5
+head = 2
+extras = Array[int]([7, 1])
+primary_color = Color(0.86, 0.9, 0.9, 1)
+secondary_color = Color(0.18, 0.3, 0.32, 1)
+accent_color = Color(0.62, 0.98, 0.85, 1)
+emissive_color = Color(0.7, 1, 0.9, 1)
+emissive_strength = 2.2
+metallic = 0.2
+roughness = 0.65
+weapon_scale = 0.85
+weapon_style = &"harpoon"
+arms_color = Color(0.2, 0.32, 0.34, 1)
+silhouette_notes = "Pale hooded figure with a tilted glowing halo and a short teal cloak, carrying a needle-thin rifle. Vesper is tall, dark and long-rifled; Wisp is pale, haloed and slender."
+
+[resource]
+script = ExtResource("13_qghei")
+id = &"wisp"
+display_name = "Wisp"
+codename = "The Cartographer"
+sort_order = 14
+tagline = "You are exactly where I drew you."
+lore = "Wisp mapped the Ring for the Cascadian Charter: eleven thousand pieces of falling city, every orbit re-surveyed by hand. Somewhere in the math of a debris field that never settles she found a way to fold the distance between two points she had marked. She stopped selling the maps. She sells the shortcut now, one needle at a time."
+playstyle = "Place a Mark somewhere safe, then go where you should not be. Open with the needle rifle, Exchange an out-of-position enemy into your team (and yourself into theirs), and swap back to the Mark when the trade is done. Displacement is a fight-starter: fold the enemy behind you, into your team's guns."
+movement = SubResource("Resource_4holy")
+hitbox = SubResource("Resource_c31a1")
+primary = SubResource("Resource_j7oax")
+secondary = SubResource("Resource_3p08s")
+ability_1 = SubResource("Resource_ng1ub")
+ability_2 = SubResource("Resource_gxlrq")
+ultimate = SubResource("Resource_6ost2")
+visual = SubResource("Resource_ophti")
+audio = SubResource("Resource_j3tso")
+theme_color = Color(0.62, 0.98, 0.85, 1)
+ai = SubResource("Resource_xtx8p")
+counters = Array[StringName]([&"bombard", &"vesper", &"tallow"])
+countered_by = Array[StringName]([&"kiln", &"rook", &"sable"])
+synergies = Array[StringName]([&"ferry", &"cadence", &"harrier"])
+unique_mechanic = "Exchange: trade places with your Mark on a second press, or with an enemy hit by the marked needle. Nothing else on the roster moves the enemy AND you at once."
+difficulty = 3

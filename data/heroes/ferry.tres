@@ -1,0 +1,323 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_jltdd"]
+[ext_resource type="Script" path="res://src/heroes/abilities/FerryUndertowBehavior.gd" id="2_m2ucg"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="3_os2g6"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="4_iyuh0"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="5_0tpqe"]
+[ext_resource type="Script" path="res://src/abilities/effects/HealEffect.gd" id="6_iviy3"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="7_oj077"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="8_3ylyu"]
+[ext_resource type="Script" path="res://src/heroes/deployables/FerryWaystone.gd" id="9_xmvei"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="10_pbpv4"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="11_t0bm2"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="12_mv5wi"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/FerryBehavior.gd" id="13_xlrrt"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="14_0kv6l"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="15_lge8p"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="16_1tk6r"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="17_sc7ww"]
+[ext_resource type="Script" path="res://src/heroes/abilities/SutureHealingShellEffect.gd" id="18_7nrgx"]
+[ext_resource type="Script" path="res://src/heroes/abilities/FerryCrossingBehavior.gd" id="19_uq0ir"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="20_kvxx6"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="21_jqs4v"]
+
+[sub_resource type="Resource" id="Resource_jltdd"]
+script = ExtResource("1_jltdd")
+intent = 1
+min_range = 4.0
+max_range = 20.0
+target_ally = true
+combo_tags = Array[StringName]([&"pull_ally"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_m2ucg"]
+script = ExtResource("5_0tpqe")
+id = &"ferry_undertow"
+display_name = "Undertow"
+duration = 1.0
+cleansable = false
+color = Color(0.5, 0.9, 1, 1)
+
+[sub_resource type="Resource" id="Resource_os2g6"]
+script = ExtResource("4_iyuh0")
+status = SubResource("Resource_m2ucg")
+who = 1
+
+[sub_resource type="Resource" id="Resource_iyuh0"]
+script = ExtResource("6_iviy3")
+amount = 40.0
+who = 4
+
+[sub_resource type="Resource" id="Resource_0tpqe"]
+script = ExtResource("7_oj077")
+cast_vfx = &"ferry_undertow_cast"
+sound_fire = &"ferry_undertow_fire"
+camera_shake = 0.03
+anim_tag = &"throw"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_iviy3"]
+script = ExtResource("8_3ylyu")
+id = &"ferry_undertow"
+display_name = "Undertow"
+description = "Aim at an ally 4-20 m away: the current drags them to your side and heals them for 40."
+cooldown = 10.0
+effects = Array[ExtResource("3_os2g6")]([SubResource("Resource_os2g6"), SubResource("Resource_iyuh0")])
+behavior = ExtResource("2_m2ucg")
+presentation = SubResource("Resource_0tpqe")
+ai = SubResource("Resource_jltdd")
+
+[sub_resource type="Resource" id="Resource_oj077"]
+script = ExtResource("1_jltdd")
+intent = 7
+max_range = 6.0
+ideal_range = 3.0
+needs_line_of_sight = false
+target_ground = true
+
+[sub_resource type="Resource" id="Resource_3ylyu"]
+script = ExtResource("10_pbpv4")
+deployable_script = ExtResource("9_xmvei")
+distance = 2.0
+health = 250.0
+lifetime = 60.0
+kind = &"waystone"
+visual_id = &"waystone"
+
+[sub_resource type="Resource" id="Resource_xmvei"]
+script = ExtResource("7_oj077")
+cast_vfx = &"ferry_waystone_cast"
+sound_fire = &"ferry_waystone_fire"
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_pbpv4"]
+script = ExtResource("8_3ylyu")
+id = &"ferry_waystone"
+display_name = "Waystone"
+description = "Plant a beacon (250 hp, 60 s). For 5 s after spawning, allies can press INTERACT to cross straight to it. One waystone at a time; planting again moves it."
+cooldown = 20.0
+effects = Array[ExtResource("3_os2g6")]([SubResource("Resource_3ylyu")])
+presentation = SubResource("Resource_xmvei")
+ai = SubResource("Resource_oj077")
+
+[sub_resource type="Resource" id="Resource_t0bm2"]
+script = ExtResource("11_t0bm2")
+max_effective_range = 35.0
+aggression = 0.3
+self_preservation = 0.7
+sticks_to_tank = 0.7
+heals = true
+heal_range = 20.0
+builds = true
+ult_style = &"save"
+ult_min_targets = 1
+aim_difficulty_scale = 1.1
+
+[sub_resource type="Resource" id="Resource_mv5wi"]
+script = ExtResource("12_mv5wi")
+footstep_set = &"boots_light"
+ult_stinger = &"ult_ferry"
+ult_stinger_enemy = &"ult_ferry_enemy"
+voice_pitch = 0.95
+callout_tone = &"radio_c"
+
+[sub_resource type="Resource" id="Resource_xlrrt"]
+script = ExtResource("14_0kv6l")
+
+[sub_resource type="Resource" id="Resource_0kv6l"]
+script = ExtResource("15_lge8p")
+footstep_interval = 0.4
+
+[sub_resource type="Resource" id="Resource_lge8p"]
+script = ExtResource("1_jltdd")
+max_range = 36.0
+ideal_range = 14.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_1tk6r"]
+script = ExtResource("16_1tk6r")
+damage = 35.0
+speed = 45.0
+lifetime = 2.5
+visual_id = &"flare"
+
+[sub_resource type="Resource" id="Resource_sc7ww"]
+script = ExtResource("7_oj077")
+muzzle_vfx = &"ferry_bolt_muzzle"
+tracer_color = Color(0.6, 0.95, 1, 1)
+impact_vfx = &"ferry_bolt_impact"
+projectile_vfx = &"flare"
+sound_fire = &"ferry_bolt_fire"
+sound_tail = &"ferry_bolt_tail"
+camera_shake = 0.03
+camera_kick_pitch = 0.7
+camera_kick_yaw_random = 0.25
+viewmodel_kick = 0.06
+viewmodel_kick_rot = 2.5
+
+[sub_resource type="Resource" id="Resource_7nrgx"]
+script = ExtResource("8_3ylyu")
+id = &"ferry_bolt"
+display_name = "Lantern Bolt"
+description = "Fast bolts of drowned light: 35 damage, 2.5 shots/s, 10 per lantern."
+trigger = 1
+fire_rate = 2.5
+resource = 1
+ammo = 10
+reload_time = 1.4
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_os2g6")]([SubResource("Resource_1tk6r")])
+presentation = SubResource("Resource_sc7ww")
+ai = SubResource("Resource_lge8p")
+
+[sub_resource type="Resource" id="Resource_uq0ir"]
+script = ExtResource("1_jltdd")
+intent = 1
+target_ally = true
+cast_priority = 0.75
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_kvxx6"]
+script = ExtResource("18_7nrgx")
+heal = 50.0
+heal_radius = 2.5
+burst_vfx = &"ferry_light_burst"
+damage = 10.0
+radius = 0.16
+lifetime = 1.2
+visual_id = &"orb"
+
+[sub_resource type="Resource" id="Resource_jqs4v"]
+script = ExtResource("7_oj077")
+muzzle_vfx = &"ferry_light_muzzle"
+tracer_color = Color(0.5, 1, 0.95, 1)
+impact_vfx = &"ferry_light_burst"
+impact_decal = &""
+projectile_vfx = &"orb"
+sound_fire = &"ferry_light_fire"
+camera_shake = 0.01
+camera_kick_pitch = 0.4
+camera_kick_yaw_random = 0.15
+viewmodel_kick = 0.05
+viewmodel_kick_rot = 2.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_clktj"]
+script = ExtResource("8_3ylyu")
+id = &"ferry_light"
+display_name = "Ferrylight"
+description = "Hold: lob a lantern of healing light once a second. It bursts on the first ally, enemy or surface it touches: allies within 2.5 m are healed for 50; an enemy hit directly takes 10."
+trigger = 1
+fire_rate = 1.0
+reload_time = 0.0
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_os2g6")]([SubResource("Resource_kvxx6")])
+presentation = SubResource("Resource_jqs4v")
+ai = SubResource("Resource_uq0ir")
+
+[sub_resource type="Resource" id="Resource_2s8we"]
+script = ExtResource("1_jltdd")
+intent = 7
+max_range = 10.0
+ideal_range = 5.0
+needs_line_of_sight = false
+combo_tags = Array[StringName]([&"resurrect"])
+cast_priority = 0.8
+telegraph_seconds = 3.0
+
+[sub_resource type="Resource" id="Resource_ajjp3"]
+script = ExtResource("20_kvxx6")
+radius = 10.0
+heal = 60.0
+min_fraction = 0.7
+requires_los = false
+vfx_id = &"ferry_crossing_ring"
+
+[sub_resource type="Resource" id="Resource_iwidk"]
+script = ExtResource("7_oj077")
+cast_vfx = &"ferry_crossing_cast"
+loop_vfx = &"ferry_crossing_loop"
+self_glow = Color(0.6, 0.95, 1, 1)
+sound_fire = &"ferry_crossing_fire"
+sound_cast = &"ferry_crossing_cast"
+sound_loop = &"ferry_crossing_loop"
+sound_end = &"ferry_crossing_end"
+voice_line = &"ferry_ult_line"
+voice_line_enemy = &"ferry_ult_line_enemy"
+camera_shake = 0.1
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_orlfa"]
+script = ExtResource("5_0tpqe")
+id = &"ferry_crossing"
+display_name = "Crossing"
+duration = 3.0
+cleansable = false
+invulnerable = true
+unstoppable = true
+color = Color(0.6, 0.95, 1, 1)
+
+[sub_resource type="Resource" id="Resource_ft2bi"]
+script = ExtResource("8_3ylyu")
+id = &"ferry_crossing"
+display_name = "Crossing"
+description = "Raise the lantern for 3 s (rooted, invulnerable). Then up to two allies who died within 10 m in the last 15 s return where they fell. Living allies nearby are healed for 30/s during the cast and 60 when it completes."
+cast_time = 3.0
+resource = 2
+ult_cost = 1700.0
+lock_movement = true
+cancel_on_cc = false
+self_status_while_active = SubResource("Resource_orlfa")
+effects = Array[ExtResource("3_os2g6")]([SubResource("Resource_ajjp3")])
+behavior = ExtResource("19_uq0ir")
+presentation = SubResource("Resource_iwidk")
+ai = SubResource("Resource_2s8we")
+
+[sub_resource type="Resource" id="Resource_pw2g5"]
+script = ExtResource("21_jqs4v")
+build = 0
+height = 1.8
+head = 2
+extras = Array[int]([1, 7])
+primary_color = Color(0.2, 0.33, 0.4, 1)
+secondary_color = Color(0.1, 0.14, 0.19, 1)
+accent_color = Color(0.6, 0.95, 0.9, 1)
+emissive_color = Color(0.5, 0.9, 1, 1)
+emissive_strength = 2.6
+metallic = 0.1
+roughness = 0.75
+weapon_scale = 1.35
+weapon_style = &"lantern"
+arms_color = Color(0.18, 0.26, 0.3, 1)
+silhouette_notes = "Tall and narrow: deep hood, long sea-dark cloak, a faint halo of drowned light behind the head and a lantern held out in front. Reads as 'the one who walks in the dark' - and as a support, not a sniper, because of the halo and lantern."
+
+[resource]
+script = ExtResource("17_sc7ww")
+id = &"ferry"
+display_name = "Ferry"
+codename = "The Boatwoman"
+role = 2
+sort_order = 24
+tagline = "Nobody stays behind."
+lore = "When the Adriatic Charter drowned, Ferry poled a flat-bottomed boat through the flooded streets bringing the living out and the dead home. The lantern on her prow was a salvaged Ring beacon: it remembers a place, and it remembers a person. The Charters hired her for the first trick. Her team keeps her for the second."
+playstyle = "Plant the Waystone somewhere safe near the fight and your team's respawns become a ten-second walk instead of a thirty-second one. Ferrylight is your heal: lob it at the ally, it bursts on contact. Undertow pulls an overextended ally back to you. Hold Crossing for the moment two allies drop together, then stand over them and raise the lantern."
+movement = SubResource("Resource_0kv6l")
+hitbox = SubResource("Resource_xlrrt")
+primary = SubResource("Resource_7nrgx")
+secondary = SubResource("Resource_clktj")
+ability_1 = SubResource("Resource_iviy3")
+ability_2 = SubResource("Resource_pbpv4")
+ultimate = SubResource("Resource_ft2bi")
+hero_script = ExtResource("13_xlrrt")
+visual = SubResource("Resource_pw2g5")
+audio = SubResource("Resource_mv5wi")
+theme_color = Color(0.45, 0.88, 0.92, 1)
+ai = SubResource("Resource_t0bm2")
+counters = Array[StringName]([&"bombard", &"vesper", &"cairn"])
+countered_by = Array[StringName]([&"sable", &"harrier", &"wisp"])
+synergies = Array[StringName]([&"harrier", &"sable", &"wisp"])
+unique_mechanic = "Waystone: a beacon (250 hp, 60 s). For 5 s after spawning, any ally can press INTERACT to cross straight to it. Crossing (ult) brings back up to two allies who died within 10 m in the last 15 s, where they fell."
+difficulty = 2

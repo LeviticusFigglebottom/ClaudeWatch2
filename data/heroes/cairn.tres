@@ -1,0 +1,420 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_1v273"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_3brqj"]
+[ext_resource type="Script" path="res://src/heroes/deployables/CairnSlab.gd" id="3_54k51"]
+[ext_resource type="Script" path="res://src/abilities/effects/DeployEffect.gd" id="4_lnbk8"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="5_hrj3p"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="6_t1fke"]
+[ext_resource type="Script" path="res://src/heroes/abilities/CairnUpthrustBehavior.gd" id="7_lg2mi"]
+[ext_resource type="Script" path="res://src/abilities/effects/DashEffect.gd" id="8_8dyp3"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="9_krbko"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="10_fu8gg"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="11_sclyj"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="12_uvy47"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/CairnBehavior.gd" id="13_6lau4"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="14_savww"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="15_72p7r"]
+[ext_resource type="Script" path="res://src/abilities/effects/ProjectileEffect.gd" id="16_yqkx0"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="17_xnm3k"]
+[ext_resource type="Script" path="res://src/abilities/effects/KnockbackEffect.gd" id="18_lidg4"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="19_ioac5"]
+
+[sub_resource type="Resource" id="Resource_1v273"]
+script = ExtResource("1_1v273")
+intent = 6
+min_range = 3.0
+max_range = 18.0
+ideal_range = 9.0
+target_ground = true
+combo_tags = Array[StringName]([&"displace", &"high_ground", &"barrier"])
+cast_priority = 0.6
+telegraph_seconds = 0.5
+
+[sub_resource type="Resource" id="Resource_3brqj"]
+script = ExtResource("4_lnbk8")
+deployable_script = ExtResource("3_54k51")
+placement = 3
+max_range = 18.0
+health = 450.0
+lifetime = 5.0
+max_instances = 2
+kind = &"slab"
+visual_id = &"cairn_slab"
+params = {
+"height": 3.0,
+"rise_time": 0.5,
+"width": 2.4
+}
+
+[sub_resource type="Resource" id="Resource_54k51"]
+script = ExtResource("5_hrj3p")
+muzzle_vfx = &"cairn_slab_dust"
+cast_vfx = &"cast_generic"
+sound_fire = &"cairn_slab_fire"
+sound_cast = &"cairn_slab_cast"
+sound_end = &"cairn_slab_end"
+camera_shake = 0.14
+viewmodel_kick = 0.08
+viewmodel_kick_rot = 3.0
+anim_tag = &"cast"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_lnbk8"]
+script = ExtResource("6_t1fke")
+id = &"cairn_slab"
+display_name = "Raise Slab"
+description = "A 2.4 m wide stone pillar rises 3 m out of the ground where you aim (within 18 m) in half a second and stands for 5 s (450 hp). Anyone on it rides up: an elevator for allies, a lift into the open for enemies. Blocks shots and movement."
+cooldown = 10.0
+recovery = 0.2
+effects = Array[ExtResource("2_3brqj")]([SubResource("Resource_3brqj")])
+presentation = SubResource("Resource_54k51")
+ai = SubResource("Resource_1v273")
+
+[sub_resource type="Resource" id="Resource_hrj3p"]
+script = ExtResource("1_1v273")
+intent = 2
+min_range = 3.0
+max_range = 20.0
+ideal_range = 8.0
+use_when_health_below = 0.5
+combo_tags = Array[StringName]([&"high_ground"])
+
+[sub_resource type="Resource" id="Resource_t1fke"]
+script = ExtResource("8_8dyp3")
+speed = 6.0
+direction = 4
+vertical_boost = 11.0
+preserve_momentum = 0.2
+
+[sub_resource type="Resource" id="Resource_lg2mi"]
+script = ExtResource("10_fu8gg")
+id = &"cairn_tremor"
+display_name = "Tremor"
+duration = 1.0
+is_debuff = true
+is_crowd_control = true
+tags = Array[StringName]([&"slow"])
+speed_mult = 0.7
+color = Color(0.7, 0.8, 0.5, 1)
+
+[sub_resource type="Resource" id="Resource_8dyp3"]
+script = ExtResource("9_krbko")
+status = SubResource("Resource_lg2mi")
+who = 1
+enabled = false
+
+[sub_resource type="Resource" id="Resource_krbko"]
+script = ExtResource("5_hrj3p")
+cast_vfx = &"cairn_slab_dust"
+end_vfx = &"cairn_rock_impact"
+sound_cast = &"cairn_upthrust_cast"
+sound_end = &"cairn_upthrust_end"
+sound_impact = &"cairn_upthrust_impact"
+camera_shake = 0.2
+viewmodel_kick = 0.1
+viewmodel_kick_rot = 4.0
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_fu8gg"]
+script = ExtResource("6_t1fke")
+id = &"cairn_upthrust"
+display_name = "Upthrust"
+description = "Kick off the ground: a 3 m leap in the direction you face. When you land, the stone answers: 55 damage within 3.5 m, enemies shoved away and slowed to 70% for a second. Your way onto your own slabs."
+cooldown = 9.0
+recovery = 0.1
+active_duration = 3.0
+requires_ground = true
+cancel_on_cc = false
+effects = Array[ExtResource("2_3brqj")]([SubResource("Resource_t1fke"), SubResource("Resource_8dyp3")])
+behavior = ExtResource("7_lg2mi")
+presentation = SubResource("Resource_krbko")
+ai = SubResource("Resource_hrj3p")
+
+[sub_resource type="Resource" id="Resource_sclyj"]
+script = ExtResource("11_sclyj")
+max_effective_range = 26.0
+aggression = 0.45
+prefers_high_ground = 0.9
+sticks_to_tank = 0.0
+builds = true
+ult_style = &"zone"
+aim_difficulty_scale = 1.25
+
+[sub_resource type="Resource" id="Resource_uvy47"]
+script = ExtResource("12_uvy47")
+footstep_set = &"boots_heavy"
+ult_stinger = &"ult_cairn"
+ult_stinger_enemy = &"ult_cairn_enemy"
+voice_pitch = 0.9
+
+[sub_resource type="Resource" id="Resource_6lau4"]
+script = ExtResource("14_savww")
+head_radius = 0.22
+head_height = 1.7
+head_crouch_height = 1.1
+body_radius = 0.44
+body_top = 1.4
+body_crouch_top = 0.9
+
+[sub_resource type="Resource" id="Resource_savww"]
+script = ExtResource("15_72p7r")
+max_speed = 5.3
+ground_accel = 55.0
+air_control = 0.32
+capsule_height = 1.95
+eye_height = 1.66
+crouch_eye_height = 1.05
+landing_recovery = 0.1
+footstep_interval = 0.46
+
+[sub_resource type="Resource" id="Resource_72p7r"]
+script = ExtResource("1_1v273")
+min_range = 2.0
+ideal_range = 12.0
+needs_line_of_sight = false
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_yqkx0"]
+script = ExtResource("16_yqkx0")
+damage = 80.0
+speed = 30.0
+gravity = 12.0
+radius = 0.22
+lifetime = 3.0
+splash_radius = 2.5
+splash_damage = 50.0
+splash_min_fraction = 0.4
+knockback = 2.0
+visual_id = &"shell"
+lob_arc = true
+
+[sub_resource type="Resource" id="Resource_xnm3k"]
+script = ExtResource("5_hrj3p")
+muzzle_vfx = &"cairn_rock_muzzle"
+tracer_color = Color(0.75, 0.85, 0.55, 1)
+impact_vfx = &"cairn_rock_impact"
+impact_decal = &"scorch"
+projectile_vfx = &"shell"
+sound_fire = &"cairn_lobber_fire"
+sound_tail = &"cairn_lobber_tail"
+sound_impact = &"cairn_lobber_impact"
+camera_shake = 0.12
+camera_kick_pitch = 2.8
+camera_kick_yaw_random = 0.4
+kick_recovery = 9.0
+viewmodel_kick = 0.16
+viewmodel_kick_rot = 6.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_lidg4"]
+script = ExtResource("6_t1fke")
+id = &"cairn_lobber"
+display_name = "Rock Lobber"
+description = "Lobs a stone at 30 m/s in a heavy arc: 80 damage on a direct hit, 50 splash within 2.5 m. Arcs over cover; lead your targets."
+trigger = 1
+fire_rate = 1.5
+resource = 1
+ammo = 6
+reload_time = 1.6
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_3brqj")]([SubResource("Resource_yqkx0")])
+presentation = SubResource("Resource_xnm3k")
+ai = SubResource("Resource_72p7r")
+
+[sub_resource type="Resource" id="Resource_ioac5"]
+script = ExtResource("1_1v273")
+min_range = 4.0
+max_range = 26.0
+ideal_range = 12.0
+needs_line_of_sight = false
+combo_tags = Array[StringName]([&"aoe_damage"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_svkgx"]
+script = ExtResource("16_yqkx0")
+damage = 120.0
+speed = 22.0
+gravity = 14.0
+radius = 0.35
+lifetime = 3.0
+splash_radius = 4.0
+splash_damage = 70.0
+splash_min_fraction = 0.35
+knockback = 7.0
+visual_id = &"shell"
+lob_arc = true
+
+[sub_resource type="Resource" id="Resource_frbgd"]
+script = ExtResource("5_hrj3p")
+muzzle_vfx = &"cairn_rock_muzzle"
+tracer_color = Color(0.7, 0.8, 0.5, 1)
+impact_vfx = &"explosion"
+impact_decal = &"scorch"
+projectile_vfx = &"shell"
+sound_fire = &"cairn_boulder_fire"
+sound_tail = &"cairn_boulder_tail"
+sound_impact = &"cairn_boulder_impact"
+camera_shake = 0.18
+camera_kick_pitch = 4.0
+camera_kick_yaw_random = 0.6
+viewmodel_kick = 0.22
+viewmodel_kick_rot = 8.0
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_ptpl0"]
+script = ExtResource("6_t1fke")
+id = &"cairn_boulder"
+display_name = "Boulder"
+description = "Heave a boulder: 120 damage on a direct hit, 70 splash within 4 m, and everyone caught is shoved away. Slow and heavy; aim it at a choke."
+cooldown = 5.0
+recovery = 0.35
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("2_3brqj")]([SubResource("Resource_svkgx")])
+presentation = SubResource("Resource_frbgd")
+ai = SubResource("Resource_ioac5")
+
+[sub_resource type="Resource" id="Resource_mmx4b"]
+script = ExtResource("1_1v273")
+intent = 6
+max_range = 12.0
+ideal_range = 6.0
+needs_enemies_in_radius = 2
+combo_tags = Array[StringName]([&"displace", &"barrier"])
+cast_priority = 0.7
+telegraph_seconds = 0.3
+
+[sub_resource type="Resource" id="Resource_de07i"]
+script = ExtResource("18_lidg4")
+radius = 12.0
+cone_deg = 60.0
+force = 14.0
+upward = 0.35
+damage = 90.0
+
+[sub_resource type="Resource" id="Resource_leod5"]
+script = ExtResource("4_lnbk8")
+deployable_script = ExtResource("3_54k51")
+distance = 4.0
+health = 500.0
+lifetime = 6.0
+max_instances = 3
+kind = &"cairn_wave"
+visual_id = &"cairn_wave_slab"
+params = {
+"height": 2.6,
+"rise_time": 0.35,
+"width": 3.2
+}
+
+[sub_resource type="Resource" id="Resource_ld74j"]
+script = ExtResource("4_lnbk8")
+deployable_script = ExtResource("3_54k51")
+distance = 7.0
+health = 500.0
+lifetime = 6.0
+max_instances = 3
+kind = &"cairn_wave"
+visual_id = &"cairn_wave_slab"
+params = {
+"height": 2.6,
+"rise_time": 0.35,
+"width": 3.2
+}
+delay = 0.12
+
+[sub_resource type="Resource" id="Resource_yjdkd"]
+script = ExtResource("4_lnbk8")
+deployable_script = ExtResource("3_54k51")
+distance = 10.0
+health = 500.0
+lifetime = 6.0
+max_instances = 3
+kind = &"cairn_wave"
+visual_id = &"cairn_wave_slab"
+params = {
+"height": 2.6,
+"rise_time": 0.35,
+"width": 3.2
+}
+delay = 0.24
+
+[sub_resource type="Resource" id="Resource_py6nl"]
+script = ExtResource("5_hrj3p")
+muzzle_vfx = &"cairn_slab_dust"
+cast_vfx = &"cairn_landslide"
+self_glow = Color(0.62, 0.78, 0.42, 1)
+sound_fire = &"cairn_landslide_fire"
+sound_cast = &"cairn_landslide_cast"
+sound_end = &"cairn_landslide_end"
+voice_line = &"cairn_ult_line"
+voice_line_enemy = &"cairn_ult_line_enemy"
+camera_shake = 0.4
+camera_kick_pitch = 3.0
+viewmodel_kick = 0.2
+viewmodel_kick_rot = 6.0
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_3dmko"]
+script = ExtResource("6_t1fke")
+id = &"cairn_landslide"
+display_name = "Landslide"
+description = "Shove a wave of stone through a 60 degree cone to 12 m: 90 damage and a hard knockback. Three stone pillars then rise at 4, 7 and 10 m in front of you and stand for 6 s: cover for your team, a wall for theirs."
+recovery = 0.5
+resource = 2
+ult_cost = 1800.0
+effects = Array[ExtResource("2_3brqj")]([SubResource("Resource_de07i"), SubResource("Resource_leod5"), SubResource("Resource_ld74j"), SubResource("Resource_yjdkd")])
+presentation = SubResource("Resource_py6nl")
+ai = SubResource("Resource_mmx4b")
+
+[sub_resource type="Resource" id="Resource_65xo4"]
+script = ExtResource("19_ioac5")
+build = 2
+height = 1.92
+shoulder_width = 0.62
+head = 2
+extras = Array[int]([4, 11])
+primary_color = Color(0.5, 0.46, 0.4, 1)
+secondary_color = Color(0.3, 0.36, 0.26, 1)
+accent_color = Color(0.62, 0.78, 0.42, 1)
+emissive_color = Color(0.7, 0.95, 0.5, 1)
+emissive_strength = 1.4
+metallic = 0.05
+roughness = 0.9
+skin_color = Color(0.5, 0.36, 0.28, 1)
+weapon_scale = 1.25
+weapon_style = &"launcher"
+arms_color = Color(0.46, 0.42, 0.36, 1)
+silhouette_notes = "A heavy hooded figure in stone-grey with green vines wrapped around the torso, big rounded shoulder pads and a drum-fed rock launcher. Earthy, matte, no metal shine."
+
+[resource]
+script = ExtResource("17_xnm3k")
+id = &"cairn"
+display_name = "Cairn"
+codename = "The Terrace Keeper"
+role = 0
+sort_order = 4
+tagline = "The ground is wherever I say it is."
+lore = "Cairn grew potatoes on the terraces above Kestrel Summit until a Core drop buried the lower fields under a kilometer of wreckage. He learned to shape stone the way his grandmother taught him to shape soil: patiently, and always upward. The Andean Charter hires him out to pay for new terraces. He still talks to the rock while he works, and it still seems to listen."
+playstyle = "Lob rocks from behind cover and make your own cover when there is none. Raise Slab under a teammate to give them the high ground, or under an enemy to lift them into your team's sightlines. Upthrust gets you onto your own slabs and slams whoever is beneath you when you land. Landslide clears a choke and leaves three pillars behind it: fight from them."
+health = 375.0
+armor = 175.0
+movement = SubResource("Resource_savww")
+hitbox = SubResource("Resource_6lau4")
+primary = SubResource("Resource_lidg4")
+secondary = SubResource("Resource_ptpl0")
+ability_1 = SubResource("Resource_lnbk8")
+ability_2 = SubResource("Resource_fu8gg")
+ultimate = SubResource("Resource_3dmko")
+hero_script = ExtResource("13_6lau4")
+visual = SubResource("Resource_65xo4")
+audio = SubResource("Resource_uvy47")
+theme_color = Color(0.62, 0.78, 0.42, 1)
+ai = SubResource("Resource_sclyj")
+counters = Array[StringName]([&"sable", &"cathedral", &"ballast", &"bramble"])
+countered_by = Array[StringName]([&"harrier", &"vesper", &"coil", &"wisp"])
+synergies = Array[StringName]([&"vesper", &"bombard", &"kiln", &"lumen"])
+unique_mechanic = "Raise Slab: a 2.4 m stone pillar rises 3 m out of the ground at the aimed point in half a second, carrying whoever stands on it. Allies get an elevator; enemies get displaced into the open."
+difficulty = 2

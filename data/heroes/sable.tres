@@ -1,0 +1,322 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_u6wfb"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_536ei"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="3_tbmb1"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="4_jui31"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="5_2ud3p"]
+[ext_resource type="Script" path="res://src/abilities/effects/DashEffect.gd" id="6_p6qsb"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="7_b7vdb"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="8_eyelq"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/SableBehavior.gd" id="9_ho1ra"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="10_cny6m"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="11_wqqoj"]
+[ext_resource type="Script" path="res://src/heroes/abilities/SableComboBehavior.gd" id="12_qjs8n"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="13_j5753"]
+[ext_resource type="Script" path="res://src/heroes/abilities/SableLungeBehavior.gd" id="14_ug3ox"]
+[ext_resource type="Script" path="res://src/abilities/effects/MeleeEffect.gd" id="15_0y2p7"]
+[ext_resource type="Script" path="res://src/heroes/abilities/SableRequiemBehavior.gd" id="16_egjkl"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="17_mqope"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="18_ehyte"]
+
+[sub_resource type="Resource" id="Resource_u6wfb"]
+script = ExtResource("1_u6wfb")
+intent = 7
+max_range = 60.0
+ideal_range = 15.0
+needs_line_of_sight = false
+cast_priority = 0.7
+
+[sub_resource type="Resource" id="Resource_536ei"]
+script = ExtResource("3_tbmb1")
+cast_vfx = &"smoke_puff"
+end_vfx = &"smoke_puff"
+self_glow = Color(0.4, 0.2, 0.7, 0.6)
+sound_cast = &"sable_shroud_cast"
+sound_loop = &"sable_shroud_loop"
+sound_end = &"sable_shroud_end"
+anim_tag = &"cast"
+crosshair = &"cross"
+
+[sub_resource type="Resource" id="Resource_tbmb1"]
+script = ExtResource("5_2ud3p")
+id = &"sable_shroud"
+display_name = "Shrouded"
+duration = 0.0
+cleansable = false
+invisible = true
+color = Color(0.5, 0.3, 0.8, 1)
+
+[sub_resource type="Resource" id="Resource_jui31"]
+script = ExtResource("4_jui31")
+id = &"sable_shroud"
+display_name = "Shroud"
+description = "Toggle. While Shroud is on you are invisible whenever you move below 40% speed. Moving faster or striking breaks it for 1 s."
+trigger = 3
+cooldown = 2.0
+cooldown_starts_on_end = true
+cancel_on_cc = false
+self_status_while_active = SubResource("Resource_tbmb1")
+presentation = SubResource("Resource_536ei")
+ai = SubResource("Resource_u6wfb")
+
+[sub_resource type="Resource" id="Resource_2ud3p"]
+script = ExtResource("1_u6wfb")
+intent = 2
+min_range = 3.0
+ideal_range = 6.0
+needs_line_of_sight = false
+use_when_health_below = 0.4
+
+[sub_resource type="Resource" id="Resource_p6qsb"]
+script = ExtResource("6_p6qsb")
+speed = 8.0
+vertical_boost = 9.5
+preserve_momentum = 0.2
+
+[sub_resource type="Resource" id="Resource_b7vdb"]
+script = ExtResource("3_tbmb1")
+cast_vfx = &"sable_shadow_step"
+sound_fire = &"sable_vault_fire"
+sound_tail = &"sable_vault_tail"
+camera_shake = 0.05
+anim_tag = &"cast"
+crosshair = &"cross"
+
+[sub_resource type="Resource" id="Resource_eyelq"]
+script = ExtResource("4_jui31")
+id = &"sable_vault"
+display_name = "Vault"
+description = "Leap high in your movement direction: onto ledges, over a wall, or out of a fight that turned."
+cooldown = 8.0
+effects = Array[ExtResource("2_536ei")]([SubResource("Resource_p6qsb")])
+presentation = SubResource("Resource_b7vdb")
+ai = SubResource("Resource_2ud3p")
+
+[sub_resource type="Resource" id="Resource_ho1ra"]
+script = ExtResource("7_b7vdb")
+preferred_range = 2.0
+min_range = 0.0
+max_effective_range = 7.0
+aggression = 0.9
+self_preservation = 0.45
+flanker = true
+dives = true
+prefers_high_ground = 0.3
+sticks_to_tank = 0.1
+melee_brawler = true
+ult_min_targets = 1
+strafe_style = &"jump"
+aim_difficulty_scale = 0.8
+
+[sub_resource type="Resource" id="Resource_cny6m"]
+script = ExtResource("8_eyelq")
+footstep_set = &"boots_light"
+footstep_volume = 0.6
+ult_stinger = &"ult_sable"
+ult_stinger_enemy = &"ult_sable_enemy"
+
+[sub_resource type="Resource" id="Resource_wqqoj"]
+script = ExtResource("10_cny6m")
+
+[sub_resource type="Resource" id="Resource_qjs8n"]
+script = ExtResource("11_wqqoj")
+max_speed = 5.8
+ground_accel = 72.0
+air_accel = 16.0
+air_control = 0.55
+jump_velocity = 7.0
+mass = 0.85
+footstep_interval = 0.34
+
+[sub_resource type="Resource" id="Resource_j5753"]
+script = ExtResource("1_u6wfb")
+max_range = 3.2
+ideal_range = 2.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_ug3ox"]
+script = ExtResource("3_tbmb1")
+tracer_color = Color(0.75, 0.45, 1, 1)
+impact_vfx = &"melee_hit"
+impact_decal = &""
+sound_fire = &"sable_blades_fire"
+sound_tail = &"sable_blades_tail"
+sound_impact = &"sable_blades_impact"
+camera_shake = 0.04
+camera_kick_pitch = 0.5
+camera_kick_yaw_random = 0.35
+kick_recovery = 14.0
+viewmodel_kick = 0.07
+viewmodel_kick_rot = 3.5
+hitstop_on_hit = 0.02
+anim_tag = &"melee"
+crosshair = &"cross"
+
+[sub_resource type="Resource" id="Resource_0y2p7"]
+script = ExtResource("4_jui31")
+id = &"sable_blades"
+display_name = "Twin Blades"
+description = "Three-hit combo: 40, 40 (wide sweep, two targets), then 70 (thrust). Reach 2.6 m. Every hit from behind deals 2.5x. The combo resets after 1.2 s without a swing."
+trigger = 1
+fire_rate = 2.4
+reload_time = 0.0
+usable_while_silenced = true
+is_weapon = true
+behavior = ExtResource("12_qjs8n")
+presentation = SubResource("Resource_ug3ox")
+ai = SubResource("Resource_j5753")
+
+[sub_resource type="Resource" id="Resource_egjkl"]
+script = ExtResource("1_u6wfb")
+intent = 4
+min_range = 2.0
+max_range = 9.0
+ideal_range = 4.5
+combo_tags = Array[StringName]([&"dive"])
+cast_priority = 0.75
+
+[sub_resource type="Resource" id="Resource_mqope"]
+script = ExtResource("15_0y2p7")
+damage = 30.0
+range = 2.8
+arc_deg = 140.0
+knockback = 2.0
+backstab_multiplier = 2.5
+
+[sub_resource type="Resource" id="Resource_ehyte"]
+script = ExtResource("3_tbmb1")
+impact_vfx = &"melee_hit"
+cast_vfx = &"sable_shadow_step"
+sound_cast = &"sable_lunge_cast"
+sound_end = &"sable_lunge_end"
+sound_impact = &"sable_lunge_impact"
+camera_shake = 0.08
+viewmodel_kick = 0.05
+anim_tag = &"melee"
+crosshair = &"cross"
+
+[sub_resource type="Resource" id="Resource_gbq8l"]
+script = ExtResource("4_jui31")
+id = &"sable_lunge"
+display_name = "Lunge"
+description = "Dash 4 m toward your aim in a quarter second and cut for 30 on arrival (backstab-eligible). The gap closer that starts every combo."
+cooldown = 6.0
+active_duration = 0.25
+end_effects = Array[ExtResource("2_536ei")]([SubResource("Resource_mqope")])
+behavior = ExtResource("14_ug3ox")
+presentation = SubResource("Resource_ehyte")
+ai = SubResource("Resource_egjkl")
+
+[sub_resource type="Resource" id="Resource_vm32b"]
+script = ExtResource("1_u6wfb")
+intent = 4
+max_range = 12.0
+ideal_range = 4.0
+needs_line_of_sight = false
+needs_enemies_in_radius = 1
+combo_tags = Array[StringName]([&"dive"])
+cast_priority = 0.7
+
+[sub_resource type="Resource" id="Resource_avusy"]
+script = ExtResource("5_2ud3p")
+id = &"sable_requiem_mark"
+display_name = "Marked"
+duration = 4.0
+is_debuff = true
+revealed = true
+color = Color(0.9, 0.4, 1, 1)
+
+[sub_resource type="Resource" id="Resource_i3jno"]
+script = ExtResource("17_mqope")
+status = SubResource("Resource_avusy")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_7k0o3"]
+script = ExtResource("3_tbmb1")
+cast_vfx = &"sable_requiem_cast"
+loop_vfx = &"sable_requiem_loop"
+end_vfx = &"smoke_puff"
+area_vfx = &"sable_requiem_mark"
+sound_cast = &"sable_requiem_cast"
+sound_loop = &"sable_requiem_loop"
+sound_end = &"sable_requiem_end"
+sound_impact = &"sable_requiem_impact"
+voice_line = &"sable_ult_line"
+voice_line_enemy = &"sable_ult_line_enemy"
+camera_shake = 0.2
+anim_tag = &"ult"
+crosshair = &"cross"
+
+[sub_resource type="Resource" id="Resource_v0xqg"]
+script = ExtResource("5_2ud3p")
+id = &"sable_requiem"
+display_name = "Requiem"
+duration = 0.0
+cleansable = false
+invulnerable = true
+unstoppable = true
+color = Color(0.8, 0.5, 1, 1)
+
+[sub_resource type="Resource" id="Resource_g11si"]
+script = ExtResource("4_jui31")
+id = &"sable_requiem"
+display_name = "Requiem"
+description = "Mark every enemy within 12 m (revealed 4 s), then dash through each in turn at 30 m/s, cutting for 100 (2.5x from behind). You are invulnerable and unstoppable until the last cut."
+active_duration = 6.0
+resource = 2
+ult_cost = 1750.0
+cancel_on_cc = false
+self_status_while_active = SubResource("Resource_v0xqg")
+effects = Array[ExtResource("2_536ei")]([SubResource("Resource_i3jno")])
+behavior = ExtResource("16_egjkl")
+presentation = SubResource("Resource_7k0o3")
+ai = SubResource("Resource_vm32b")
+
+[sub_resource type="Resource" id="Resource_d0eay"]
+script = ExtResource("18_ehyte")
+build = 0
+height = 1.74
+shoulder_width = 0.48
+head = 2
+extras = Array[int]([8, 1])
+primary_color = Color(0.12, 0.1, 0.16, 1)
+secondary_color = Color(0.22, 0.14, 0.3, 1)
+accent_color = Color(0.6, 0.32, 0.82, 1)
+emissive_color = Color(0.72, 0.42, 1, 1)
+emissive_strength = 1.6
+metallic = 0.15
+roughness = 0.75
+weapon_scale = 1.05
+weapon_style = &"blades"
+arms_color = Color(0.14, 0.12, 0.18, 1)
+stance = &"hunched"
+silhouette_notes = "Small, low and narrow: a hood, a short cloak, a long tail of cloth and two blades. Hunched, always looks about to move."
+
+[resource]
+script = ExtResource("13_j5753")
+id = &"sable"
+display_name = "Sable"
+codename = "The Shadow-dancer"
+sort_order = 16
+tagline = "You'll hear the second cut."
+lore = "Sable danced in the Pearl River Charter's lantern theatres until the theatres were bought by a Charter that preferred quiet. She kept the blades from the last show, learned that stillness is the only real camouflage, and now takes contracts against the loud. She never runs in; she arrives."
+playstyle = "Creep in Shroud below 40% speed, open from behind for 2.5x, finish the three-hit combo and Vault out before the team turns. Lunge closes the last gap. Requiem is a team wipe if they are clumped and nobody has reveal or a save."
+health = 225.0
+movement = SubResource("Resource_qjs8n")
+hitbox = SubResource("Resource_wqqoj")
+primary = SubResource("Resource_0y2p7")
+secondary = SubResource("Resource_gbq8l")
+ability_1 = SubResource("Resource_jui31")
+ability_2 = SubResource("Resource_eyelq")
+ultimate = SubResource("Resource_g11si")
+hero_script = ExtResource("9_ho1ra")
+visual = SubResource("Resource_d0eay")
+audio = SubResource("Resource_cny6m")
+theme_color = Color(0.58, 0.32, 0.8, 1)
+ai = SubResource("Resource_ho1ra")
+counters = Array[StringName]([&"tallow", &"suture", &"vesper", &"lumen"])
+countered_by = Array[StringName]([&"vesper", &"bombard", &"coil", &"rook"])
+synergies = Array[StringName]([&"tallow", &"wisp", &"ballast"])
+unique_mechanic = "Backstab: every blade hit from behind deals 2.5x. Shroud keeps you invisible only while moving below 40% speed; sprinting or striking breaks it for 1 s."
+difficulty = 3

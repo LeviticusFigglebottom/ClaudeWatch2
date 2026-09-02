@@ -1,0 +1,285 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_q35dh"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="2_bppt5"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="3_2vvr2"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="4_2q17f"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="5_kc72j"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="6_t4g4i"]
+[ext_resource type="Script" path="res://src/heroes/abilities/RicochetSkipBehavior.gd" id="7_7fjpk"]
+[ext_resource type="Script" path="res://src/abilities/effects/DashEffect.gd" id="8_avcmg"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="9_cghjk"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="10_nmod2"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="11_2qnwf"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="12_hc6vp"]
+[ext_resource type="Script" path="res://src/heroes/abilities/RicochetDiscBehavior.gd" id="13_dwege"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="14_3cq12"]
+[ext_resource type="Script" path="res://src/heroes/abilities/RicochetPinballBehavior.gd" id="15_hdlw2"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="16_mejkm"]
+
+[sub_resource type="Resource" id="Resource_q35dh"]
+script = ExtResource("1_q35dh")
+max_range = 26.0
+needs_line_of_sight = false
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_bppt5"]
+script = ExtResource("4_2q17f")
+id = &"ricochet_bank_primed"
+display_name = "Bank Shot"
+duration = 6.0
+cleansable = false
+vfx_id = &"ricochet_bank_shot_loop"
+color = Color(1, 0.45, 0.8, 1)
+
+[sub_resource type="Resource" id="Resource_2vvr2"]
+script = ExtResource("3_2vvr2")
+status = SubResource("Resource_bppt5")
+
+[sub_resource type="Resource" id="Resource_2q17f"]
+script = ExtResource("5_kc72j")
+cast_vfx = &"ricochet_bank_shot_cast"
+self_glow = Color(1, 0.45, 0.8, 0.7)
+sound_cast = &"ricochet_bank_shot_cast"
+sound_end = &"ricochet_bank_shot_end"
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_kc72j"]
+script = ExtResource("6_t4g4i")
+id = &"ricochet_bank_shot"
+display_name = "Bank Shot"
+description = "Prime your launcher for 6 s: the next disc you fire locks onto the nearest enemy it can see after its first bounce and curves into them. 8 s cooldown."
+cooldown = 8.0
+effects = Array[ExtResource("2_bppt5")]([SubResource("Resource_2vvr2")])
+presentation = SubResource("Resource_2q17f")
+ai = SubResource("Resource_q35dh")
+
+[sub_resource type="Resource" id="Resource_t4g4i"]
+script = ExtResource("1_q35dh")
+intent = 3
+max_range = 12.0
+ideal_range = 4.0
+needs_line_of_sight = false
+use_when_health_below = 0.5
+cast_priority = 0.55
+
+[sub_resource type="Resource" id="Resource_7fjpk"]
+script = ExtResource("8_avcmg")
+speed = 14.0
+vertical_boost = 3.5
+preserve_momentum = 0.2
+
+[sub_resource type="Resource" id="Resource_avcmg"]
+script = ExtResource("5_kc72j")
+cast_vfx = &"ricochet_skip_cast"
+projectile_vfx = &"disc"
+sound_fire = &"ricochet_skip_fire"
+sound_tail = &"ricochet_skip_tail"
+camera_shake = 0.1
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_cghjk"]
+script = ExtResource("6_t4g4i")
+id = &"ricochet_skip"
+display_name = "Skip"
+description = "Dash 14 m/s in your movement direction and leave a disc bouncing on the spot you left for 4 s. It arms on its first bounce (40 / 55 / 70 damage) and hits the first enemy who walks into it. 7 s cooldown."
+cooldown = 7.0
+effects = Array[ExtResource("2_bppt5")]([SubResource("Resource_7fjpk")])
+behavior = ExtResource("7_7fjpk")
+presentation = SubResource("Resource_avcmg")
+ai = SubResource("Resource_t4g4i")
+
+[sub_resource type="Resource" id="Resource_nmod2"]
+script = ExtResource("9_cghjk")
+preferred_range = 9.0
+max_effective_range = 22.0
+aggression = 0.55
+prefers_high_ground = 0.15
+ult_style = &"zone"
+aim_difficulty_scale = 1.25
+
+[sub_resource type="Resource" id="Resource_2qnwf"]
+script = ExtResource("10_nmod2")
+ult_stinger = &"ult_ricochet"
+ult_stinger_enemy = &"ult_ricochet_enemy"
+callout_tone = &"radio_c"
+
+[sub_resource type="Resource" id="Resource_hc6vp"]
+script = ExtResource("11_2qnwf")
+
+[sub_resource type="Resource" id="Resource_dwege"]
+script = ExtResource("12_hc6vp")
+max_speed = 5.7
+air_control = 0.4
+jump_velocity = 6.6
+camera_bob_scale = 1.1
+footstep_interval = 0.4
+
+[sub_resource type="Resource" id="Resource_3cq12"]
+script = ExtResource("1_q35dh")
+max_range = 28.0
+ideal_range = 9.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_hdlw2"]
+script = ExtResource("5_kc72j")
+muzzle_vfx = &"ricochet_disc_muzzle"
+tracer_color = Color(1, 0.5, 0.85, 1)
+impact_vfx = &"ricochet_disc_impact"
+projectile_vfx = &"disc"
+sound_fire = &"ricochet_disc_fire"
+sound_tail = &"ricochet_disc_tail"
+sound_impact = &"ricochet_disc_impact"
+camera_shake = 0.05
+camera_kick_pitch = 1.3
+camera_kick_yaw_random = 0.35
+kick_recovery = 10.0
+viewmodel_kick = 0.08
+viewmodel_kick_rot = 3.0
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_mejkm"]
+script = ExtResource("6_t4g4i")
+id = &"ricochet_disc"
+display_name = "Disc Launcher"
+description = "Launch a disc at 45 m/s. It passes through enemies until it bounces; after 1 / 2 / 3 bounces it deals 45 / 70 / 95 damage. 1.6 discs per second, 5 per clip, 1.5 s reload."
+trigger = 1
+fire_rate = 1.6
+resource = 1
+ammo = 5
+reload_time = 1.5
+usable_while_silenced = true
+is_weapon = true
+behavior = ExtResource("13_dwege")
+presentation = SubResource("Resource_hdlw2")
+ai = SubResource("Resource_3cq12")
+
+[sub_resource type="Resource" id="Resource_qdral"]
+script = ExtResource("1_q35dh")
+min_range = 4.0
+ideal_range = 9.0
+needs_line_of_sight = false
+
+[sub_resource type="Resource" id="Resource_mgpdw"]
+script = ExtResource("5_kc72j")
+muzzle_vfx = &"ricochet_lob_muzzle"
+tracer_color = Color(1, 0.35, 0.7, 1)
+impact_vfx = &"ricochet_disc_impact"
+projectile_vfx = &"disc"
+sound_fire = &"ricochet_lob_fire"
+sound_tail = &"ricochet_lob_tail"
+sound_impact = &"ricochet_lob_impact"
+camera_shake = 0.08
+camera_kick_pitch = 2.2
+camera_kick_yaw_random = 0.4
+kick_recovery = 7.0
+viewmodel_kick = 0.14
+viewmodel_kick_rot = 6.0
+anim_tag = &"throw"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_qwqdg"]
+script = ExtResource("6_t4g4i")
+id = &"ricochet_lob"
+display_name = "Lob"
+description = "Throw a heavy disc in an arc (28 m/s, drops fast). It arms on its first bounce like any disc but hits harder: 55 / 80 / 105 damage. Arcs over barriers. 5 s cooldown."
+cooldown = 5.0
+usable_while_silenced = true
+is_weapon = true
+behavior = ExtResource("13_dwege")
+presentation = SubResource("Resource_mgpdw")
+ai = SubResource("Resource_qdral")
+
+[sub_resource type="Resource" id="Resource_dg8yt"]
+script = ExtResource("1_q35dh")
+intent = 9
+max_range = 12.0
+ideal_range = 6.0
+needs_line_of_sight = false
+needs_enemies_in_radius = 2
+combo_tags = Array[StringName]([&"aoe_damage"])
+cast_priority = 0.65
+
+[sub_resource type="Resource" id="Resource_xa0fm"]
+script = ExtResource("5_kc72j")
+cast_vfx = &"ricochet_pinball_cast"
+loop_vfx = &"ricochet_pinball_loop"
+end_vfx = &"ricochet_pinball_end"
+projectile_vfx = &"disc"
+self_glow = Color(1, 0.45, 0.8, 1)
+sound_fire = &"ricochet_pinball_fire"
+sound_cast = &"ricochet_pinball_cast"
+sound_loop = &"ricochet_pinball_loop"
+sound_end = &"ricochet_pinball_end"
+sound_impact = &"ricochet_pinball_impact"
+voice_line = &"ricochet_ult_line"
+voice_line_enemy = &"ricochet_ult_line_enemy"
+camera_shake = 0.15
+anim_tag = &"ult"
+
+[sub_resource type="Resource" id="Resource_vhkg8"]
+script = ExtResource("4_2q17f")
+id = &"ricochet_pinball_status"
+display_name = "Pinball"
+duration = 6.0
+cleansable = false
+color = Color(1, 0.45, 0.8, 1)
+
+[sub_resource type="Resource" id="Resource_6kg3n"]
+script = ExtResource("6_t4g4i")
+id = &"ricochet_pinball"
+display_name = "Pinball"
+description = "For 6 s a disc leaves you every 0.3 s in a random direction. Each bounces up to 6 times and arms like any disc (45 / 70 / 95). Inside a room, the room becomes the weapon. You keep your launcher."
+active_duration = 6.0
+resource = 2
+ult_cost = 1800.0
+cancel_on_cc = false
+self_status_while_active = SubResource("Resource_vhkg8")
+behavior = ExtResource("15_hdlw2")
+presentation = SubResource("Resource_xa0fm")
+ai = SubResource("Resource_dg8yt")
+
+[sub_resource type="Resource" id="Resource_wegxb"]
+script = ExtResource("16_mejkm")
+height = 1.86
+shoulder_width = 0.56
+head = 7
+extras = Array[int]([4, 2])
+primary_color = Color(0.16, 0.14, 0.2, 1)
+secondary_color = Color(0.62, 0.58, 0.55, 1)
+accent_color = Color(0.95, 0.4, 0.75, 1)
+emissive_color = Color(1, 0.45, 0.8, 1)
+emissive_strength = 2.2
+metallic = 0.35
+roughness = 0.55
+weapon_scale = 1.2
+weapon_style = &"launcher"
+arms_color = Color(0.5, 0.46, 0.44, 1)
+silhouette_notes = "Beaked mask, padded shoulders, a fat drum-fed disc launcher held low. Magenta disc-glow on the drum. Reads as 'the one with the weird gun' from across a room."
+
+[resource]
+script = ExtResource("14_3cq12")
+id = &"ricochet"
+display_name = "Ricochet"
+codename = "The Trick Shot"
+sort_order = 12
+tagline = "The wall is on my side."
+lore = "Ricochet learned angles in the pit-arenas under Aurelia Bazaar, where the crowd only paid for shots that came from somewhere impossible. The launcher was a prize; the discs he cuts himself from Ring alloy that never dulls. He does not aim at people. He aims at the world and lets it deliver."
+playstyle = "Never shoot straight at anyone. Skip discs off floors, walls and ceilings so they arrive armed; fight in corridors and rooms where every surface is a friend. Bank Shot when you cannot find the angle, Skip to break contact and leave a trap, and Pinball inside a room to make the whole room lethal."
+health = 225.0
+movement = SubResource("Resource_dwege")
+hitbox = SubResource("Resource_hc6vp")
+primary = SubResource("Resource_mejkm")
+secondary = SubResource("Resource_qwqdg")
+ability_1 = SubResource("Resource_kc72j")
+ability_2 = SubResource("Resource_cghjk")
+ultimate = SubResource("Resource_6kg3n")
+visual = SubResource("Resource_wegxb")
+audio = SubResource("Resource_2qnwf")
+theme_color = Color(0.95, 0.4, 0.75, 1)
+ai = SubResource("Resource_nmod2")
+counters = Array[StringName]([&"cathedral", &"kiln", &"cairn"])
+countered_by = Array[StringName]([&"vesper", &"bombard", &"harrier"])
+synergies = Array[StringName]([&"cairn", &"coil", &"rook"])
+unique_mechanic = "Discs only damage after bouncing at least once: a fresh disc flies straight through enemies. Each bounce arms it harder, 45 -> 70 -> 95 damage, up to three bounces."
+difficulty = 3

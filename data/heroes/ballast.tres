@@ -1,0 +1,391 @@
+[gd_resource type="Resource" script_class="HeroData" format=3]
+
+[ext_resource type="Script" path="res://src/data/AbilityAIHints.gd" id="1_xyaq3"]
+[ext_resource type="Script" path="res://src/heroes/abilities/BallastAnchorBehavior.gd" id="2_0d0xa"]
+[ext_resource type="Script" path="res://src/abilities/AbilityEffect.gd" id="3_bk768"]
+[ext_resource type="Script" path="res://src/abilities/effects/ApplyStatusEffect.gd" id="4_pv3rv"]
+[ext_resource type="Script" path="res://src/data/StatusData.gd" id="5_i113l"]
+[ext_resource type="Script" path="res://src/data/AbilityPresentation.gd" id="6_dkq6a"]
+[ext_resource type="Script" path="res://src/data/AbilityData.gd" id="7_3xkhp"]
+[ext_resource type="Script" path="res://src/heroes/abilities/BallastSurgeBehavior.gd" id="8_w3noq"]
+[ext_resource type="Script" path="res://src/data/AIHeroProfile.gd" id="9_20mc3"]
+[ext_resource type="Script" path="res://src/data/HeroAudioData.gd" id="10_nh7l6"]
+[ext_resource type="Script" path="res://src/heroes/behaviors/BallastBehavior.gd" id="11_hpyeb"]
+[ext_resource type="Script" path="res://src/data/HitboxProfile.gd" id="12_k4wo6"]
+[ext_resource type="Script" path="res://src/data/MovementProfile.gd" id="13_uvbib"]
+[ext_resource type="Script" path="res://src/abilities/effects/HitscanEffect.gd" id="14_xap42"]
+[ext_resource type="Script" path="res://src/data/HeroData.gd" id="15_h3730"]
+[ext_resource type="Script" path="res://src/heroes/abilities/BallastRiptideBehavior.gd" id="16_se8a2"]
+[ext_resource type="Script" path="res://src/abilities/effects/AreaEffect.gd" id="17_ssh8s"]
+[ext_resource type="Script" path="res://src/data/HeroVisualData.gd" id="18_c2p6b"]
+
+[sub_resource type="Resource" id="Resource_xyaq3"]
+script = ExtResource("1_xyaq3")
+intent = 6
+min_range = 3.0
+max_range = 26.0
+combo_tags = Array[StringName]([&"pull", &"displace"])
+cast_priority = 0.7
+telegraph_seconds = 0.3
+
+[sub_resource type="Resource" id="Resource_0d0xa"]
+script = ExtResource("5_i113l")
+id = &"ballast_hooked"
+display_name = "Hooked"
+duration = 0.7
+is_debuff = true
+is_crowd_control = true
+tags = Array[StringName]([&"displace", &"root"])
+rooted = true
+color = Color(0.3, 0.9, 0.9, 1)
+
+[sub_resource type="Resource" id="Resource_bk768"]
+script = ExtResource("4_pv3rv")
+status = SubResource("Resource_0d0xa")
+who = 1
+enabled = false
+
+[sub_resource type="Resource" id="Resource_pv3rv"]
+script = ExtResource("6_dkq6a")
+muzzle_vfx = &"muzzle_generic"
+impact_vfx = &"ballast_anchor_impact"
+projectile_vfx = &"harpoon"
+sound_fire = &"ballast_anchor_fire"
+sound_loop = &"ballast_anchor_loop"
+sound_end = &"ballast_anchor_end"
+sound_impact = &"ballast_anchor_impact"
+camera_shake = 0.1
+camera_kick_pitch = 2.0
+camera_kick_yaw_random = 0.2
+viewmodel_kick = 0.12
+viewmodel_kick_rot = 4.0
+anim_tag = &"throw"
+crosshair = &"bracket"
+
+[sub_resource type="Resource" id="Resource_i113l"]
+script = ExtResource("7_3xkhp")
+id = &"ballast_anchor"
+display_name = "Anchor"
+description = "Throw the harpoon-anchor (40 damage). Hit a surface: you are winched to it (press jump to let go). Hit an enemy: they are reeled to your feet and hooked for 0.7 s. Unstoppable enemies cannot be reeled."
+cooldown = 11.0
+recovery = 0.1
+active_duration = 2.6
+effects = Array[ExtResource("3_bk768")]([SubResource("Resource_bk768")])
+behavior = ExtResource("2_0d0xa")
+presentation = SubResource("Resource_pv3rv")
+ai = SubResource("Resource_xyaq3")
+
+[sub_resource type="Resource" id="Resource_dkq6a"]
+script = ExtResource("1_xyaq3")
+intent = 5
+max_range = 20.0
+ideal_range = 8.0
+use_when_health_below = 0.65
+counter_tags = Array[StringName]([&"poke"])
+cast_priority = 0.6
+
+[sub_resource type="Resource" id="Resource_3xkhp"]
+script = ExtResource("6_dkq6a")
+cast_vfx = &"ballast_surge_cast"
+loop_vfx = &"ballast_surge_loop"
+self_glow = Color(0.85, 0.65, 0.3, 1)
+sound_cast = &"ballast_surge_cast"
+sound_loop = &"ballast_surge_loop"
+sound_end = &"ballast_surge_end"
+camera_shake = 0.08
+viewmodel_kick = 0.06
+viewmodel_kick_rot = 2.0
+anim_tag = &"cast"
+
+[sub_resource type="Resource" id="Resource_w3noq"]
+script = ExtResource("5_i113l")
+id = &"ballast_surge"
+display_name = "Surge"
+duration = 5.0
+cleansable = false
+speed_mult = 0.6
+color = Color(0.85, 0.65, 0.3, 1)
+
+[sub_resource type="Resource" id="Resource_20mc3"]
+script = ExtResource("7_3xkhp")
+id = &"ballast_surge"
+display_name = "Surge"
+description = "Over-pressurize the suit for 5 s: +150 armor, but you move at 60% speed. Press it when the poke starts, not when you are already dying."
+cooldown = 12.0
+active_duration = 5.0
+cancel_on_cc = false
+self_status_while_active = SubResource("Resource_w3noq")
+behavior = ExtResource("8_w3noq")
+presentation = SubResource("Resource_3xkhp")
+ai = SubResource("Resource_dkq6a")
+
+[sub_resource type="Resource" id="Resource_nh7l6"]
+script = ExtResource("9_20mc3")
+preferred_range = 6.0
+min_range = 0.0
+max_effective_range = 18.0
+aggression = 0.7
+self_preservation = 0.4
+prefers_high_ground = 0.2
+sticks_to_tank = 0.0
+ult_style = &"combo_enabler"
+aim_difficulty_scale = 0.9
+
+[sub_resource type="Resource" id="Resource_hpyeb"]
+script = ExtResource("10_nh7l6")
+footstep_set = &"boots_heavy"
+ult_stinger = &"ult_ballast"
+ult_stinger_enemy = &"ult_ballast_enemy"
+voice_pitch = 0.85
+callout_tone = &"radio_b"
+
+[sub_resource type="Resource" id="Resource_k4wo6"]
+script = ExtResource("12_k4wo6")
+head_radius = 0.22
+head_height = 1.76
+head_crouch_height = 1.12
+body_radius = 0.46
+body_top = 1.46
+body_crouch_top = 0.92
+
+[sub_resource type="Resource" id="Resource_uvbib"]
+script = ExtResource("13_uvbib")
+max_speed = 5.0
+backpedal_mult = 0.85
+ground_accel = 50.0
+air_control = 0.3
+jump_velocity = 6.2
+capsule_height = 2.0
+crouch_height = 1.3
+eye_height = 1.72
+crouch_eye_height = 1.05
+landing_recovery = 0.15
+footstep_interval = 0.5
+
+[sub_resource type="Resource" id="Resource_xap42"]
+script = ExtResource("1_xyaq3")
+max_range = 18.0
+ideal_range = 6.0
+spam_ok = true
+
+[sub_resource type="Resource" id="Resource_h3730"]
+script = ExtResource("14_xap42")
+damage = 11.0
+range = 32.0
+pellets = 10
+spread_deg = 8.0
+spread_moving_deg = 1.0
+spread_airborne_deg = 3.0
+falloff_start = 6.0
+falloff_end = 16.0
+knockback = 1.2
+
+[sub_resource type="Resource" id="Resource_se8a2"]
+script = ExtResource("6_dkq6a")
+muzzle_vfx = &"ballast_wave_muzzle"
+tracer_style = &"shell"
+tracer_color = Color(0.45, 0.95, 0.95, 1)
+sound_fire = &"ballast_wave_fire"
+sound_tail = &"ballast_wave_tail"
+sound_impact = &"ballast_wave_impact"
+camera_shake = 0.14
+camera_kick_pitch = 3.4
+camera_kick_yaw_random = 0.7
+kick_recovery = 9.0
+viewmodel_kick = 0.18
+viewmodel_kick_rot = 7.0
+crosshair = &"circle"
+spread_visual_scale = 1.3
+
+[sub_resource type="Resource" id="Resource_ssh8s"]
+script = ExtResource("7_3xkhp")
+id = &"ballast_wave"
+display_name = "Wave Cannon"
+description = "Pressure-driven shotgun. 10 pellets of 11 damage (110 up close); falloff from 6 to 16 m. Devastating at point blank, harmless past 20 m."
+trigger = 1
+fire_rate = 1.1
+resource = 1
+ammo = 5
+reload_time = 1.9
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_bk768")]([SubResource("Resource_h3730")])
+presentation = SubResource("Resource_se8a2")
+ai = SubResource("Resource_xap42")
+
+[sub_resource type="Resource" id="Resource_c2p6b"]
+script = ExtResource("1_xyaq3")
+min_range = 8.0
+max_range = 45.0
+ideal_range = 22.0
+cast_priority = 0.45
+
+[sub_resource type="Resource" id="Resource_abv83"]
+script = ExtResource("14_xap42")
+damage = 60.0
+range = 60.0
+falloff_min = 0.5
+knockback = 2.0
+
+[sub_resource type="Resource" id="Resource_cqtal"]
+script = ExtResource("6_dkq6a")
+muzzle_vfx = &"muzzle_generic"
+tracer_style = &"bullet"
+tracer_color = Color(0.6, 1, 0.95, 1)
+sound_fire = &"ballast_slug_fire"
+sound_tail = &"ballast_slug_tail"
+sound_impact = &"ballast_slug_impact"
+camera_shake = 0.1
+camera_kick_pitch = 2.6
+camera_kick_yaw_random = 0.3
+viewmodel_kick = 0.14
+viewmodel_kick_rot = 5.0
+
+[sub_resource type="Resource" id="Resource_aq4i4"]
+script = ExtResource("7_3xkhp")
+id = &"ballast_slug"
+display_name = "Pressure Slug"
+description = "Chamber a single slug: 60 hitscan damage with no spread, falling off from 20 to 40 m. Your only answer to ranged poke."
+cooldown = 3.0
+recovery = 0.25
+usable_while_silenced = true
+is_weapon = true
+effects = Array[ExtResource("3_bk768")]([SubResource("Resource_abv83")])
+presentation = SubResource("Resource_cqtal")
+ai = SubResource("Resource_c2p6b")
+
+[sub_resource type="Resource" id="Resource_f0lrj"]
+script = ExtResource("1_xyaq3")
+intent = 6
+max_range = 12.0
+ideal_range = 7.0
+needs_enemies_in_radius = 2
+hold_for_combo = true
+combo_tags = Array[StringName]([&"pull", &"group"])
+cast_priority = 0.7
+telegraph_seconds = 0.5
+
+[sub_resource type="Resource" id="Resource_1j1fp"]
+script = ExtResource("17_ssh8s")
+radius = 9.0
+damage = 120.0
+knockback = 7.0
+requires_los = false
+center_on_point = true
+vfx_id = &"ballast_riptide_explosion"
+
+[sub_resource type="Resource" id="Resource_3uvs7"]
+script = ExtResource("6_dkq6a")
+cast_vfx = &"ballast_riptide"
+loop_vfx = &"ballast_riptide_loop"
+end_vfx = &"ballast_riptide_end"
+area_vfx = &"ballast_riptide_ring"
+self_glow = Color(0.25, 0.74, 0.78, 1)
+sound_cast = &"ballast_riptide_cast"
+sound_loop = &"ballast_riptide_loop"
+sound_end = &"ballast_riptide_end"
+voice_line = &"ballast_ult_line"
+voice_line_enemy = &"ballast_ult_line_enemy"
+camera_shake = 0.3
+viewmodel_kick = 0.1
+viewmodel_kick_rot = 3.0
+anim_tag = &"ult"
+crosshair = &"circle"
+
+[sub_resource type="Resource" id="Resource_yqmkr"]
+script = ExtResource("5_i113l")
+id = &"ballast_riptide_channel"
+display_name = "Riptide"
+duration = 3.0
+cleansable = false
+speed_mult = 0.5
+color = Color(0.25, 0.74, 0.78, 1)
+
+[sub_resource type="Resource" id="Resource_r6k8g"]
+script = ExtResource("5_i113l")
+id = &"ballast_riptide_slow"
+display_name = "Undertow"
+duration = 0.6
+is_debuff = true
+is_crowd_control = true
+tags = Array[StringName]([&"slow"])
+speed_mult = 0.55
+color = Color(0.3, 0.8, 0.9, 1)
+
+[sub_resource type="Resource" id="Resource_rampn"]
+script = ExtResource("17_ssh8s")
+radius = 9.0
+damage = 6.0
+min_fraction = 0.8
+requires_los = false
+center_on_point = true
+enemy_status = SubResource("Resource_r6k8g")
+vfx_id = &"ballast_riptide_ring"
+
+[sub_resource type="Resource" id="Resource_pytp7"]
+script = ExtResource("7_3xkhp")
+id = &"ballast_riptide"
+display_name = "Riptide"
+description = "Open the tide where you aim (within 12 m). For 3 s every enemy within 9 m is dragged toward the center, slowed to 55% and takes 30 damage per second; when it closes, a 120 damage burst throws them upward. Sets up any area ultimate."
+recovery = 0.3
+active_duration = 3.0
+tick_interval = 0.2
+resource = 2
+ult_cost = 1850.0
+blocks_primary_while_active = true
+self_status_while_active = SubResource("Resource_yqmkr")
+tick_effects = Array[ExtResource("3_bk768")]([SubResource("Resource_rampn")])
+end_effects = Array[ExtResource("3_bk768")]([SubResource("Resource_1j1fp")])
+behavior = ExtResource("16_se8a2")
+presentation = SubResource("Resource_3uvs7")
+ai = SubResource("Resource_f0lrj")
+
+[sub_resource type="Resource" id="Resource_ow5ei"]
+script = ExtResource("18_c2p6b")
+build = 2
+height = 2.0
+shoulder_width = 0.64
+head = 6
+extras = Array[int]([10, 4])
+primary_color = Color(0.22, 0.4, 0.44, 1)
+secondary_color = Color(0.13, 0.17, 0.2, 1)
+accent_color = Color(0.82, 0.62, 0.3, 1)
+emissive_color = Color(0.35, 0.95, 0.9, 1)
+emissive_strength = 2.2
+metallic = 0.65
+roughness = 0.5
+weapon_scale = 1.25
+weapon_style = &"harpoon"
+arms_color = Color(0.2, 0.34, 0.38, 1)
+stance = &"brace"
+silhouette_notes = "Round diving helmet with three brass bolts, an anchor strapped across the back, wide braced stance and a long harpoon gun. Reads as 'the heavy one' from across the map."
+
+[resource]
+script = ExtResource("15_h3730")
+id = &"ballast"
+display_name = "Ballast"
+codename = "The Diver"
+role = 0
+sort_order = 1
+tagline = "The deep does not let go."
+lore = "Ballast spent twenty years walking the drowned floors of the Adriatic Charter, cutting reactor plate out of stations that fell into the sea. The pressure suit is his own design; the anchor was the first tool he ever forged. He talks slowly, moves slowly, and has never once lost a grip on anything he decided to hold. The Charters hire him when the drop site is somewhere nobody else can stand."
+playstyle = "Walk forward. Hook anyone who flanks or peeks and drop them at your feet, then finish with the Wave Cannon. Use Anchor on walls to reposition without giving up the front line. Surge when the poke starts hurting: you get slower but far tougher. Riptide drags an entire team into one spot for your strikers."
+health = 300.0
+armor = 250.0
+movement = SubResource("Resource_uvbib")
+hitbox = SubResource("Resource_k4wo6")
+primary = SubResource("Resource_ssh8s")
+secondary = SubResource("Resource_aq4i4")
+ability_1 = SubResource("Resource_i113l")
+ability_2 = SubResource("Resource_20mc3")
+ultimate = SubResource("Resource_pytp7")
+hero_script = ExtResource("11_hpyeb")
+visual = SubResource("Resource_ow5ei")
+audio = SubResource("Resource_hpyeb")
+theme_color = Color(0.25, 0.74, 0.78, 1)
+ai = SubResource("Resource_nh7l6")
+counters = Array[StringName]([&"sable", &"harrier", &"wisp", &"ricochet"])
+countered_by = Array[StringName]([&"vesper", &"bombard", &"lumen", &"kiln"])
+synergies = Array[StringName]([&"coil", &"rook", &"suture", &"cadence"])
+unique_mechanic = "Anchor: throws a harpoon-anchor. Hit a wall or floor and Ballast is winched to it; hit an enemy and they are reeled to Ballast and briefly hooked (rooted). Unstoppable enemies cannot be reeled."
+difficulty = 2
