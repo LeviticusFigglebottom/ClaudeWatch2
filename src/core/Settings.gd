@@ -223,6 +223,8 @@ func action_display_string(action: String) -> String:
 	for e: InputEvent in events:
 		if e is InputEventKey:
 			var k := e as InputEventKey
+			if DisplayServer.get_name() == "headless":
+				return OS.get_keycode_string(k.physical_keycode).to_upper()
 			return OS.get_keycode_string(DisplayServer.keyboard_get_keycode_from_physical(k.physical_keycode)).to_upper()
 		if e is InputEventMouseButton:
 			match (e as InputEventMouseButton).button_index:

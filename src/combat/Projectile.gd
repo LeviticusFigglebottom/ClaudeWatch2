@@ -54,7 +54,6 @@ func setup(w: SimWorld, owner_p: Pawn) -> void:
 	world = w
 	owner_pawn = owner_p
 	team = owner_p.team if owner_p else RF.Team.NONE
-	start_pos = global_position
 
 
 func step(dt: float) -> void:
