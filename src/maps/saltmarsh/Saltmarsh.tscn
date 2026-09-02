@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3 uid="uid://rf_map_saltmarsh"]
+[ext_resource type="Script" path="res://src/maps/saltmarsh/Saltmarsh.gd" id="1"]
+[node name="saltmarsh" type="Node3D"]
+script = ExtResource("1")

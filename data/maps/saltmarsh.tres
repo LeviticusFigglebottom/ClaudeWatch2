@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MapData" load_steps=2 format=3 uid="uid://rf_map_data_saltmarsh"]
+
+[ext_resource type="Script" path="res://src/data/MapData.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"saltmarsh"
+display_name = "Saltmarsh Terminal"
+location = "Drowned ferry port, Adriatic Charter"
+time_of_day = "Golden hour"
+description = "The tide took the lower town and the Charter kept trading anyway. Escort the Core hauler off the dock, through the customs hall and the fish-market arcades, across the drained dry-dock to the lighthouse pad."
+scene_path = "res://src/maps/saltmarsh/Saltmarsh.tscn"
+supported_modes = Array[StringName]([&"escort"])
+color_story = "Teal water and ochre stone under a low sun, rust and salt on every rail."
+ambience = &"amb_harbor"
+sort_order = 10

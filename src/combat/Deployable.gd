@@ -74,5 +74,11 @@ func on_destroyed(_by: Pawn) -> void:
 	pass
 
 
+## True when the placer is still a live pawn. Deployables outlive their owner, so any hero code
+## that needs the owner (credit, team checks, healing) must gate on this.
+func owner_alive() -> bool:
+	return owner_pawn != null and is_instance_valid(owner_pawn) and owner_pawn.alive
+
+
 func health_fraction() -> float:
 	return 0.0 if max_health <= 0.0 else clampf(health / max_health, 0.0, 1.0)

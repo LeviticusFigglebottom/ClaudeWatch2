@@ -7,6 +7,10 @@ static func resolve_damage(ev: DamageEvent, world: SimWorld) -> void:
 	if t == null or not t.alive:
 		ev.prevented = true; ev.prevented_reason = &"dead"
 		return
+	# A source that was freed this tick (owner died, entity outlived it) degrades to environment
+	# damage rather than throwing on property access.
+	if ev.source != null and not is_instance_valid(ev.source):
+		ev.source = null
 	var src := ev.source
 	# Team rules: no friendly damage; self damage only for environment/true types.
 	if src != null and src != t and src.team == t.team:

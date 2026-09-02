@@ -61,3 +61,28 @@ func test_expiry() -> void:
 	assert_true(c.has(&"t"))
 	c.step(0.6)
 	assert_false(c.has(&"t"))
+
+
+func test_step_survives_reentrant_clear_all() -> void:
+	# A DoT tick that kills the pawn clears the status list from inside step(); the loop must not
+	# index into the emptied array (this used to throw "Out of bounds get index").
+	var c := StatusController.new()
+	var burn := _make("burn", 3.0); burn.dot_dps = 10.0
+	var other := _make("other", 3.0)
+	c.apply(burn); c.apply(other)
+	c.step(0.1)
+	assert_eq(c.active.size(), 2, "both statuses survive a normal tick")
+	# Simulate the re-entrant clear that death performs mid-iteration.
+	c.clear_all()
+	c.step(0.1)
+	assert_eq(c.active.size(), 0, "stepping an emptied controller is safe")
+
+
+func test_expiry_removes_correct_instance() -> void:
+	var c := StatusController.new()
+	var short_s := _make("short", 0.5)
+	var long_s := _make("long", 5.0)
+	c.apply(short_s); c.apply(long_s)
+	c.step(1.0)
+	assert_false(c.has(&"short"), "expired status is gone")
+	assert_true(c.has(&"long"), "the other status is untouched")

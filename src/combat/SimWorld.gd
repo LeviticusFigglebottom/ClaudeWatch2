@@ -98,10 +98,28 @@ func add_pawn(hero: HeroData, team: int, player_id: int, net_id: int = -1) -> Pa
 	return p
 
 
+## Removes a pawn and severs every reference entities may still hold to it.
+## Deployables, projectiles and status instances routinely outlive their owner (a turret placed
+## before its owner died keeps ticking), so freeing the pawn without clearing those leaves dangling
+## references that blow up the moment a deployable builds a DamageEvent from `owner_pawn`.
 func remove_pawn(p: Pawn) -> void:
 	if p == null:
 		return
 	pawns.erase(p.net_id)
+	for d: Deployable in deployables.values():
+		if d.owner_pawn == p:
+			d.owner_pawn = null
+	for pr: Projectile in projectiles.values():
+		if pr.owner_pawn == p:
+			pr.owner_pawn = null
+		if pr.homing_target == p:
+			pr.homing_target = null
+	for other: Pawn in pawns.values():
+		for inst: StatusInstance in other.status.active:
+			if inst.source == p:
+				inst.source = null
+		if other.last_damage_source == p:
+			other.last_damage_source = null
 	p.queue_free()
 
 

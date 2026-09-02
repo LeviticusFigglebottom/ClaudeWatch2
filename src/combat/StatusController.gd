@@ -126,9 +126,15 @@ func clear_all() -> void:
 	_dirty = true
 
 
+## Ticks durations, damage-over-time and heal-over-time.
+## A DoT tick can kill the pawn, and death clears `active` re-entrantly, so this iterates a
+## snapshot and re-checks membership after every call that can re-enter rather than trusting
+## indices into a list that may have been emptied underneath it.
 func step(dt: float) -> void:
-	for i in range(active.size() - 1, -1, -1):
-		var s := active[i]
+	var snapshot := active.duplicate()
+	for s: StatusInstance in snapshot:
+		if not active.has(s):
+			continue
 		s.remaining -= dt
 		if s.data.dot_dps > 0.0 and pawn and pawn.world and pawn.world.is_server:
 			s.accum_dot += s.data.dot_dps * s.stacks * dt
@@ -139,13 +145,17 @@ func step(dt: float) -> void:
 				ev.position = pawn.center(); ev.direction = Vector3.ZERO
 				s.accum_dot = 0.0
 				pawn.world.apply_damage(ev)
+				if not active.has(s):
+					continue
 		if s.data.hot_hps > 0.0 and pawn and pawn.world and pawn.world.is_server:
 			s.accum_hot += s.data.hot_hps * s.stacks * dt
 			if s.accum_hot >= s.data.hot_hps * s.stacks * DOT_BATCH or s.remaining <= 0.0:
 				pawn.world.apply_heal(s.source, pawn, s.accum_hot, s.data.id)
 				s.accum_hot = 0.0
+				if not active.has(s):
+					continue
 		if s.remaining <= 0.0 and s.data.duration > 0.0:
-			active.remove_at(i)
+			active.erase(s)
 			_dirty = true
 			if pawn and pawn.world:
 				pawn.world.on_status_removed(pawn, s)
