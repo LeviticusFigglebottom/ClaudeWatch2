@@ -10,13 +10,13 @@ var buttons: Dictionary = {}
 
 func _ready() -> void:
 	theme = UITheme.theme()
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var dim := ColorRect.new()
 	dim.color = Color(0.02, 0.025, 0.04, 0.82)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
 	var root := HBoxContainer.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.offset_left = 50; root.offset_top = 50; root.offset_right = -50; root.offset_bottom = -50
 	root.add_theme_constant_override("separation", 24)
 	add_child(root)
@@ -174,7 +174,7 @@ class HeroCard extends Button:
 		hero = h
 		custom_minimum_size = Vector2(120, 96)
 		var vb := VBoxContainer.new()
-		vb.set_anchors_preset(Control.PRESET_FULL_RECT)
+		vb.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		vb.offset_left = 6; vb.offset_top = 6; vb.offset_right = -6; vb.offset_bottom = -6
 		add_child(vb)

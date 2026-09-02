@@ -247,7 +247,7 @@ func step(cmd: InputCmd, dt: float, ctx_factory: Callable) -> void:
 			if charges_left < data.charges:
 				cooldown_remaining = data.effective_cooldown()
 	if fire_interval_remaining > 0.0:
-		fire_interval_remaining -= dt
+		fire_interval_remaining -= dt * st.fire_rate_mult
 	if reload_remaining > 0.0:
 		reload_remaining -= dt
 		if reload_remaining <= 0.0:

@@ -36,6 +36,15 @@ static func resolve_damage(ev: DamageEvent, world: SimWorld) -> void:
 	if ev.amount <= 0.0:
 		ev.prevented = true; ev.prevented_reason = &"zero"
 		return
+	# Vigil-style protection: the hit can't take the last hit point.
+	if t.status.min_health_one and ev.type != RF.DamageType.TRUE:
+		var cap := t.health.total() - 1.0
+		if ev.amount >= cap:
+			ev.amount = maxf(cap, 0.0)
+			if ev.amount <= 0.0:
+				ev.prevented = true; ev.prevented_reason = &"vigil"
+				world.on_damage_prevented(ev)
+				return
 	# Apply to layers
 	var dealt := t.health.take(ev, tuning)
 	t.health.last_damage_tick = world.tick

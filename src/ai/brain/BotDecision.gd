@@ -390,10 +390,17 @@ func _pick_fight_position(tpos: Vector3, visible: bool) -> Vector3:
 		if p != target:
 			other_threats.append(p.center())
 	var iq := brain.skill.positioning_iq
-	for i in 12:
+	var tm: TacticalMap = brain.server.tactical
+	var tnodes: Array[TacticalMap.TNode] = tm.nodes_near(me.global_position, 8.0) if tm and tm.baked else []
+	var total := 12 + mini(tnodes.size(), 10)
+	for i in total:
 		var cand: Vector3
+		var tnode: TacticalMap.TNode = null
 		if i == 0:
 			cand = me.global_position
+		elif i >= 12:
+			tnode = tnodes[(i - 12 + _slot_offset) % tnodes.size()]
+			cand = tnode.pos
 		else:
 			var ang := r.randf() * TAU
 			var rad := r.randf_range(1.5, 7.0)
@@ -416,6 +423,11 @@ func _pick_fight_position(tpos: Vector3, visible: bool) -> Vector3:
 				exposed += 1
 		s -= exposed * 0.5 * iq
 		s += (cand.y - me.global_position.y) * 0.25 * hero_ai.prefers_high_ground
+		if tnode != null:
+			# Baked knowledge: cover toward the target direction and low openness are worth a lot to smart bots.
+			if tm.has_cover(tnode, (tpos - cand)): s += 0.6 * iq
+			s += (1.0 - tnode.openness) * 0.4 * iq
+			s += tnode.height * 0.1 * hero_ai.prefers_high_ground
 		if i == 0: s += 0.35   # inertia
 		# Bulwarks stand in front of allies; supports behind.
 		if me.hero.role == RF.Role.BULWARK: s -= absf(d - ideal) * 0.05

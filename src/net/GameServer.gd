@@ -34,6 +34,7 @@ var bandwidth_kbps: float = 0.0
 var replay: ReplayRecorder
 var perf_tick_ms: float = 0.0
 var potg: Dictionary = {}
+var tactical: TacticalMap
 
 
 func host(port: int, cfg: MatchConfig) -> void:
@@ -90,6 +91,7 @@ func host(port: int, cfg: MatchConfig) -> void:
 		layout = MapLayout.new()
 		world.map_root.add_child(layout)
 	_spawn_health_packs()
+	tactical = TacticalMap.load_or_bake(config.map_id, world, layout)
 	var mdata := Registry.mode(config.mode_id)
 	if mdata == null:
 		mdata = Registry.mode(md.supported_modes[0]) if not md.supported_modes.is_empty() else null
@@ -349,7 +351,7 @@ func request_hero(ps: PlayerState, hero_id: StringName) -> void:
 	var hero := Registry.hero(hero_id)
 	if hero == null or hero_id == ps.hero_id and ps.pawn and ps.pawn.alive:
 		return
-	if not config.allow_hero_duplicates:
+	if not config.allow_hero_duplicates and Registry.heroes.size() >= 8:
 		for other: PlayerState in team_players(ps.team):
 			if other != ps and other.hero_id == hero_id:
 				send_event_to(ps, &"notice", {"text": "%s is already on your team" % hero.display_name})
@@ -673,7 +675,7 @@ func _relevant(ps: PlayerState, kind: StringName, pl: Dictionary) -> bool:
 			return my != null and (int(pl["src"]) == my.net_id or int(pl["tgt"]) == my.net_id)
 		&"footstep":
 			return my != null and my.global_position.distance_to(pl["pos"]) < 28.0 and int(pl["pawn"]) != my.net_id
-		&"hitscan", &"melee", &"beam", &"area", &"projectile_impact", &"projectile_bounce", &"projectile_expire", &"projectile_stuck", &"sound", &"teleport":
+		&"hitscan", &"melee", &"beam", &"beam_segments", &"area", &"projectile_impact", &"projectile_bounce", &"projectile_expire", &"projectile_stuck", &"sound", &"teleport", &"chain_arc", &"cadence_beat", &"zipline", &"hero_fx":
 			if my == null:
 				return true
 			var pos: Vector3 = pl.get("pos", pl.get("origin", pl.get("end", my.global_position)))

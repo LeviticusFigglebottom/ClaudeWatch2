@@ -25,6 +25,7 @@ enum Stacking { REFRESH, STACK_DURATION, STACK_INTENSITY, IGNORE_IF_ACTIVE }
 @export var jump_mult: float = 1.0
 @export var cooldown_rate_mult: float = 1.0
 @export var ult_charge_mult: float = 1.0
+@export var fire_rate_mult: float = 1.0          # scales HOLD weapon fire rate
 
 @export_group("Flags")
 @export var rooted: bool = false
@@ -39,6 +40,7 @@ enum Stacking { REFRESH, STACK_DURATION, STACK_INTENSITY, IGNORE_IF_ACTIVE }
 @export var suppress_regen: bool = false
 @export var grounded_lock: bool = false     # cannot leave ground (anti-gravity heroes)
 @export var airborne: bool = false          # forced float (Rook's Lift)
+@export var min_health_one: bool = false    # cannot drop below 1 hp (Tallow's Vigil)
 
 @export_group("Over time")
 @export var dot_dps: float = 0.0

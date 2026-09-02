@@ -208,7 +208,7 @@ func setup_environment(hdri: String, sun_dir: Vector3, sun_color: Color, sun_ene
 	if hdri != "" and ResourceLoader.exists(path):
 		var pm := PanoramaSkyMaterial.new()
 		pm.panorama = load(path)
-		pm.energy_multiplier = 1.0
+		pm.energy_multiplier = float(Console.cvar("env_sky_mult", 0.85))
 		sky.sky_material = pm
 	else:
 		var psm := ProceduralSkyMaterial.new()
@@ -221,13 +221,13 @@ func setup_environment(hdri: String, sun_dir: Vector3, sun_color: Color, sun_ene
 	e.background_mode = Environment.BG_SKY
 	e.sky = sky
 	e.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
-	e.ambient_light_sky_contribution = 0.7
+	e.ambient_light_sky_contribution = 0.55
 	e.ambient_light_color = ambient
 	e.ambient_light_energy = 1.0
 	e.reflected_light_source = Environment.REFLECTION_SOURCE_SKY
 	e.tonemap_mode = Environment.TONE_MAPPER_ACES
-	e.tonemap_exposure = exposure
-	e.tonemap_white = 4.0
+	e.tonemap_exposure = exposure * float(Console.cvar("env_exposure_mult", 0.7))
+	e.tonemap_white = 6.0
 	e.ssao_enabled = bool(Settings.get_value(&"video", "ssao"))
 	e.ssao_radius = 1.5
 	e.ssao_intensity = 1.5
@@ -252,7 +252,7 @@ func setup_environment(hdri: String, sun_dir: Vector3, sun_color: Color, sun_ene
 	sun = DirectionalLight3D.new()
 	sun.name = "Sun"
 	sun.light_color = sun_color
-	sun.light_energy = sun_energy
+	sun.light_energy = sun_energy * float(Console.cvar("env_sun_mult", 0.45))
 	sun.shadow_enabled = true
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS
 	sun.directional_shadow_max_distance = 160.0

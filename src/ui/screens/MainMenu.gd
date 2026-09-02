@@ -7,16 +7,16 @@ var bg_layer: Control
 
 func _ready() -> void:
 	theme = UITheme.theme()
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var bg := ColorRect.new()
 	bg.color = UITheme.BG
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(bg)
 	var ring := RingMotif.new()
-	ring.set_anchors_preset(Control.PRESET_FULL_RECT)
+	ring.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(ring)
 	var root := HBoxContainer.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.offset_left = 80; root.offset_top = 60; root.offset_right = -80; root.offset_bottom = -60
 	add_child(root)
 	var left := VBoxContainer.new()

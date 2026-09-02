@@ -10,9 +10,9 @@ var desc: Label
 
 func _ready() -> void:
 	theme = UITheme.theme()
-	set_anchors_preset(Control.PRESET_FULL_RECT)
-	var bg := ColorRect.new(); bg.color = UITheme.BG; bg.set_anchors_preset(Control.PRESET_FULL_RECT); add_child(bg)
-	var c := CenterContainer.new(); c.set_anchors_preset(Control.PRESET_FULL_RECT); add_child(c)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var bg := ColorRect.new(); bg.color = UITheme.BG; bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); add_child(bg)
+	var c := CenterContainer.new(); c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); add_child(c)
 	var p := UITheme.panel(28)
 	p.custom_minimum_size = Vector2(620, 0)
 	c.add_child(p)

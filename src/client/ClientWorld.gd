@@ -358,6 +358,8 @@ func _present(kind: StringName, pl: Dictionary, predicted: bool) -> void:
 					if is_me: fp_rig.on_ability(ab, phase)
 					_predicted_beam_end.erase(p.net_id)
 					vfx.end_beam(p.net_id)
+					for i in 4:
+						vfx.end_beam(p.net_id * 16 + i)
 		&"beam":
 			var p := w.get_pawn(int(pl["pawn"]))
 			if p == null: return
@@ -366,6 +368,18 @@ func _present(kind: StringName, pl: Dictionary, predicted: bool) -> void:
 			var pres := ab.presentation if ab and ab.presentation else AbilityPresentation.new()
 			var start := fp_rig.muzzle_position() if p == local_pawn else ((visuals[p.net_id] as PawnVisual).muzzle_position() if visuals.has(p.net_id) else p.center())
 			vfx.beam(p.net_id, start, pl["end"], pres, p.hero.theme_color)
+		&"beam_segments":
+			var p := w.get_pawn(int(pl["pawn"]))
+			if p == null: return
+			var slot := int(pl.get("slot", 0))
+			var ab: AbilityData = p.hero.slot_ability(slot) if slot >= 0 else null
+			var pres := ab.presentation if ab and ab.presentation else AbilityPresentation.new()
+			var pts: Array = pl.get("points", [])
+			var start := fp_rig.muzzle_position() if p == local_pawn else ((visuals[p.net_id] as PawnVisual).muzzle_position() if visuals.has(p.net_id) else p.center())
+			for i in pts.size():
+				var seg_end: Vector3 = pts[i]
+				vfx.beam(p.net_id * 16 + i, start, seg_end, pres, p.hero.theme_color)
+				start = seg_end
 		&"melee":
 			var p := w.get_pawn(int(pl["pawn"]))
 			if p == local_pawn:

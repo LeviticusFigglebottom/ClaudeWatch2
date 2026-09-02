@@ -26,19 +26,19 @@ var netstats: Label
 
 func _ready() -> void:
 	theme = UITheme.theme()
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_scale = float(Settings.get_value(&"accessibility", "hud_scale"))
 	crosshair = Crosshair.new()
-	crosshair.set_anchors_preset(Control.PRESET_FULL_RECT)
+	crosshair.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	crosshair.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(crosshair)
 	damage_dir = DamageDirection.new()
-	damage_dir.set_anchors_preset(Control.PRESET_FULL_RECT)
+	damage_dir.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	damage_dir.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(damage_dir)
 	hitmarker = Hitmarker.new()
-	hitmarker.set_anchors_preset(Control.PRESET_FULL_RECT)
+	hitmarker.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	hitmarker.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(hitmarker)
 	# Bottom-left: hero + health
@@ -554,7 +554,7 @@ class TeamFrame extends Control:
 	func _init() -> void:
 		custom_minimum_size = Vector2(190, 34)
 		var vb := VBoxContainer.new()
-		vb.set_anchors_preset(Control.PRESET_FULL_RECT)
+		vb.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		vb.add_theme_constant_override("separation", 0)
 		vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(vb)

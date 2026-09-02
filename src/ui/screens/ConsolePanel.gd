@@ -10,11 +10,10 @@ var history_index: int = -1
 func _ready() -> void:
 	theme = UITheme.theme()
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	set_anchors_preset(Control.PRESET_TOP_WIDE)
-	custom_minimum_size.y = 320
-	size.y = 320
+	set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	offset_bottom = 320
 	panel = PanelContainer.new()
-	panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var sb := StyleBoxFlat.new()
 	sb.bg_color = Color(0.02, 0.025, 0.04, 0.94)
 	sb.border_color = UITheme.AMBER

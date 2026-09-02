@@ -10,7 +10,7 @@ func _ready() -> void:
 	set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	offset_left = -420; offset_top = 90; offset_right = -24; offset_bottom = 400
 	box = VBoxContainer.new()
-	box.set_anchors_preset(Control.PRESET_FULL_RECT)
+	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	box.alignment = BoxContainer.ALIGNMENT_BEGIN
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(box)

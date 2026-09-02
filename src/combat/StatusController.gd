@@ -17,6 +17,8 @@ var gravity_mult: float = 1.0
 var jump_mult: float = 1.0
 var cooldown_rate_mult: float = 1.0
 var ult_charge_mult: float = 1.0
+var fire_rate_mult: float = 1.0
+var min_health_one: bool = false
 var rooted: bool = false
 var stunned: bool = false
 var silenced: bool = false
@@ -155,7 +157,7 @@ func _recompute() -> void:
 	_dirty = false
 	speed_mult = 1.0; damage_dealt_mult = 1.0; damage_taken_mult = 1.0
 	healing_received_mult = 1.0; healing_dealt_mult = 1.0; gravity_mult = 1.0; jump_mult = 1.0
-	cooldown_rate_mult = 1.0; ult_charge_mult = 1.0
+	cooldown_rate_mult = 1.0; ult_charge_mult = 1.0; fire_rate_mult = 1.0; min_health_one = false
 	rooted = false; stunned = false; silenced = false; disarmed = false; invulnerable = false
 	unstoppable = false; revealed = false; invisible = false; anti_heal = false; suppress_regen = false
 	grounded_lock = false; airborne = false
@@ -177,6 +179,8 @@ func _recompute() -> void:
 		jump_mult *= d.jump_mult
 		cooldown_rate_mult *= d.cooldown_rate_mult
 		ult_charge_mult *= d.ult_charge_mult
+		fire_rate_mult *= d.fire_rate_mult
+		min_health_one = min_health_one or d.min_health_one
 		rooted = rooted or d.rooted
 		stunned = stunned or d.stunned
 		silenced = silenced or d.silenced
