@@ -34,7 +34,8 @@ var muzzle_flash: MeshInstance3D
 var flash_t: float = 0.0
 var _hitstop_scale_backup: float = 1.0
 var vm_light: OmniLight3D
-var _vm_base_pos := Vector3(0.28, -0.26, -0.45)
+var _vm_base_pos := Vector3(0.24, -0.22, -0.38)
+const VM_SCALE := 0.62
 
 
 func _ready() -> void:
@@ -48,6 +49,7 @@ func _ready() -> void:
 	arms.name = "Arms"
 	camera.add_child(arms)
 	arms.position = _vm_base_pos
+	arms.scale = Vector3.ONE * VM_SCALE
 	noise.seed = 7
 	noise.frequency = 1.2
 	vm_light = OmniLight3D.new()
@@ -90,20 +92,20 @@ func _build_viewmodel() -> void:
 	arm_mat.roughness = 0.6
 	arm_mat.metallic = 0.25
 	var fore := MeshInstance3D.new()
-	var cap := CapsuleMesh.new(); cap.radius = 0.05; cap.height = 0.42
+	var cap := CapsuleMesh.new(); cap.radius = 0.045; cap.height = 0.38
 	fore.mesh = cap
 	fore.material_override = arm_mat
-	fore.position = Vector3(0.02, -0.06, 0.22)
-	fore.rotation.x = PI * 0.5
+	fore.position = Vector3(0.06, -0.12, 0.3)
+	fore.rotation = Vector3(PI * 0.5 - 0.35, 0.15, 0.0)
 	fore.layers = 1 << 2
 	arms.add_child(fore)
 	var hand := MeshInstance3D.new()
-	var hs := SphereMesh.new(); hs.radius = 0.055; hs.height = 0.11
+	var hs := SphereMesh.new(); hs.radius = 0.05; hs.height = 0.1
 	hand.mesh = hs
 	var skin := StandardMaterial3D.new()
 	skin.albedo_color = vis.skin_color if vis.head == HeroVisualData.HeadShape.BARE else vis.secondary_color
 	hand.material_override = skin
-	hand.position = Vector3(0.0, -0.05, 0.02)
+	hand.position = Vector3(0.0, -0.06, 0.1)
 	hand.layers = 1 << 2
 	arms.add_child(hand)
 	# Left hand supporting for two-handed styles
@@ -111,14 +113,14 @@ func _build_viewmodel() -> void:
 		var lhand := MeshInstance3D.new()
 		lhand.mesh = hs
 		lhand.material_override = skin
-		lhand.position = Vector3(-0.08, -0.06, -0.3)
+		lhand.position = Vector3(-0.06, -0.07, -0.28)
 		lhand.layers = 1 << 2
 		arms.add_child(lhand)
 		var lfore := MeshInstance3D.new()
 		lfore.mesh = cap
 		lfore.material_override = arm_mat
-		lfore.position = Vector3(-0.22, -0.12, -0.12)
-		lfore.rotation = Vector3(0.4, -0.6, 0.0)
+		lfore.position = Vector3(-0.2, -0.16, -0.1)
+		lfore.rotation = Vector3(0.6, -0.5, 0.0)
 		lfore.layers = 1 << 2
 		arms.add_child(lfore)
 	weapon = Node3D.new()

@@ -363,7 +363,7 @@ func request_hero(ps: PlayerState, hero_id: StringName) -> void:
 			var oh := Registry.hero(other.hero_id)
 			if oh and oh.role == hero.role:
 				role_count += 1
-	if role_count >= RF.ROLE_LIMIT[hero.role]:
+	if role_count >= RF.ROLE_LIMIT[hero.role] and Registry.heroes.size() >= 8 and config.team_size >= 5:
 		send_event_to(ps, &"notice", {"text": "Your team already has enough %ss" % RF.role_name(hero.role)})
 		return
 	var can_swap_now := ps.pawn == null or not ps.pawn.alive or (mode and mode.in_own_spawn(ps.pawn)) or (mode and mode.phase == ModeController.Phase.SETUP)

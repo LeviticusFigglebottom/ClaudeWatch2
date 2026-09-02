@@ -41,7 +41,8 @@ func _ready() -> void:
 			follow_id = int(a[0])
 		if a.size() > 1: orbit_dist = float(a[1])
 		activate(true)
-		return "following")
+		var p: Pawn = world.get_pawn(follow_id) if follow_id >= 0 else (App.client.local_pawn if App.client else null)
+		return "following %s" % (p.display_name if p else "nobody"))
 	Console.register("cam_overview", "cam_overview: map overview camera", func(_a: PackedStringArray) -> String:
 		if layout and layout.overview_camera != Transform3D():
 			mode = &"fixed"

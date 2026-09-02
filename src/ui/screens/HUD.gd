@@ -64,7 +64,7 @@ func _ready() -> void:
 	# Bottom-center: abilities + ult
 	var bc := VBoxContainer.new()
 	bc.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	bc.offset_left = -260; bc.offset_right = 260; bc.offset_top = -150; bc.offset_bottom = -30
+	bc.offset_left = -260; bc.offset_right = 260; bc.offset_top = -230; bc.offset_bottom = -30
 	bc.alignment = BoxContainer.ALIGNMENT_END
 	bc.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(bc)
@@ -79,7 +79,7 @@ func _ready() -> void:
 	# Bottom-right: ammo
 	ammo_label = UITheme.label("", 40, UITheme.TEXT)
 	ammo_label.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	ammo_label.offset_left = -300; ammo_label.offset_right = -36; ammo_label.offset_top = -90; ammo_label.offset_bottom = -36
+	ammo_label.offset_left = -300; ammo_label.offset_right = -36; ammo_label.offset_top = -120; ammo_label.offset_bottom = -36
 	ammo_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	add_child(ammo_label)
 	# Top-center: objective

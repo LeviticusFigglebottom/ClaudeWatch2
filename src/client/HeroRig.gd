@@ -115,7 +115,8 @@ func build(hero: HeroData, t: int) -> void:
 	weapon = Node3D.new(); weapon.name = "Weapon"
 	var fore_r: Node3D = arm_r.get_node("Fore")
 	fore_r.add_child(weapon)
-	weapon.position = Vector3(0, -0.32 * h, 0.05)
+	weapon.position = Vector3(0, -0.34 * h, 0.0)
+	weapon.rotation.x = -PI * 0.5   # forearm points forward once the arm swings up; align the barrel with it
 	WeaponBuilder.build(weapon, visual.weapon_style, visual, team)
 	muzzle = weapon.get_node_or_null("Muzzle") as Node3D
 	if muzzle == null:
@@ -142,13 +143,13 @@ func build(hero: HeroData, t: int) -> void:
 	match visual.stance:
 		&"hunched": torso.rotation.x = -0.18
 		&"brace": torso.rotation.x = -0.08
-	arm_r.rotation.x = -1.35
-	arm_l.rotation.x = -1.1
-	arm_l.rotation.z = 0.25
+	arm_r.rotation.x = 1.35
+	arm_l.rotation.x = 1.1
+	arm_l.rotation.z = -0.25
 
 
 func _build_head(node: Node3D, skin: StandardMaterial3D, primary: StandardMaterial3D, secondary: StandardMaterial3D, accent: StandardMaterial3D, glow: StandardMaterial3D, team_mat: StandardMaterial3D, bulk: float) -> void:
-	var r := 0.14 * (0.9 + bulk * 0.15)
+	var r := 0.115 * (0.9 + bulk * 0.12)
 	match visual.head:
 		HeroVisualData.HeadShape.HELMET_ROUND:
 			_sphere(node, r * 1.1, Vector3(0, r, 0), primary)
@@ -421,26 +422,26 @@ func animate(dt: float, s: Dictionary) -> void:
 	var recoil: float = s["recoil"]
 	var melee: float = s["melee"]
 	var pose: StringName = s["pose"]
-	var aim_x := -1.35 - pitch * 0.9 + recoil * 0.35
+	var aim_x := 1.35 + pitch * 0.9 - recoil * 0.35
 	arm_r.rotation.x = lerpf(arm_r.rotation.x, aim_x, 0.4)
 	arm_r.rotation.z = lerpf(arm_r.rotation.z, 0.0, 0.2)
 	if melee > 0.0:
-		arm_l.rotation.x = -2.2 + (1.0 - melee) * 1.2
-		arm_l.rotation.z = 0.6
+		arm_l.rotation.x = 2.2 - (1.0 - melee) * 1.2
+		arm_l.rotation.z = -0.6
 	elif pose == &"cast" or pose == &"throw":
-		arm_l.rotation.x = lerpf(arm_l.rotation.x, -2.4, 0.3)
-		arm_l.rotation.z = lerpf(arm_l.rotation.z, 0.5, 0.3)
+		arm_l.rotation.x = lerpf(arm_l.rotation.x, 2.4, 0.3)
+		arm_l.rotation.z = lerpf(arm_l.rotation.z, -0.5, 0.3)
 	elif pose == &"ult":
-		arm_l.rotation.x = lerpf(arm_l.rotation.x, -2.9, 0.3)
-		arm_r.rotation.x = lerpf(arm_r.rotation.x, -2.9, 0.3)
-		arm_l.rotation.z = lerpf(arm_l.rotation.z, 0.8, 0.3)
-		arm_r.rotation.z = lerpf(arm_r.rotation.z, -0.8, 0.3)
+		arm_l.rotation.x = lerpf(arm_l.rotation.x, 2.9, 0.3)
+		arm_r.rotation.x = lerpf(arm_r.rotation.x, 2.9, 0.3)
+		arm_l.rotation.z = lerpf(arm_l.rotation.z, -0.8, 0.3)
+		arm_r.rotation.z = lerpf(arm_r.rotation.z, 0.8, 0.3)
 	elif grounded and norm > 0.2:
-		arm_l.rotation.x = lerpf(arm_l.rotation.x, -1.0 + sin(cycle + PI) * norm * 0.5, 0.3)
-		arm_l.rotation.z = lerpf(arm_l.rotation.z, 0.25, 0.2)
+		arm_l.rotation.x = lerpf(arm_l.rotation.x, 1.0 + sin(cycle + PI) * norm * 0.5, 0.3)
+		arm_l.rotation.z = lerpf(arm_l.rotation.z, -0.25, 0.2)
 	else:
-		arm_l.rotation.x = lerpf(arm_l.rotation.x, -1.1, 0.2)
-		arm_l.rotation.z = lerpf(arm_l.rotation.z, 0.25, 0.2)
+		arm_l.rotation.x = lerpf(arm_l.rotation.x, 1.1, 0.2)
+		arm_l.rotation.z = lerpf(arm_l.rotation.z, -0.25, 0.2)
 	# Stun/root wobble
 	if s["stunned"]:
 		head.rotation.z = sin(Time.get_ticks_msec() * 0.02) * 0.2
@@ -473,7 +474,7 @@ func animate_death(t: float) -> void:
 	rotation.x = e * -1.35
 	hips.position.y = lerpf(base_hips_y, 0.25, e)
 	position.y = lerpf(0.0, 0.3, e)
-	arm_l.rotation.x = lerpf(arm_l.rotation.x, -0.3, 0.1)
-	arm_r.rotation.x = lerpf(arm_r.rotation.x, -0.2, 0.1)
+	arm_l.rotation.x = lerpf(arm_l.rotation.x, 0.3, 0.1)
+	arm_r.rotation.x = lerpf(arm_r.rotation.x, 0.2, 0.1)
 	if t > 3.5:
 		set_alpha(clampf(1.0 - (t - 3.5) / 2.0, 0.0, 1.0))

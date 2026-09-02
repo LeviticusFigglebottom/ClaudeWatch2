@@ -18,6 +18,7 @@ var is_open: bool = false
 var _queued: Array[String] = []
 var _queue_delay_ticks: int = 0
 var cvars: Dictionary = {}          # name -> Variant (debug tunables)
+var blocked: int = 0                # >0: queued commands wait (e.g. a screenshot in flight)
 
 
 func _ready() -> void:
@@ -107,6 +108,8 @@ func print_line(text: String, color: Color = Color.WHITE) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if blocked > 0:
+		return
 	if _queue_delay_ticks > 0:
 		_queue_delay_ticks -= 1
 		return

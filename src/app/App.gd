@@ -176,8 +176,12 @@ func on_client_disconnected(reason: String) -> void:
 
 
 func _take_screenshot(path: String) -> void:
+	Console.blocked += 1
+	# Two full frames so camera/interpolation changes from the previous command are applied.
+	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
 	var img := get_viewport().get_texture().get_image()
+	Console.blocked -= 1
 	if path.get_base_dir() != "":
 		DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(path) if path.begins_with("res://") or path.begins_with("user://") else path.get_base_dir())
 	var err := img.save_png(path)
