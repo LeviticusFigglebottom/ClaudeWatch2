@@ -116,6 +116,21 @@ func is_attacker(team: int) -> bool:
 	return team == attacking_team
 
 
+## Distance within which a pawn counts as on the objective. Bots read this so that a bot which
+## believes it is holding the objective is actually standing on it: the brain used to pick hold
+## positions on a 2-7 m ring, which is outside the push robot's 3.2 m contest radius, so a team
+## "holding" the robot never moved it.
+func contest_radius() -> float:
+	return 3.2
+
+
+## True when this team has to physically occupy the objective for its side to make progress.
+## Escort and hybrid defenders only have to deny it; in the symmetric modes (push, control) both
+## teams must stand on it, so bots on both sides need to walk onto it rather than ring it.
+func must_occupy(team: int) -> bool:
+	return data.symmetric or is_attacker(team)
+
+
 func defending_team() -> int:
 	return RF.enemy_team(attacking_team)
 

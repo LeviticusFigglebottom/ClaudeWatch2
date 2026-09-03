@@ -81,6 +81,7 @@ func step_objective(dt: float) -> void:
 			score[pusher_team] = 100
 			end_round(pusher_team, &"push_complete")
 			return
+	_update_score()
 	_place_robot()
 	if time_remaining <= 0.0:
 		var touching := pusher_team >= 0 and pusher_team == _trailing_team()
@@ -90,6 +91,15 @@ func step_objective(dt: float) -> void:
 			pass
 		elif not overtime_active:
 			finish_match()
+
+
+## Score is how far each team has driven its barrier, as a percentage of its half of the track, so
+## an unfinished push still reports something comparable instead of 0-0.
+func _update_score() -> void:
+	if half_length <= 0.0:
+		return
+	score[RF.Team.A] = int(clampf((barrier_pos[RF.Team.A] + half_length * 0.1) / half_length, 0.0, 1.0) * 100.0)
+	score[RF.Team.B] = int(clampf((half_length * 0.1 - barrier_pos[RF.Team.B]) / half_length, 0.0, 1.0) * 100.0)
 
 
 func _trailing_team() -> int:

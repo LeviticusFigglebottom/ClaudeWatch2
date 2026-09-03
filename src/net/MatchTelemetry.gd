@@ -12,7 +12,14 @@ var damage_by_hero: Dictionary = {}
 var healing_by_hero: Dictionary = {}
 var ult_uptime_by_hero: Dictionary = {}
 var objective_time_by_hero: Dictionary = {}
+var objective_track: Array = []   # {t, contest_a, contest_b, ...mode progress} sampled every SAMPLE_S
 var _uptime_accum: float = 0.0
+var _track_accum: float = 0.0
+
+const TRACK_SAMPLE_S := 5.0
+## hud_state() keys worth keeping: how far the objective has actually travelled.
+const TRACK_KEYS: Array[String] = ["push_progress", "barrier_a", "barrier_b", "payload_progress",
+	"checkpoint", "capture_a", "capture_b", "point_owner", "pusher_team", "contested", "phase"]
 
 
 func setup(s: GameServer) -> void:
@@ -32,6 +39,19 @@ func step(dt: float) -> void:
 				if ps.pawn.on_objective:
 					objective_time_by_hero[h] = float(objective_time_by_hero.get(h, 0.0)) + 1.0
 					ps.stats.objective_time += 1.0
+	_track_accum += dt
+	if _track_accum >= TRACK_SAMPLE_S and server.mode:
+		_track_accum = 0.0
+		var row := {"t": roundf(elapsed)}
+		if server.mode.contest_count.size() >= 2:
+			row["contest_a"] = server.mode.contest_count[0]
+			row["contest_b"] = server.mode.contest_count[1]
+		var hs := server.mode.hud_state()
+		for k: String in TRACK_KEYS:
+			if hs.has(k):
+				var v: Variant = hs[k]
+				row[k] = snappedf(float(v), 0.001) if v is float else v
+		objective_track.append(row)
 
 
 func on_event(kind: StringName, pl: Dictionary) -> void:
@@ -73,6 +93,7 @@ func finish(summary: Dictionary) -> void:
 		"kills": kills, "ult_uses": ult_uses, "ttk": ttk_samples,
 		"damage_by_hero": damage_by_hero, "healing_by_hero": healing_by_hero,
 		"ult_uptime_by_hero": ult_uptime_by_hero, "objective_time_by_hero": objective_time_by_hero,
+		"objective_track": objective_track,
 		"rounds": summary.get("rounds", []),
 	}
 	var path := server.config.telemetry_path

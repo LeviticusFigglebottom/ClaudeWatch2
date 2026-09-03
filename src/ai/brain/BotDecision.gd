@@ -155,7 +155,10 @@ func _evaluate() -> void:
 		obj_score += 0.25
 	if stance == TeamCoordinator.Stance.STAGGER_WAIT: obj_score -= 0.5
 	if mode and mode.phase == ModeController.Phase.SETUP: obj_score = 0.6 if not attacking else 0.1
-	scores[Goal.HOLD_OBJECTIVE if not attacking else Goal.ADVANCE] = obj_score
+	# Teams that have to stand on the objective walk onto it (ADVANCE); teams that only have to deny
+	# it take up positions around it (HOLD_OBJECTIVE).
+	var occupy: bool = mode == null or bool(mode.must_occupy(me.team))
+	scores[Goal.ADVANCE if occupy else Goal.HOLD_OBJECTIVE] = obj_score
 	# Regroup / stagger
 	var dist_team := me.global_position.distance_to(ally_centroid)
 	var rg := 0.0
@@ -348,9 +351,15 @@ func _objective_hold_point(objective: Vector3) -> Vector3:
 		var espawn: Vector3 = brain.world.mode.spawn_transform(RF.enemy_team(me.team)).origin
 		enemy_dir = espawn - objective
 	enemy_dir = Vector3(enemy_dir.x, 0, enemy_dir.z).normalized()
+	# Stay inside the contest radius when this team has to occupy the objective, so "holding" it
+	# still counts toward capture or pushing.
+	var max_rad := 7.0
+	var wmode: ModeController = brain.world.mode
+	if wmode and wmode.must_occupy(me.team):
+		max_rad = maxf(wmode.contest_radius() * 0.8, 1.5)
 	for i in 10:
 		var ang := (float(i) + _slot_offset * 0.37) / 10.0 * TAU
-		var rad := 2.0 + r.randf() * 5.0
+		var rad := minf(2.0 + r.randf() * 5.0, max_rad)
 		if me.hero.role == RF.Role.BULWARK: rad *= 0.6
 		var cand := objective + Vector3(cos(ang), 0, sin(ang)) * rad
 		cand = brain.world.ground_point(cand + Vector3(0, 3, 0))
@@ -392,12 +401,27 @@ func _pick_fight_position(tpos: Vector3, visible: bool) -> Vector3:
 	var iq := brain.skill.positioning_iq
 	var tm: TacticalMap = brain.server.tactical
 	var tnodes: Array[TacticalMap.TNode] = tm.nodes_near(me.global_position, 8.0) if tm and tm.baked else []
+	# Fight from on the objective when this team has to occupy it. Players brawl on the point rather
+	# than backing off it, and in push nothing moves at all unless bodies are inside the robot's
+	# contest radius. The pull fades with distance so bots away from the fight are not dragged in.
+	var obj_pull := 0.0
+	var obj_pos := Vector3.ZERO
+	var obj_r := 1.0
+	var wmode: ModeController = world.mode
+	if wmode and wmode.must_occupy(me.team) and (wmode.phase == ModeController.Phase.LIVE or wmode.phase == ModeController.Phase.OVERTIME):
+		obj_pos = wmode.objective_position()
+		obj_r = maxf(wmode.contest_radius() - 0.7, 1.0)
+		obj_pull = clampf(1.0 - me.global_position.distance_to(obj_pos) / 26.0, 0.0, 1.0) * 1.4
 	var total := 12 + mini(tnodes.size(), 10)
 	for i in total:
 		var cand: Vector3
 		var tnode: TacticalMap.TNode = null
 		if i == 0:
 			cand = me.global_position
+		elif obj_pull > 0.0 and i <= 2:
+			# Two candidates standing on the objective, spread so a team does not stack on one spot.
+			var oa := (float(i) + _slot_offset * 1.7) / 3.0 * TAU
+			cand = world.ground_point(obj_pos + Vector3(cos(oa), 0, sin(oa)) * obj_r * 0.6 + Vector3(0, 2.0, 0))
 		elif i >= 12:
 			tnode = tnodes[(i - 12 + _slot_offset) % tnodes.size()]
 			cand = tnode.pos
@@ -428,6 +452,9 @@ func _pick_fight_position(tpos: Vector3, visible: bool) -> Vector3:
 			if tm.has_cover(tnode, (tpos - cand)): s += 0.6 * iq
 			s += (1.0 - tnode.openness) * 0.4 * iq
 			s += tnode.height * 0.1 * hero_ai.prefers_high_ground
+		if obj_pull > 0.0:
+			var od := cand.distance_to(obj_pos)
+			s += obj_pull * (1.0 if od <= obj_r else -clampf((od - obj_r) / 6.0, 0.0, 1.0))
 		if i == 0: s += 0.35   # inertia
 		# Bulwarks stand in front of allies; supports behind.
 		if me.hero.role == RF.Role.BULWARK: s -= absf(d - ideal) * 0.05

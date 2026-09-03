@@ -40,6 +40,10 @@ func update_contest() -> void:
 	contest_count = count_on_zone(point)
 
 
+func contest_radius() -> float:
+	return minf(point.half_extents.x, point.half_extents.z) if point else 5.0
+
+
 func step_objective(dt: float) -> void:
 	if unlock_timer > 0.0:
 		unlock_timer -= dt

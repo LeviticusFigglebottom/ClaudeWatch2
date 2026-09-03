@@ -78,6 +78,8 @@ func step_objective(dt: float) -> void:
 		if checkpoint_index < layout.payload_checkpoints.size() and progress >= layout.payload_checkpoints[checkpoint_index]:
 			checkpoint_index += 1
 			time_remaining += data.time_per_checkpoint
+			# Report checkpoints as they land, so an undelivered payload still scores what it reached.
+			score[attacking_team] = maxi(score[attacking_team], checkpoint_index)
 			announce(&"checkpoint", {"index": checkpoint_index})
 		if progress >= path_length - 0.05:
 			completed[attacking_team] = true

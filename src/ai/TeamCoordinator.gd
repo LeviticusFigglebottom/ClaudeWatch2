@@ -167,6 +167,10 @@ func _staging_point(objective: Vector3) -> Vector3:
 
 
 func _hold_point(objective: Vector3) -> Vector3:
+	# Teams that must occupy the objective rally on it, not 4 m behind it: in push that offset put
+	# the whole team outside the robot's contest radius, so holding the robot never moved it.
+	if server.mode.must_occupy(team):
+		return objective
 	var spawn := server.mode.spawn_transform(team).origin
 	var dir := (spawn - objective)
 	if dir.length() < 1.0:
