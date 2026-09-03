@@ -69,7 +69,7 @@ server in-process.
 ```bash
 godot --headless --path . --export-release "Linux Client" build/linux/ringfall.x86_64
 godot --headless --path . --export-release "Linux Dedicated Server" build/server/ringfall_server.x86_64
-./build/server/ringfall_server.x86_64 --headless -- --server --map=kestrel --mode=control
+./build/server/ringfall_server.x86_64 --headless -- --server --map=saltmarsh --mode=escort
 ```
 
 ## Tests and tooling
@@ -78,10 +78,11 @@ godot --headless --path . --export-release "Linux Dedicated Server" build/server
 tools/parse_check.sh                           # parse gate: every .gd, catches runtime-only script errors
 tools/test.sh                                  # GUT unit suite (combat math, statuses, codec, rays)
 tools/check.sh saltmarsh escort 1800           # import + build data + headless bot match, lists script errors
-tools/sim.py run --map kestrel --mode control --matches 40 --procs 4 --out sim_out/kestrel
-tools/sim.py analyze sim_out/kestrel           # pick/win/K-D/damage/heal/ult-uptime/TTK tables
+tools/sim.py run --map test_range --mode control --matches 40 --procs 4 --out sim_out/control
+tools/sim.py analyze sim_out/control           # pick/win/K-D/damage/heal/ult-uptime/TTK tables
+#   note: one --out directory per seed; a second batch into the same one overwrites its matches
 tools/net_stress.sh 150 0.1 40                 # bot match with simulated latency/loss/jitter
-tools/screenshot.sh "map aurelia hybrid 9; wait 600; shot screenshots/aurelia.png; quit"
+tools/screenshot.sh "map nightmarket push 9; wait 600; shot screenshots/nightmarket.png; quit"
 python3 tools/audio/gen_audio.py               # synthesize every referenced sound id
 tools/godot.sh --headless res://tools/prop_audit.tscn      # per-map floating/sunk/embedded prop report
 tools/godot.sh --headless res://tools/vfx_audit.tscn       # every authored VFX id resolves and builds
@@ -104,7 +105,8 @@ rather than on its exit code.
 ## Controls (defaults)
 
 WASD move · Space jump · Ctrl/C crouch · LMB primary · RMB secondary · Shift ability 1 · E ability 2
-· F ability 3 · Q ultimate · R reload · V melee · G ping · Tab scoreboard · H hero select · Esc menu.
+· F ability 3 · Q ultimate · R reload · V melee · G ping · Tab scoreboard · H hero select · Y chat
+· U team chat · Esc menu.
 Everything is rebindable in Settings → Controls.
 
 ## Layout

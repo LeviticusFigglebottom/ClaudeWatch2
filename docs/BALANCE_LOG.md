@@ -116,17 +116,89 @@ the two changes above differing.
 None. Pass 2 was a verification run, and the Cathedral result says to measure before nudging again
 rather than change a second lever on a 9-pick sample.
 
+## Pass 3 — larger sample at the pass-1 numbers
+
+32 matches, seeds 4000-6000. (Intended 56: several batches were written into one `--out` directory
+and later seeds overwrote earlier files, since match filenames only encode map, mode and index. Use
+one directory per seed.)
+
+| hero | picks | win% | dmg/10m | heal/10m |
+|---|---|---|---|---|
+| cadence | 31 | 45.2 | 5290 | 8007 |
+| cathedral | 14 | 71.4 | 13593 | 1543 |
+| kiln | 19 | 21.1 | 12158 | 0 |
+
+### Findings
+
+1. **Cadence is fixed.** 64.9% over 37 picks before the change, 45.2% over 31 picks after. Healing
+   fell from 9863 to 8007 per ten minutes alive.
+2. **Cathedral was still an outlier** at 71.4%, and his damage had barely moved, confirming pass 2's
+   reading that Censer rather than the mace carries him.
+3. **Kiln is now a real finding, not noise.** 28.0%, 23.5%, 21.1% across three passes and roughly
+   60 cumulative picks, with the second-highest damage in the game every time.
+
+### Changes
+
+| Change | From | To | Why |
+|---|---|---|---|
+| Cathedral Censer burst damage | 70 | 52 | The actual source of a bulwark's striker-level output, and it got stronger when bots began clustering on the objective |
+
+## Pass 4 — verification, largest sample
+
+56 matches, seeds 4000-6000, one output directory per seed. Team A won 30, B 20, 6 draws. Average
+duration 322 s.
+
+| hero | picks | win% | K/D | dmg/10m | heal/10m | obj% |
+|---|---|---|---|---|---|---|
+| bombard | 71 | 46.5 | 2.30 | 3662 | 0 | 20.3 |
+| lumen | 65 | 43.1 | 2.93 | 7538 | 970 | 18.4 |
+| cadence | 56 | 53.6 | 2.03 | 4720 | 7517 | 26.3 |
+| ferry | 42 | 35.7 | 1.41 | 3677 | 1489 | 16.7 |
+| suture | 41 | 39.0 | 2.34 | 4869 | 2828 | 21.9 |
+| cairn | 39 | 53.8 | 4.09 | 9896 | 0 | 35.9 |
+| harrier | 38 | 39.5 | 2.20 | 8530 | 0 | 27.3 |
+| vesper | 31 | 41.9 | 3.18 | 8985 | 0 | 21.4 |
+| kiln | 27 | 25.9 | 3.29 | 12691 | 0 | 30.3 |
+| ricochet | 24 | 45.8 | 1.12 | 3810 | 0 | 28.9 |
+| wisp | 21 | 19.0 | 2.35 | 8962 | 0 | 17.9 |
+| cathedral | 20 | 55.0 | 3.75 | 13211 | 1568 | 20.7 |
+| tallow | 20 | 55.0 | 3.03 | 6393 | 9039 | 21.1 |
+| bramble | 19 | 63.2 | 3.75 | 8938 | 557 | 28.4 |
+| ballast | 19 | 52.6 | 7.41 | 12477 | 0 | 30.1 |
+| sable | 11 | 63.6 | 2.65 | 10936 | 0 | 18.8 |
+| coil | 9 | 55.6 | 6.35 | 13979 | 0 | 32.2 |
+| rook | 7 | 14.3 | 1.06 | 3837 | 0 | 28.6 |
+
+### Findings
+
+1. **Both changes did what they were meant to.** Cathedral 64.0 → 71.4 → **55.0%** once the right
+   ability was cut, with damage 14258 → **13211**. Cadence 64.9 → **53.6%** on a 56-pick sample.
+   Neither is an outlier any more, and neither was gutted: both sit slightly above even.
+2. **Kiln is the clearest remaining problem.** 25.9% on 27 picks, and 21-28% in every pass so far,
+   while posting the highest damage in the game. Damage that does not convert to wins.
+3. **Wisp is consistently low** (19.0% here, 10-39% across passes) on middling damage.
+4. **Rook now gets picked** occasionally (7 slots, up from 1) but is still under-sampled.
+5. **Persistent side skew:** team A has won more in every batch (24/18, 18/5, 17/10, 30/20). Across
+   160 matches that is unlikely to be pure variance and is worth a look at spawn advantage or the
+   attacker-first ordering in the symmetric modes.
+
+### Changes
+
+None. Pass 4 was a verification run and both targets landed in band.
+
 ## Next pass
 
-1. **Cathedral, with a real sample.** The lever to test is Censer's burst damage or its radius, not
-   the mace. Needs at least 25 Cathedral picks before and after.
-2. **Cadence again.** If she stays above roughly 60% with a decent sample, the next lever is the
-   on-beat shell heal (30 in 4 m), which pass 2 showed is the larger part of her healing.
-3. **Kiln and Cairn.** Determine whether the low win rate is the hero or bots feeding with it, by
-   reading their death positions and objective time rather than by changing numbers.
-4. **Rook needs picks.** Fix the `HeroPicker` weighting so it appears, then it can be measured.
-5. **Ult hoarding.** 14-30% ult uptime on the supports is a bot policy problem in `BotDecision`, and
+1. **Kiln.** Four passes, ~90 picks, 21-28% win with the highest damage in the game. Before touching
+   a number, read where Kiln dies and how the bots spend Heat: this looks like output that never
+   converts, which is usually positioning or resource policy rather than tuning.
+2. **Wisp**, same treatment: consistently low across passes on ordinary damage.
+3. **The side skew.** Team A has won more in all four batches (89 to 53 overall). Check spawn
+   advantage and the attacker-first ordering in the symmetric modes before reading any more
+   per-hero win rates, because a systematic side bias contaminates all of them.
+4. **Rook needs picks.** `HeroPicker` selects it 7 times in 56 matches where the average hero gets
+   30. Fix the weighting, then it can be measured.
+5. **Ult hoarding.** 16-23% ult uptime on the supports is a bot policy problem in `BotDecision`, and
    it distorts every support's apparent strength. Worth fixing before trusting support win rates.
-6. **Time-to-kill.** A median of 8.55 s from first damage to death is long for the genre, but the
+6. **Time-to-kill.** A median near 8.9 s from first damage to death is long for the genre, but the
    measure spans an entire life including disengages and healing, so it needs a cleaner definition
    (damage within a continuous engagement window) before it can be tuned against.
