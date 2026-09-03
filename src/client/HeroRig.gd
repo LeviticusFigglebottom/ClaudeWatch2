@@ -28,6 +28,7 @@ var bob: float = 0.0
 var base_hips_y: float = 0.95
 var alpha: float = 1.0
 var meshes: Array[MeshInstance3D] = []
+const TP_WEAPON_SCALE := 0.8
 var hidden_in_fp: bool = false
 var status_light: OmniLight3D
 
@@ -118,8 +119,11 @@ func build(hero: HeroData, t: int) -> void:
 	weapon.position = Vector3(0, -0.34 * h, 0.0)
 	weapon.rotation.x = -PI * 0.5   # forearm points forward once the arm swings up; align the barrel with it
 	WeaponBuilder.build(weapon, visual.weapon_style, visual, team)
+	# Third-person weapons read oversized at authored scale (the FP view has its own scale).
+	var wscale := visual.weapon_scale * TP_WEAPON_SCALE
+	weapon.scale = Vector3.ONE * wscale
 	# Slide the model so its grip point sits in the hand (the weapon origin is the hand).
-	var grip_local: Vector3 = WeaponBuilder.hand_points(visual.weapon_style)["grip"] * visual.weapon_scale
+	var grip_local: Vector3 = WeaponBuilder.hand_points(visual.weapon_style)["grip"] * wscale
 	weapon.position -= weapon.basis * grip_local
 	_collect_meshes(weapon)   # weapon parts follow the body's layer/alpha handling (hidden from the FP camera)
 	muzzle = weapon.get_node_or_null("Muzzle") as Node3D

@@ -220,8 +220,11 @@ func tower(x0: float, z0: float, x1: float, z1: float, y0: float, top: float, m:
 	var cx := (x0 + x1) * 0.5
 	var cz := (z0 + z1) * 0.5
 	place("city_kit_industrial/detail_tank_large", Vector3(cx + rng.randf_range(-2, 2), top, cz + rng.randf_range(-3, 3)), rng.randf_range(0, 360), 2.5, false)
-	place("modular_buildings/detail_ac_a", Vector3(cx - 3, top, cz - 4), 0, 4.0, false)
-	place("modular_buildings/detail_ac_a", Vector3(cx + 3, top, cz + 4), 30, 4.0, false)
+	# Keep the AC units on the slab: narrow towers get them pulled in toward the centre.
+	var dx := minf(3.0, absf(x1 - x0) * 0.5 - 1.3)
+	var dz := minf(4.0, absf(z1 - z0) * 0.5 - 1.3)
+	place("modular_buildings/detail_ac_a", Vector3(cx - dx, top, cz - dz), 0, 4.0, false)
+	place("modular_buildings/detail_ac_a", Vector3(cx + dx, top, cz + dz), 30, 4.0, false)
 	box(cx - 0.6, cz - 0.6, cx + 0.6, cz + 0.6, top, top + 1.0, m_conc)   # lift-motor room stub
 
 
@@ -655,8 +658,9 @@ func _pit() -> void:
 	for z: float in [-14, -6, 2, 10]:
 		block(Vector3(20.6, -8, z), Vector3(0.15, 8.0, 0.15), m_rust)
 	deco_box(Vector3(23, -1.2, 0), Vector3(6, 0.15, 0.15), m_rust)
-	place("city_kit_roads/construction_fence", Vector3(21.0, SIDE_Y, -12), 0, 5.0, false)
-	place("city_kit_roads/construction_fence", Vector3(21.0, SIDE_Y, 12), 0, 5.0, false)
+	# Fences close the rail gaps on the pavement edge (x = 20 is the pit lip; the fence runs along z).
+	place("city_kit_roads/construction_fence", Vector3(19.7, SIDE_Y, -12), 90, 5.0, false)
+	place("city_kit_roads/construction_fence", Vector3(19.7, SIDE_Y, 12), 90, 5.0, false)
 	neon(Vector3(22.5, 0.6, -14.5), Vector3(1.6, 0.4, 0.1), AMBER, Vector3.ZERO, false)
 	lamp(Vector3(23, -3.5, 0), Color(0.35, 0.9, 0.55), 2.0, 14.0)
 
@@ -712,8 +716,9 @@ func _layout() -> void:
 	layout.kill_z = -3.0
 	layout.bounds_min = Vector3(-40, -12, -90)
 	layout.bounds_max = Vector3(40, 60, 90)
-	var cam_pos := Vector3(-62, 66, -108)
-	layout.overview_camera = Transform3D(Basis.looking_at((Vector3(0, 2, 0) - cam_pos).normalized(), Vector3.UP), cam_pos)
+	# The market is covered: the overview looks down the street from under the canopy at the south end.
+	var cam_pos := Vector3(-10, 22, -82)
+	layout.overview_camera = Transform3D(Basis.looking_at((Vector3(0, 2, 10) - cam_pos).normalized(), Vector3.UP), cam_pos)
 	layout.skybox_camera = Transform3D(Basis.looking_at(Vector3(0.3, 0.25, -1).normalized(), Vector3.UP), Vector3(0, 6, 8))
 	layout.lanes.append(PackedVector3Array([Vector3(0, 0, -62), Vector3(0, 0, -34), Vector3(1.5, 0, 0), Vector3(0, 0, 34), Vector3(0, 0, 62)]))
 	layout.lanes.append(PackedVector3Array([Vector3(-9.5, SIDE_Y, -55), Vector3(-9.75, WALK_Y, -50), Vector3(-13, WALK_Y, -25), Vector3(-13, WALK_Y, 0), Vector3(-13, WALK_Y, 25), Vector3(-9.75, WALK_Y, 50), Vector3(-9.5, SIDE_Y, 55)]))

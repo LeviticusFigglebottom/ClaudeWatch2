@@ -104,7 +104,15 @@ func update_frame(delta: float) -> void:
 				return
 			var anchor := p.global_position + Vector3(0, 1.2, 0)
 			var dir := Vector3(sin(orbit_yaw) * cos(orbit_pitch), sin(-orbit_pitch), cos(orbit_yaw) * cos(orbit_pitch))
-			camera.global_position = anchor + dir * orbit_dist
+			var want := anchor + dir * orbit_dist
+			# Keep the orbit camera out of walls: pull it in to the first world hit along the boom.
+			var space := camera.get_world_3d().direct_space_state if camera.is_inside_tree() else null
+			if space:
+				var q := PhysicsRayQueryParameters3D.create(anchor, want, RF.L_WORLD)
+				var hit := space.intersect_ray(q)
+				if hit.has("position"):
+					want = (hit["position"] as Vector3) - dir * 0.25
+			camera.global_position = want
 			camera.look_at(anchor, Vector3.UP)
 		&"fixed", &"free":
 			camera.global_position = free_pos

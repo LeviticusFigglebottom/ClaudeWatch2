@@ -500,10 +500,16 @@ func _boundary_warehouses() -> void:
 		block(Vector3(c.x - (x1 - x0) * 0.25, h + 0.3, -27), Vector3(1.4, 2.4, 1.4), m_bricks, 0, false)
 		block(Vector3(c.x + (x1 - x0) * 0.2, 0, -22.55), Vector3(3.0, 3.2, 0.1), m_dark, 0, false, false)
 		_window(Vector3(c.x - (x1 - x0) * 0.2, 3.2, -22.5), 2.2, 1.2, 0)
+	# Rooftop furniture sits on the actual roof slab of whichever warehouse is under it.
+	var roof_top := func(x: float) -> float:
+		for s: Array in specs:
+			if x >= float(s[0]) and x <= float(s[1]):
+				return float(s[2]) + 0.3
+		return 7.0
 	for x: float in [-60.0, -20.0, 22.0, 66.0]:
-		prop("city_kit_industrial/water_tower.glb", Vector3(x, 7.0, -27), 0, 3.2, false)
+		prop("city_kit_industrial/water_tower.glb", Vector3(x, roof_top.call(x), -27), 0, 3.2, false)
 	for x: float in [-41.0, 46.0, 90.0]:
-		prop("city_kit_industrial/chimney_medium.glb", Vector3(x, 7.5, -26), 0, 3.0, false)
+		prop("city_kit_industrial/chimney_medium.glb", Vector3(x, roof_top.call(x), -26), 0, 3.0, false)
 
 
 ## --- Leg 1: dock ---------------------------------------------------------------------------------

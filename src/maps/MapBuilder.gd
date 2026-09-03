@@ -167,12 +167,16 @@ func prop(path: String, pos: Vector3, yaw_deg: float = 0.0, scale_f: float = 1.0
 	var node := PropLibrary.instance(path)
 	if node == null:
 		return null
-	node.position = pos
-	node.rotation.y = deg_to_rad(yaw_deg)
+	# Placed by footprint: `pos` is the centre of the model's base, whatever the kit's origin convention.
+	var ab := PropLibrary._aabb(node)
+	var foot := Vector3(ab.position.x + ab.size.x * 0.5, ab.position.y, ab.position.z + ab.size.z * 0.5)
+	var yaw := deg_to_rad(yaw_deg)
+	node.position = pos - foot.rotated(Vector3.UP, yaw) * scale_f
+	node.rotation.y = yaw
 	node.scale = Vector3.ONE * scale_f
 	props_root.add_child(node)
 	if collide:
-		PropLibrary.add_box_collision(node, static_root, pos, deg_to_rad(yaw_deg), scale_f)
+		PropLibrary.add_box_collision(node, static_root, node.position, yaw, scale_f)
 	return node
 
 
