@@ -67,6 +67,7 @@ func build() -> void:
 	_parking(-1.0)   # hosts Tide's forward spawn (z -41..-16)
 	_parking(1.0)    # hosts Cinder's forward spawn (z 16..41)
 	_pit()
+	_bounds()
 	_rain()
 	_layout()
 
@@ -299,6 +300,35 @@ func _towers() -> void:
 	# Cables across the canyon
 	for z: float in [-45, -20, 8, 36, 58]:
 		deco_box(Vector3(0, 9.5 + fmod(absf(z), 3.0), z), Vector3(30, 0.05, 0.05), m_rail)
+
+
+## --- Outskirts ------------------------------------------------------------------------------------
+## Nightmarket gets a cage but no backdrop, and that is a measured decision rather than an omission.
+##
+## A three-rank skyline was built here and then removed. Two things kill it. The near facades top out
+## at 32 m only 15 m from the spine, which puts the visible roofline at a 63 degree slope, and the
+## tower volumes run out to x = 30, so the closest a background slab can sit is x = 44 — from the
+## street its top would have to clear 88 m just to appear at all, and 137 m to sit far enough above
+## the roofline to read as anything but a sliver. Ranks at 92-226 m were built and measured: 467
+## meshes above y = 40, the tallest topping out at 226 m, and not one pixel of it visible.
+##
+## The second reason is the one that settles it. This map is night with fog at density 0.02 and
+## `fog_aerial_perspective` blending toward a near-black night sky, so everything past roughly 50 m
+## reads as black from every vantage tested — up the canyon, along the street, and from 230 m outside
+## the map looking in. A backdrop cannot be seen through that, and the fog is the authored look of
+## the map rather than something to trade away for scenery.
+##
+## Nightmarket also has no exposed edge to hide: the street is walled by solid tower volumes on both
+## sides and closed by the metro back walls, so the thing this pass fixes on the other two maps does
+## not exist here. What it does need is the cage below, because a launch or knockback can still put a
+## player behind a facade.
+
+
+## The cage. The towers already wall the street, so this only closes the two ends past the back walls
+## and the notional line at the tower faces: it exists so that no launch, dash or knockback can put a
+## player behind the facades, where the backdrop slabs would be visible as flat boxes from the side.
+func _bounds() -> void:
+	boundary_rect(-30.5, -82.5, 30.5, 82.5, 70.0, -14.0)
 
 
 ## --- walkways -------------------------------------------------------------------------------------

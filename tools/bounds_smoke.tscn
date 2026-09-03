@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tools/bounds_smoke.gd" id="1_bnds"]
+
+[node name="BoundsSmoke" type="Node"]
+script = ExtResource("1_bnds")

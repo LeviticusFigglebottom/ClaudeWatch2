@@ -237,7 +237,7 @@ func _can_stand() -> bool:
 	s.height = profile.capsule_height
 	params.shape = s
 	params.transform = Transform3D(Basis(), pawn.global_position + Vector3(0, profile.capsule_height * 0.5 + 0.02, 0))
-	params.collision_mask = RF.L_WORLD | RF.L_DEPLOYABLE
+	params.collision_mask = RF.L_WORLD | RF.L_DEPLOYABLE | RF.L_BOUNDARY
 	params.exclude = [pawn.get_rid()]
 	return space.intersect_shape(params, 1).is_empty()
 

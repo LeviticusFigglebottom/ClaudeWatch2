@@ -49,6 +49,11 @@ const L_PICKUP := 1 << 6
 const L_PAYLOAD := 1 << 7
 const L_PROJECTILE_BLOCKER := 1 << 8
 const L_NAV_ONLY := 1 << 9
+## The invisible cage around a map's playable area. Deliberately absent from every sight, projectile
+## and ground-probe mask: bullets, beams and bot vision pass straight through, so the cage never
+## produces an impact spark or a decal hanging in mid-air over open water. Only pawn movement
+## collides with it, which is the whole job — keep players inside without announcing where the edge is.
+const L_BOUNDARY := 1 << 10
 
 # Simulation
 const TICK_RATE := 60

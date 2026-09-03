@@ -89,6 +89,7 @@ func build() -> void:
 	_lighthouse_pad()
 	_keepers_house()
 	_skyline()
+	_bounds()
 	_layout()
 
 
@@ -1085,28 +1086,140 @@ func _keepers_house() -> void:
 
 ## --- Skyline across the water (non-colliding) ------------------------------------------------------
 
-func _skyline() -> void:
-	# houses across the canal / south lagoon
+## --- Outskirts ------------------------------------------------------------------------------------
+## Everything past the kerbs. The playable ground stops at the quay; the port should not. Before this
+## the lagoon was one flat sheet of water from the boardwalk out to a single row of houses 12 m away,
+## with nothing in between and nothing behind them, so the map read as a diorama on a tray: the exact
+## line where the level ended was the line where detail stopped.
+##
+## Now three things fill that gap. The lagoon carries working harbour furniture — mooring piles,
+## a broken breakwater, moored boats — so the water is somewhere rather than nowhere. The near house
+## row moved in from z=30 to z=26 and two more rows sit behind it, so the horizon is a town with
+## depth instead of one façade with sky above it. The same treatment closes the north, west and east.
+##
+## None of it collides or casts shadows, and all of it is primitive blocks, so the merge pass in
+## MapBuilder folds it into a handful of chunks. _bounds() keeps players off all of it.
+
+const OUT_ROOF := 0.35     # roof cap thickness on scenery houses
+
+
+## One run of plaster houses. `axis` &"x" runs the row along X facing ±Z; &"z" runs it along Z facing
+## ±X. `face` (-1 or 1) is the side the fronts and windows look toward — always back at the player.
+## `lit` puts warm light in about a third of the windows; the far rows skip windows entirely, since
+## at that distance they are a texture cost with no read.
+func _house_row(axis: StringName, from_a: float, to_a: float, at: float, face: float,
+		h_lo: float, h_hi: float, depth: float, step: float, windows: bool, lit: bool = true) -> void:
 	var tints := [m_ochre, m_rose, m_cream, m_sage, m_white]
+	var roofs := [m_roof, m_roof_dark]
 	var i := 0
-	for x in range(-64, 64, 9):
-		var h := 7.0 + (i % 3) * 2.0
-		var c := Vector3(x + 4.0, WATER_Y, 30.0 + (i % 2) * 3.0)
-		block(c, Vector3(8.0, h, 7.0), tints[i % tints.size()], 0, false)
-		block(c + Vector3(0, h, 0), Vector3(8.6, 0.3, 7.6), m_roof if i % 2 == 0 else m_roof_dark, 0, false)
-		for wx: float in [-2.4, 0.0, 2.4]:
-			block(c + Vector3(wx, 2.0, -3.55), Vector3(1.0, 1.4, 0.1), m_lamp if (i + int(wx)) % 3 == 0 else m_glass, 0, false, false)
-			block(c + Vector3(wx, 4.6, -3.55), Vector3(1.0, 1.4, 0.1), m_glass, 0, false, false)
+	var a := from_a
+	while a < to_a:
+		var w: float = step - 1.0
+		var h: float = h_lo + float((i * 5) % 4) * (h_hi - h_lo) * 0.334
+		var c: Vector3 = Vector3(a + step * 0.5, WATER_Y, at) if axis == &"x" else Vector3(at, WATER_Y, a + step * 0.5)
+		var size: Vector3 = Vector3(w, h, depth) if axis == &"x" else Vector3(depth, h, w)
+		block(c, size, tints[i % tints.size()], 0, false, false)
+		block(c + Vector3(0, h, 0), size + Vector3(0.6, -h + OUT_ROOF, 0.6), roofs[i % 2], 0, false, false)
+		if windows:
+			var n_off: Vector3 = Vector3(0, 0, face * (depth * 0.5 + 0.06)) if axis == &"x" else Vector3(face * (depth * 0.5 + 0.06), 0, 0)
+			for k in 3:
+				var t: float = (float(k) - 1.0) * (w * 0.28)
+				var slide: Vector3 = Vector3(t, 0, 0) if axis == &"x" else Vector3(0, 0, t)
+				var wsz: Vector3 = Vector3(1.0, 1.4, 0.12) if axis == &"x" else Vector3(0.12, 1.4, 1.0)
+				var warm: bool = lit and (i + k) % 3 == 0
+				block(c + slide + n_off + Vector3(0, 2.0, 0), wsz, m_lamp if warm else m_glass, 0, false, false)
+				if h > 6.5:
+					block(c + slide + n_off + Vector3(0, 4.8, 0), wsz, m_glass, 0, false, false)
+		a += step
 		i += 1
-	# campanile
-	block(Vector3(30, WATER_Y, 38), Vector3(4.5, 26.0, 4.5), m_bricks, 0, false)
-	deco(_cyl(0.1, 6.0, 3.4), Vector3(30, WATER_Y + 29.0, 38), m_paint_teal)
-	# distant cranes and masts in the east
-	for z: float in [-30.0, 30.0]:
-		block(Vector3(118, WATER_Y, z), Vector3(1.2, 22.0, 1.2), m_iron, 0, false)
-		deco(_box(0.8, 0.8, 18.0), Vector3(118, WATER_Y + 22.0, z + 7.0), m_paint_red, Vector3(0.1, 0, 0))
-	prop("pirate_kit/ship_medium.glb", Vector3(-80, WATER_Y, 35), 60, 1.2, false)
-	prop("pirate_kit/mast.glb", Vector3(-30, WATER_Y, 24), 0, 1.2, false)
+
+
+## Mooring piles: the leaning bundles of timber that mark every channel in a lagoon port. Three to a
+## cluster, splayed, standing well proud of the water so they read at a distance.
+func _piles(centre: Vector3, count: int = 3, height: float = 4.0) -> void:
+	for k in count:
+		var ang := TAU * float(k) / float(count) + centre.x * 0.7
+		var off := Vector3(cos(ang), 0, sin(ang)) * 0.55
+		var lean := Vector3(cos(ang), 0, sin(ang)) * 0.35
+		var d := deco(_cyl(0.16, height), centre + off + Vector3(0, height * 0.5, 0) + lean * 0.5, m_wood)
+		d.rotation = Vector3(lean.z * 0.16, 0, -lean.x * 0.16)
+		d.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
+
+## The lagoon between the quay and the near houses: piles, a broken mole, moored boats, a pontoon.
+func _lagoon_furniture() -> void:
+	# Broken breakwater running parallel to the boardwalk, in segments with water between them.
+	for seg: Array in [[-66.0, -46.0], [-40.0, -14.0], [-6.0, 18.0], [26.0, 52.0], [60.0, 84.0]]:
+		var x0 := float(seg[0]); var x1 := float(seg[1])
+		block(Vector3((x0 + x1) * 0.5, WATER_Y - 0.5, 24.0), Vector3(x1 - x0, 1.3, 3.2), m_stone, 0, false, false)
+		block(Vector3((x0 + x1) * 0.5, WATER_Y + 0.8, 24.0), Vector3(x1 - x0 - 1.5, 0.35, 2.2), m_concrete_dark, 0, false, false)
+	# Mooring pile clusters scattered through the near water.
+	for spec: Array in [[-58.0, 15.5], [-44.0, 18.5], [-30.0, 14.5], [-16.0, 19.0], [-2.0, 15.0],
+			[12.0, 20.0], [26.0, 19.5], [40.0, 20.5], [56.0, 20.0], [72.0, 21.0], [88.0, 20.5]]:
+		_piles(Vector3(float(spec[0]), WATER_Y, float(spec[1])), 3, 3.4 + fmod(absf(float(spec[0])), 3.0) * 0.4)
+	# Moored boats, bows to the quay.
+	for spec: Array in [[-52.0, 16.5, 20.0], [-24.0, 17.5, -15.0], [4.0, 19.5, 8.0], [34.0, 21.0, -12.0],
+			[62.0, 22.5, 14.0], [84.0, 22.0, -8.0]]:
+		prop("pirate_kit/boat_row_large.glb", Vector3(float(spec[0]), WATER_Y - 0.15, float(spec[1])), float(spec[2]), 1.6, false)
+	for spec: Array in [[-38.0, 20.5, 40.0], [18.0, 23.0, -35.0], [70.0, 19.0, 25.0]]:
+		prop("pirate_kit/boat_row_small.glb", Vector3(float(spec[0]), WATER_Y - 0.1, float(spec[1])), float(spec[2]), 1.5, false)
+	# A working pontoon and a larger hull further out, to break the mid-water emptiness.
+	for spec: Array in [[-20.0, 27.5], [46.0, 27.0]]:
+		block(Vector3(float(spec[0]), WATER_Y - 0.1, float(spec[1])), Vector3(9.0, 0.45, 3.4), m_planks_grey, 0, false, false)
+		_piles(Vector3(float(spec[0]) - 4.0, WATER_Y, float(spec[1])), 2, 2.6)
+		_piles(Vector3(float(spec[0]) + 4.0, WATER_Y, float(spec[1])), 2, 2.6)
+	prop("pirate_kit/ship_medium.glb", Vector3(8, WATER_Y - 0.3, 27), 84, 1.5, false)
+	prop("pirate_kit/ship_wreck.glb", Vector3(-62, WATER_Y - 0.4, 26), 8, 1.4, false)
+
+
+## Rows of town on every side, near ones detailed, far ones silhouettes.
+func _skyline() -> void:
+	_lagoon_furniture()
+	# South: the far bank of the lagoon, three rows deep.
+	_house_row(&"x", -70, 66, 34.0, -1.0, 6.5, 11.0, 7.0, 9.0, true)
+	_house_row(&"x", -84, 80, 46.0, -1.0, 9.0, 15.0, 9.0, 12.0, true, false)
+	_house_row(&"x", -100, 96, 60.0, -1.0, 12.0, 20.0, 12.0, 16.0, false)
+	# North: the town behind the salvage warehouses, seen over their roofs.
+	_house_row(&"x", -80, 92, -42.0, 1.0, 8.0, 13.0, 9.0, 11.0, true)
+	_house_row(&"x", -96, 104, -56.0, 1.0, 11.0, 18.0, 12.0, 15.0, false)
+	# West: the ferry approach, closed off by the old quarter.
+	_house_row(&"z", -30, 22, -94.0, 1.0, 7.0, 12.0, 8.0, 10.0, true)
+	_house_row(&"z", -48, 40, -108.0, 1.0, 10.0, 17.0, 11.0, 14.0, false)
+	# East: the container quay past the lighthouse.
+	_house_row(&"z", -28, 20, 120.0, -1.0, 8.0, 14.0, 9.0, 11.0, true)
+	_house_row(&"z", -46, 38, 134.0, -1.0, 11.0, 18.0, 12.0, 14.0, false)
+	# Campanile: the one tall landmark, pulled in from z=38 so it sits within the near rows.
+	block(Vector3(30, WATER_Y, 36), Vector3(4.5, 26.0, 4.5), m_bricks, 0, false, false)
+	block(Vector3(30, WATER_Y + 26.0, 36), Vector3(5.2, 0.4, 5.2), m_roof_dark, 0, false, false)
+	deco(_cyl(0.1, 6.0, 3.4), Vector3(30, WATER_Y + 29.0, 36), m_paint_teal)
+	# Harbour cranes on the east quay, brought in from x=118 so they read against the near rows.
+	for z: float in [-22.0, 6.0, 26.0]:
+		block(Vector3(110, WATER_Y, z), Vector3(1.2, 20.0, 1.2), m_iron, 0, false, false)
+		block(Vector3(110, WATER_Y, z + 5.0), Vector3(1.0, 13.0, 1.0), m_iron, 0, false, false)
+		var jib := deco(_box(0.8, 0.8, 17.0), Vector3(110, WATER_Y + 20.0, z + 6.0), m_paint_red, Vector3(0.12, 0, 0))
+		jib.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	# Container stacks under the cranes.
+	for spec: Array in [[113.0, -18.0], [113.0, 2.0], [107.0, 12.0], [113.0, 24.0]]:
+		for k in 3:
+			var cm: Material = [m_paint_red, m_paint_teal, m_rust, m_corr][(k + int(spec[1])) % 4]
+			block(Vector3(float(spec[0]), WATER_Y + float(k) * 2.6, float(spec[1])), Vector3(6.0, 2.5, 2.5), cm, 0, false, false)
+	# The ferry lying off the western approach, and a mast marking the channel.
+	prop("pirate_kit/ship_large.glb", Vector3(-86, WATER_Y - 0.3, 8), 84, 1.6, false)
+	prop("pirate_kit/mast.glb", Vector3(-80, WATER_Y, 26), 0, 1.2, false)
+
+
+## --- Bounds ---------------------------------------------------------------------------------------
+
+## The cage. North, west and east are sealed a good way past the last kerb, so a player never brushes
+## it while fighting and never reaches the scenery. The south frontage is deliberately left open: the
+## lagoon is an authored hazard — the kerbs are hoppable and the water plane does not collide, so
+## going in is a fall and a death, which is the risk the boardwalk gaps are there to offer.
+func _bounds() -> void:
+	var top := 46.0
+	var base := -8.0
+	boundary(Vector3(-78, 0, -35), Vector3(104, 0, -35), top, base)    # north, behind the warehouses
+	boundary(Vector3(-78, 0, -35), Vector3(-78, 0, 30), top, base)     # west, short of the ferry approach
+	boundary(Vector3(104, 0, -35), Vector3(104, 0, 30), top, base)     # east, short of the container quay
 
 
 ## --- Layout ---------------------------------------------------------------------------------------

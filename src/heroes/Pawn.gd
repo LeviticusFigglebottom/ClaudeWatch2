@@ -50,7 +50,7 @@ func setup(w: SimWorld, h: HeroData, t: int, nid: int, pid: int, server: bool) -
 	is_server = server
 	name = "Pawn_%d" % nid
 	collision_layer = RF.L_PAWN
-	collision_mask = RF.L_WORLD | RF.L_PAWN | RF.L_DEPLOYABLE | RF.L_PAYLOAD | RF.barrier_layer(RF.enemy_team(t))
+	collision_mask = RF.L_WORLD | RF.L_PAWN | RF.L_DEPLOYABLE | RF.L_PAYLOAD | RF.L_BOUNDARY | RF.barrier_layer(RF.enemy_team(t))
 	health.setup(h.health, h.armor, h.shield)
 	status.setup(self)
 	movement.setup(self, h.movement if h.movement else MovementProfile.new())

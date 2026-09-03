@@ -86,6 +86,7 @@ tools/screenshot.sh "map nightmarket push 9; wait 600; shot screenshots/nightmar
 python3 tools/audio/gen_audio.py               # synthesize every referenced sound id
 tools/godot.sh --headless res://tools/prop_audit.tscn      # per-map floating/sunk/embedded prop report
 tools/godot.sh --headless res://tools/vfx_audit.tscn       # every authored VFX id resolves and builds
+tools/godot.sh --headless res://tools/bounds_smoke.tscn    # every map's play boundary is present and in position
 tools/godot.sh --headless res://tools/play_smoke.tscn -- --client     # menu -> match -> alive with a hero
 tools/godot.sh --headless res://tools/killcam_smoke.tscn -- --client  # death -> killcam plays and ends
 tools/godot.sh --headless res://tools/chat_smoke.tscn -- --client     # chat line opens and round-trips

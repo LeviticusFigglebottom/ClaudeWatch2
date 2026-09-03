@@ -7,6 +7,7 @@ extends Node3D
 var layout: MapLayout
 var world: SimWorld
 var static_root: StaticBody3D
+var boundary_root: StaticBody3D
 var props_root: Node3D
 var nav_region: NavigationRegion3D
 var _mat_cache: Dictionary = {}
@@ -29,6 +30,11 @@ func _ready() -> void:
 	static_root.collision_layer = RF.L_WORLD
 	static_root.collision_mask = 0
 	add_child(static_root)
+	boundary_root = StaticBody3D.new()
+	boundary_root.name = "Boundary"
+	boundary_root.collision_layer = RF.L_BOUNDARY
+	boundary_root.collision_mask = 0
+	add_child(boundary_root)
 	props_root = Node3D.new()
 	props_root.name = "Props"
 	add_child(props_root)
@@ -160,6 +166,62 @@ func wall(a: Vector3, b: Vector3, h: float, t: float, material: Material) -> Mes
 	var yaw := atan2(-d.x, -d.z)
 	var center := (a + b) * 0.5
 	return block(Vector3(center.x, minf(a.y, b.y), center.z), Vector3(t, h, len), material, rad_to_deg(yaw))
+
+
+## --- Play boundary --------------------------------------------------------------------------------
+
+## An invisible wall from `a` to `b`, `height` tall, rising from `base_y`. Blocks pawn movement only:
+## shots, sightlines and bot vision ignore RF.L_BOUNDARY entirely, so a player firing out over the
+## water sees the round leave rather than splash against nothing.
+##
+## Put these well outside the geometry a player can stand on, not flush against it. Flush against the
+## last kerb the wall reads as a wall — you slide along an edge that looks walkable. Set back a few
+## metres past a drop the player never touches it on purpose, and the map simply has no way out.
+func boundary(a: Vector3, b: Vector3, height: float, base_y: float = 0.0) -> void:
+	var d := b - a
+	var len_xz := Vector2(d.x, d.z).length()
+	if len_xz < 0.01:
+		return
+	var cs := CollisionShape3D.new()
+	var bs := BoxShape3D.new()
+	bs.size = Vector3(len_xz, height, 0.5)
+	cs.shape = bs
+	cs.position = Vector3((a.x + b.x) * 0.5, base_y + height * 0.5, (a.z + b.z) * 0.5)
+	cs.rotation.y = atan2(-d.z, d.x)
+	boundary_root.add_child(cs)
+
+
+## Rectangular cage. `inset` is negative to push the walls outward from the given rect.
+## `gaps` are segments left open, as [side, from, to] with side one of &"n" (-z), &"s" (+z),
+## &"w" (-x), &"e" (+x) — used where the design wants a hole, like Saltmarsh's lagoon.
+func boundary_rect(x0: float, z0: float, x1: float, z1: float, height: float, base_y: float = 0.0, gaps: Array = []) -> void:
+	var lo := Vector2(minf(x0, x1), minf(z0, z1))
+	var hi := Vector2(maxf(x0, x1), maxf(z0, z1))
+	for side: StringName in [&"n", &"s", &"w", &"e"]:
+		var spans: Array = []
+		match side:
+			&"n", &"s": spans = [[lo.x, hi.x]]
+			_: spans = [[lo.y, hi.y]]
+		for g: Array in gaps:
+			if StringName(g[0]) != side:
+				continue
+			var cut: Array = []
+			for sp: Array in spans:
+				var s0 := float(sp[0]); var s1 := float(sp[1])
+				var g0 := minf(float(g[1]), float(g[2])); var g1 := maxf(float(g[1]), float(g[2]))
+				if g1 <= s0 or g0 >= s1:
+					cut.append(sp)
+					continue
+				if g0 > s0: cut.append([s0, g0])
+				if g1 < s1: cut.append([g1, s1])
+			spans = cut
+		for sp: Array in spans:
+			var s0 := float(sp[0]); var s1 := float(sp[1])
+			match side:
+				&"n": boundary(Vector3(s0, 0, lo.y), Vector3(s1, 0, lo.y), height, base_y)
+				&"s": boundary(Vector3(s0, 0, hi.y), Vector3(s1, 0, hi.y), height, base_y)
+				&"w": boundary(Vector3(lo.x, 0, s0), Vector3(lo.x, 0, s1), height, base_y)
+				&"e": boundary(Vector3(hi.x, 0, s0), Vector3(hi.x, 0, s1), height, base_y)
 
 
 ## Non-colliding decorative mesh (for thin details) — still occludes nothing.

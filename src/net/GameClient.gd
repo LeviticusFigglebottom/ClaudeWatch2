@@ -490,7 +490,7 @@ func _on_pawn_spawn(pl: Dictionary) -> void:
 		team = int(pl["team"])
 		cmd_history.clear()
 		state_history.clear()
-		p.collision_mask = RF.L_WORLD | RF.L_DEPLOYABLE | RF.L_PAYLOAD | RF.barrier_layer(RF.enemy_team(p.team))
+		p.collision_mask = RF.L_WORLD | RF.L_DEPLOYABLE | RF.L_PAYLOAD | RF.L_BOUNDARY | RF.barrier_layer(RF.enemy_team(p.team))
 		UIRouter.hide_overlay(&"hero_select")
 		EventBus.local_pawn_spawned.emit(p)
 	else:
