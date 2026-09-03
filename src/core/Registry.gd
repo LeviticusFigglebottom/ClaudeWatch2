@@ -53,6 +53,11 @@ func _load_all(dir_path: String, klass: String) -> Array[Resource]:
 	dir.list_dir_begin()
 	var f := dir.get_next()
 	while f != "":
+		# Exported builds convert text resources to binary and list them as "<name>.tres.remap";
+		# loading still uses the original path. Without this the whole registry is empty in an
+		# export: no heroes, no maps, no modes.
+		if f.ends_with(".remap"):
+			f = f.trim_suffix(".remap")
 		if not dir.current_is_dir() and (f.ends_with(".tres") or f.ends_with(".res")):
 			var r := load(dir_path.path_join(f))
 			if r != null and r.is_class("Resource") and (r.get_script() != null and (r.get_script() as Script).get_global_name() == klass or ClassDB.is_parent_class(r.get_class(), klass)):
