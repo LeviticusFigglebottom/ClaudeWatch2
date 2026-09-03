@@ -18,6 +18,7 @@ func _ready() -> void:
 	MapBuilder.merge_enabled = false
 	var total := 0
 	var findings := 0
+	var maps_done := 0
 	for id: StringName in Registry.map_ids():
 		if only != "" and String(id) != only:
 			continue
@@ -114,11 +115,14 @@ func _ready() -> void:
 					print("SUNK    %s: support surface %.2f m above its bottom (at %s)" % [label, sink, _v(centre)])
 					bad += 1
 		print("[%s] audited %d props, %d findings (%d marked audit_ignore)" % [id, n, bad, ignored])
+		maps_done += 1
 		total += n
 		findings += bad
-		vp.queue_free()
-		await get_tree().process_frame
-	print("prop audit: %d props, %d findings" % [total, findings])
+		# Deliberately not freed: tearing a loaded SimWorld down while the next map is being built
+		# aborted the process partway through the loop, so an all-maps run reported only the first
+		# map and looked like a clean pass. Three maps' geometry costs less than a silent gate.
+		vp.render_target_update_mode = SubViewport.UPDATE_DISABLED
+	print("prop audit: %d maps, %d props, %d findings" % [maps_done, total, findings])
 	get_tree().quit(0)
 
 
