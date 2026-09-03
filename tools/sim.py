@@ -32,7 +32,15 @@ def run(args):
     for i in range(args.procs):
         n = per if i < args.procs - 1 else args.matches - per * (args.procs - 1)
         if n <= 0: continue
-        seed = args.seed + i * 1000
+        # Per-match seed layout: run * 1e6 + proc * 1e3 + match index (SimHarness strides by 1
+        # within a process). The run factor matters: the old formula was `args.seed + i * 1000`,
+        # so two runs whose --seed differed by less than 1000 * --procs silently shared most of
+        # their matches. A pair of 8-match batches at --seed 4000 and 5000 with --procs 4 had 7
+        # of 8 matches in common, which quietly halved the sample size of any balance pass that
+        # combined them and made a re-measurement look like it reproduced the first result.
+        if n > 1000:
+            raise SystemExit("[sim] at most 1000 matches per process; raise --procs")
+        seed = args.seed * 1000000 + i * 1000
         cmd = [GODOT, "--headless", "--fixed-fps", "60", "--path", ROOT, "--",
                "--sim", f"--map={args.map}", f"--mode={args.mode}", f"--matches={n}", f"--difficulty={args.difficulty}",
                f"--seed={seed}", f"--out={os.path.abspath(args.out)}", f"--limit={args.limit}"]
@@ -57,6 +65,17 @@ def analyze(dirs, min_games=1):
     for f in files:
         try: games.append(json.load(open(f)))
         except Exception as e: print("bad", f, e)
+    # Two matches with the same map, mode and seed are the same match. Combining directories that
+    # overlap this way inflates n without adding information, so say so rather than reporting a
+    # confident win rate over what is really half as many games.
+    fingerprints = {}
+    for g in games:
+        fingerprints.setdefault((g.get("map"), g.get("mode"), g.get("seed")), 0)
+        fingerprints[(g.get("map"), g.get("mode"), g.get("seed"))] += 1
+    repeats = sum(c - 1 for c in fingerprints.values())
+    if repeats:
+        print(f"[sim] warning: {repeats} of {len(games)} telemetry files repeat a map/mode/seed "
+              f"already counted; only {len(fingerprints)} of them are distinct matches.")
     hero = {}
     def H(h):
         return hero.setdefault(h, {"picks":0,"wins":0,"kills":0,"deaths":0,"damage":0.0,"healing":0.0,"ult_uptime":0.0,"obj":0.0,"ults":0,"time":0.0})

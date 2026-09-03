@@ -13,6 +13,13 @@ role limits, at Veteran difficulty.
     tools/sim.py run --map nightmarket --mode push --matches 8 --procs 4 --limit 480 --seed 1000 --out out/push
     tools/sim.py analyze out/push out/escort out/control
 
+Each match's seed is `--seed * 1000000 + proc * 1000 + index`, so two runs with different `--seed`
+values can never share a match. `analyze` counts a repeated map/mode/seed as one match and says so,
+because two runs of the same seed are the same match and adding them together only inflates `n`.
+
+`--limit` must cover every round: a truncated round is scored for whoever was ahead, which flatters
+the team that attacks first. `tools/sim.py run` warns when the limit is too short for the mode.
+
 Columns: `picks` is hero-slots sampled, not matches. `dmg/10m` and `heal/10m` are per ten minutes
 **alive**, so they are not diluted by respawn time. `ult uptime%` is the share of alive time spent
 sitting at a full ult meter, which measures bot ult policy more than hero strength. `obj%` is the
@@ -25,8 +32,10 @@ share of alive time on the objective.
   they arm, and Bombard lobs shells over cover; both sit near 3300-3900 dmg/10m while the field runs
   8000-14000. That is an AI limitation, not evidence that either hero is weak. Do not buff a hero on
   simulated damage alone when its kit needs a skill the bots lack.
-- **Ult uptime above ~10% means ults are being hoarded, not that the ult is strong.** The support
-  heroes show 14-30% because `BotDecision` holds their ults for a condition that rarely arrives.
+- **Ult uptime above ~10% means ults are being hoarded, not that the ult is strong.** Through pass 4
+  the support heroes showed 14-30% because `BotDecision` held their ults for a condition that rarely
+  arrived. Pass 5 added a patience term that raises the urge to fire the longer an ult sits ready,
+  and the supports now sit near 10-12%. Read any figure above that as policy, not power.
 - Sample sizes per hero are small (single digits to ~50 picks). A win rate on fewer than ~20 picks
   is noise. Changes below were made only where the sample supported them, and the log says where it
   did not.
@@ -148,6 +157,14 @@ one directory per seed.)
 56 matches, seeds 4000-6000, one output directory per seed. Team A won 30, B 20, 6 draws. Average
 duration 322 s.
 
+> **Correction (pass 5).** Only 32 of those 56 matches were distinct. `tools/sim.py` derived each
+> process's seed as `--seed + proc * 1000`, so two runs whose `--seed` differed by less than
+> `1000 * --procs` shared most of their matches, and separate output directories preserved the
+> duplicates instead of hiding them. The findings below still hold — the duplicated matches were
+> real matches, just counted twice — but the sample was half the size stated, and every per-hero
+> pick count on this page should be read as approximately doubled. Passes 1, 2 and 3 are unaffected;
+> their seeds do not overlap. The seed layout is fixed and `analyze` now warns about repeats.
+
 | hero | picks | win% | K/D | dmg/10m | heal/10m | obj% |
 |---|---|---|---|---|---|---|
 | bombard | 71 | 46.5 | 2.30 | 3662 | 0 | 20.3 |
@@ -186,7 +203,171 @@ duration 322 s.
 
 None. Pass 4 was a verification run and both targets landed in band.
 
-## Next pass
+## Pass 5 — repairing the measurement, then re-measuring
+
+Pass 5 changed one hero number. Four of the five items pass 4 left for "next pass" turned out to be
+properties of the harness or the bot code rather than of any hero, so this pass fixed those and then
+re-measured from scratch. Every figure from passes 1-4 that ranked heroes against each other should
+be treated as superseded.
+
+### 1. Kiln was never weak
+
+Kiln read 21-28% across four passes while posting the highest damage in the game. A controlled
+mirror settles it: both teams play Vesper, Harrier, Suture and Ferry, and only the bulwark slot
+differs. 16 matches per pairing on Training Range/Control, sides swapped halfway so neither hero
+gets the spawn.
+
+| matchup | Kiln wins | opponent wins | draws |
+|---|---|---|---|
+| Kiln vs Cairn | 4 | 0 | 12 |
+| Kiln vs Cathedral | 6 | 5 | 5 |
+
+Kiln is fine. Its win rate was measuring the composition the picker always built around it. With the
+picker fixed (below) Kiln reads 52.9% over 34 picks.
+
+### 2. The hero picker was measuring compositions, not heroes
+
+`HeroPicker` took the argmax of a synergy score plus a small random term, so once the first hero on a
+team was locked the rest of the composition followed almost deterministically. It now samples from a
+weight instead: synergy and counters bias the draw, they no longer decide it. Measured over 120 team
+draws on 60 distinct seeds, with the same seeds for each variant:
+
+| picker | distinct comps | mean top-teammate share | worst pick count vs role-uniform | rarest–commonest hero |
+|---|---|---|---|---|
+| argmax (passes 1-4) | 64% | 75% | +123% | 9 – 71 |
+| weighted, multiplicative | 95% | 49% | +27% | 18 – 52 |
+| weighted, additive (kept) | 93% | 49% | +37% | 18 – 54 |
+
+"Role-uniform" is what the 1/2/2 role limits alone would produce with no preferences at all: 24
+picks per bulwark, 30 per striker, 48 per conduit over 120 draws. Argmax missed that by up to 123%;
+sampling lands within 37% of it. Under argmax several pairs never separated at all — three heroes
+shared 100% of their games with one particular teammate.
+
+The two weighted variants are indistinguishable, so the additive one is kept for being bounded
+rather than for measuring better. Rook, which pass 4 could not measure at all, now draws 27 picks.
+
+### 3. Overlapping seeds inflated the sample size
+
+`tools/sim.py` gave each process `--seed + proc * 1000`, so two runs whose `--seed` differed by less
+than `1000 * --procs` shared most of their matches. Pass 4's 56 telemetry files were 32 distinct
+matches. Passes 1-3 are unaffected. The seed layout is fixed and `analyze` now reports repeats
+instead of counting them twice.
+
+### 4. The escort side skew was a scoring bug, and it was the whole skew
+
+Team A had won more in every batch since pass 1 (89 to 53 overall). Splitting pass 5 by mode:
+
+| mode | A | B | draws |
+|---|---|---|---|
+| control | 11 | 7 | 6 |
+| push | 10 | 14 | 0 |
+| escort (before fix) | 13 | 3 | 8 |
+
+Control and push are even; together A won 21 and B won 21. All of it was escort, and it was not a
+tuning problem. In round two the attacker's round ends the instant it passes the other team's
+distance, so its recorded distance is about a centimetre ahead — and `compute_winner` treats a gap
+under half a metre as a tie. The second attacker could therefore only ever draw or deliver the
+payload outright. `EscortMode` now records that the distance was beaten and wins on it. Re-running
+the same 24 seeds:
+
+| | A | B | draws |
+|---|---|---|---|
+| before | 13 | 3 | 8 |
+| after | 11 | 13 | 0 |
+
+The draws were not close matches. They were team B winning and not being credited.
+
+### 5. Ults are no longer hoarded
+
+`BotDecision` held ults for a condition that rarely arrived. It now adds pressure that grows the
+longer an ult sits ready, scaled by the bot's discipline. Measured on the same 32 seeds before and
+after, with the picker unchanged so the compositions are identical:
+
+| hero | ult uptime before | after | ults/10m before | after |
+|---|---|---|---|---|
+| cadence | 26.7% | 11.5% | 3.34 | 4.96 |
+| tallow | 22.0% | 12.6% | 4.06 | 4.74 |
+| suture | 19.4% | 10.4% | 2.87 | 3.19 |
+| cathedral | 16.4% | 24.6% | 5.17 | 3.96 |
+
+Three of the four moved the right way on both measures. Cathedral went the other way on 6 picks,
+which is noise.
+
+### 6. `ctx.ability` was null everywhere
+
+Found while reading the pass-5 kill data: 90% of Cathedral's and Sable's kills were credited to
+"Quick Melee" while every other hero sat between 1.5% and 9%. Both are melee-primary heroes, and
+`MeleeEffect` falls back to `quick_melee` when it cannot see which ability fired it. `ctx.ability`
+turned out to be assigned in exactly one place in the codebase, so it was null for every ability in
+the game. Three systems were degraded by it:
+
+- Kill attribution fell back to a blank or generic id, so the kill feed and killcam named the wrong
+  thing. 68% of kills were unattributed and 19% were credited to quick melee; after the fix those
+  are 0% and 5.5%, and every hero's weapon appears under its own name.
+- Per-shot weapon bloom is stored on the ability, so it never accumulated. Only Suture authors any,
+  and only 0.15 degrees per shot, so the balance effect is negligible — but it was inert.
+- Hitscan and beam events carried `slot: -1`, so the client could not look up the firing ability and
+  drew every hitscan weapon and beam with a default presentation instead of its authored muzzle
+  flash, tracer colour and impact VFX.
+
+`Ability` now stamps itself onto each context before running effects.
+
+### Pass 5 measurement
+
+72 matches: Training Range/Control 24 at a 360 s limit, Nightmarket/Push 24 at 500 s, Saltmarsh/
+Escort 24 at 900 s, with the fixed picker, the fixed escort scoring and the ult change. Team A won
+32, B 34, 6 draws. Average duration 351 s. Time-to-kill median 7.37 s, p10 1.90, p90 41.17.
+
+| hero | picks | win% | K/D | dmg/10m | heal/10m | ult uptime% | obj% |
+|---|---|---|---|---|---|---|---|
+| suture | 64 | 39.1 | 2.26 | 4887 | 2349 | 7.5 | 18.8 |
+| cadence | 62 | 51.6 | 1.97 | 3983 | 6245 | 10.7 | 25.7 |
+| tallow | 60 | 53.3 | 2.91 | 6442 | 9280 | 14.7 | 22.2 |
+| ferry | 52 | 36.5 | 1.62 | 4007 | 1211 | 4.8 | 19.1 |
+| lumen | 50 | 48.0 | 3.14 | 7848 | 1253 | 1.2 | 20.9 |
+| coil | 42 | 64.3 | 6.48 | 17584 | 0 | 6.3 | 31.9 |
+| bramble | 41 | 31.7 | 2.47 | 8652 | 587 | 3.2 | 30.2 |
+| bombard | 41 | 26.8 | 1.75 | 3791 | 0 | 0.2 | 18.7 |
+| sable | 36 | 47.2 | 2.20 | 13600 | 0 | 0.4 | 20.1 |
+| ricochet | 35 | 45.7 | 0.62 | 3180 | 0 | 0.4 | 26.9 |
+| harrier | 34 | 52.9 | 2.83 | 8922 | 0 | 1.1 | 31.2 |
+| kiln | 34 | 52.9 | 6.06 | 11606 | 0 | 3.6 | 34.2 |
+| ballast | 31 | 41.9 | 4.61 | 12272 | 0 | 4.2 | 25.6 |
+| wisp | 30 | 50.0 | 4.12 | 8910 | 0 | 8.7 | 22.8 |
+| vesper | 29 | 51.7 | 3.34 | 8292 | 0 | 0.7 | 17.6 |
+| cathedral | 28 | 64.3 | 3.74 | 12010 | 1483 | 16.3 | 25.1 |
+| rook | 27 | 37.0 | 1.51 | 4056 | 0 | 0.3 | 30.4 |
+| cairn | 24 | 29.2 | 2.78 | 9808 | 0 | 4.0 | 33.0 |
+
+This is the first table on this page where every hero has a usable sample and no composition
+repeats more than twice, so it is the first one that can be read as being about heroes.
+
+### Findings
+
+1. **Coil is the clearest outlier.** 64.3% over 42 picks, the highest K/D in the game, and 17584
+   damage per ten minutes alive against 13600 for the next hero. Damage is measured directly rather
+   than attributed, so this one does not depend on the attribution bug above.
+2. **Cathedral reads 64.3% again**, but the pass-3 diagnosis that named Censer as the lever was
+   built on the kill attribution that turned out to be broken. Not touched this pass: with
+   attribution fixed, the next pass can see which of his abilities actually does the work.
+3. **Bombard at 26.8% over 41 picks** is the lowest win rate with a large sample, on the lowest
+   damage in the game. This is the bot-competence caveat: Bombard lobs shells over cover and the
+   bots cannot use it. Do not buff it on this data.
+4. **Cairn at 29.2%** is now the weakest bulwark, having read mid-table under the old picker. 24
+   picks is thin; it needs a mirror test like Kiln's rather than a tuning change.
+5. **Side skew is gone.** 32-34 across 72 matches once escort scores correctly.
+
+### Changes
+
+| Change | From | To | Why |
+|---|---|---|---|
+| Coil Arc Gauntlet chain jumps | 2 | 1 | Against a grouped team every primary shot hit three bodies for 66 damage at four shots a second. Single-target output is unchanged; the outlier was entirely in the spread. The Arc Lance keeps both jumps |
+
+Non-hero changes: `HeroPicker` samples instead of taking the argmax; `EscortMode` wins on a beaten
+distance; `BotDecision` grows ult pressure over time; `Ability` populates `ctx.ability`;
+`tools/sim.py` cannot hand two runs the same match, and `analyze` warns when it is given repeats.
+
+### After pass 4 (kept for the record; 1-5 were resolved in pass 5)
 
 1. **Kiln.** Four passes, ~90 picks, 21-28% win with the highest damage in the game. Before touching
    a number, read where Kiln dies and how the bots spend Heat: this looks like output that never
@@ -202,3 +383,18 @@ None. Pass 4 was a verification run and both targets landed in band.
 6. **Time-to-kill.** A median near 8.9 s from first damage to death is long for the genre, but the
    measure spans an entire life including disengages and healing, so it needs a cleaner definition
    (damage within a continuous engagement window) before it can be tuned against.
+
+## Next pass
+
+1. **Verify the Coil change** on the same seeds as pass 5, the way pass 2 verified pass 1.
+2. **Cathedral.** 64.3% over 28 picks, and every previous diagnosis of which ability carries him was
+   made with broken kill attribution. Read the ability-level kill and damage data first.
+3. **Cairn**, and **Bramble** at 31.7% over 41 picks: mirror tests like Kiln's, not tuning changes.
+   A mirror is the only measurement here that isolates one hero from its composition.
+4. **Bombard and Ricochet** cannot be balanced from this harness at all. Bombard lobs over cover and
+   Ricochet needs bounces to arm; the bots do neither. They need either a bot that can use them or a
+   human playtest before any number moves.
+5. **Time-to-kill.** A median of 7.4 s from first damage to death is long for the genre, but the
+   measure spans an entire life including disengages and healing, so it needs a cleaner definition
+   (damage within a continuous engagement window) before it can be tuned against.
+6. **Map-specific balance** is still out of reach: one map per mode, and Hybrid has no map.

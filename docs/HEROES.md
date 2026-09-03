@@ -17,7 +17,7 @@ Generated from `data/heroes/*.tres` by `tools/gen_docs.tscn`; design notes per h
 | **Bombard** | Striker | 225 / 0 / 0 | 5.3 | Indirect fire: the mortar's predicted landing point is drawn as a world-space reticle visible through walls, so every shell can be lobbed over cover blind. | Cathedral, Rook, Cairn, Kiln | Harrier, Sable, Wisp |
 | **Sable** | Striker | 225 / 0 / 0 | 5.8 | Backstab: every blade hit from behind deals 2.5x. Shroud keeps you invisible only while moving below 40% speed; sprinting or striking breaks it for 1 s. | Tallow, Suture, Vesper, Lumen | Vesper, Bombard, Coil, Rook |
 | **Bramble** | Striker | 200 / 0 / 0 | 5.7 | Roots: the third consecutive thorn hit on the same target (within 2 s of the last) roots it for 1.2 s. Switching targets or pausing resets the count. | Harrier, Sable, Wisp, Ballast | Tallow, Suture, Cathedral, Vesper |
-| **Cadence** | Conduit | 220 / 0 / 0 | 5.5 | On the beat: a 120 bpm clock. Groove heals allies within 9 m for 12 on every beat; Bassline shots fired within 66 ms of a beat deal 1.5x, heal allies within 4 m of the impact for 30, and make the next Groove pulse heal 24. | Bombard, Bramble, Rook | Coil, Wisp, Sable |
+| **Cadence** | Conduit | 220 / 0 / 0 | 5.5 | On the beat: a 120 bpm clock. Groove heals allies within 9 m for 8 on every beat; Bassline shots fired within 66 ms of a beat deal 1.5x, heal allies within 4 m of the impact for 30, and make the next Groove pulse heal 16. | Bombard, Bramble, Rook | Coil, Wisp, Sable |
 | **Lumen** | Conduit | 200 / 0 / 0 | 5.5 | Bouncing beam: Mirror Beam reflects off Refract mirrors (up to 3 bounces), healing the first ally / burning the first enemy along the full folded path. Prism splits it into up to 3 targets in a 25 degree cone. | Bombard, Rook, Ballast | Harrier, Wisp, Sable |
 | **Suture** | Conduit | 225 / 0 / 0 | 5.5 | Tether: links the two most recently tethered allies (or one ally and Suture) for 6 s. Every point of healing Suture puts into one end of the tether is copied to the other end. | Bramble, Kiln, Coil | Wisp, Ballast, Rook |
 | **Ferry** | Conduit | 200 / 0 / 0 | 5.5 | Waystone: a beacon (250 hp, 60 s). For 5 s after spawning, any ally can press INTERACT to cross straight to it. Crossing (ult) brings back up to two allies who died within 10 m in the last 15 s, where they fell. | Bombard, Vesper, Cairn | Sable, Harrier, Wisp |
@@ -45,10 +45,10 @@ Pick the spot the fight will happen and put the Wall there first; your team heal
 
 | Key | Ability | Cooldown / rate | Numbers | Description |
 |---|---|---|---|---|
-| LMB | **Reliquary Mace** | 1.1/s | 70 melee | A slow, wide swing: 70 damage to up to three enemies in a 90 degree arc within 3 m, and they are slowed to 80% for a second. Each enemy struck heals you for 8. |
+| LMB | **Reliquary Mace** | 1.1/s | 58 melee | A slow, wide swing: 58 damage to up to three enemies in a 90 degree arc within 3 m, and they are slowed to 80% for a second. |
 | RMB | **Guard** |  |  | Hold to raise the shield: you take 40% less damage from all sides but move at 70% speed and cannot swing. Hold it while closing the distance; drop it to strike. |
 | Shift | **Stained-glass Wall** | 12 s | deploy cathedral_wall | Plant a 6 m wide, 3.2 m tall window 3 m in front of you for 8 s (700 hp). Enemy shots break on the glass; every ally standing within 4 m behind it heals 15 hp per second. |
-| E | **Censer** | 9 s | dash 15 m/s, area r4 70 dmg | Swing the censer and lunge forward; 0.4 s later burning incense bursts around you: 70 damage within 4 m, enemies knocked back and set burning for 10 damage per second over 2 s. |
+| E | **Censer** | 9 s | dash 15 m/s, area r4 52 dmg | Swing the censer and lunge forward; 0.4 s later burning incense bursts around you: 52 damage within 4 m, enemies knocked back and set burning for 10 damage per second over 2 s. |
 | Q | **Sanctuary** | ult 1900 | deploy barrier_dome, status Sanctified, heal 60 | Raise a 6 m dome around you for 6 s (1500 hp) that blocks all enemy fire from outside. On cast every ally inside is cleansed, healed for 60 and made invulnerable for 0.5 s: the answer to an enemy ultimate. |
 
 Synergies: Vesper, Suture, Tallow, Bombard  
@@ -150,7 +150,7 @@ Find the clump. Every shot on one target arcs to two more within 6 m, so aim at 
 
 | Key | Ability | Cooldown / rate | Numbers | Description |
 |---|---|---|---|---|
-| LMB | **Arc Gauntlet** | 4.0/s, 12 ammo | 30 dmg hitscan | Hitscan lightning: 30 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to up to two more enemies within 6 m of the target for 21 and 15 damage. 12 cells, 1.4 s recharge. |
+| LMB | **Arc Gauntlet** | 4.0/s, 12 ammo | 30 dmg hitscan | Hitscan lightning: 30 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to one more enemy within 6 m of the target for 21 damage. 12 cells, 1.4 s recharge. |
 | RMB | **Arc Lance** | 7 s | 70 dmg hitscan | Overcharge the gauntlet into a 40 m hitscan bolt: 70 damage, headshots double, then chains to two more enemies within 8 m for 49 and 35. 7 s cooldown. |
 | Shift | **Tesla Node** | 12 s | deploy tesla_node | Plant a 150 hp pylon (12 s) where you aim, up to 12 m away. Every 0.8 s it zaps the nearest enemy within 7 m for 20 damage, and your Chain can jump through it. 12 s cooldown. |
 | E | **Capacitor** | 11 s |  | For 1.5 s every hit you take is absorbed instead of dealt. When it ends you release the stored damage (up to 250) as a burst in 5 m with knockback. Nothing stored, nothing released. 11 s cooldown. |
@@ -226,7 +226,7 @@ Stand in the middle of your team with the Groove on and let the beat do the heal
 | Key | Ability | Cooldown / rate | Numbers | Description |
 |---|---|---|---|---|
 | LMB | **Bassline** | 1.5/s, 6 ammo | 45 dmg proj 30 m/s, splash 30/2m | Bass-cannon. A slow, heavy shell: 45 damage plus 30 splash in 2 m. Shots fired ON THE BEAT (120 bpm) deal 1.5x and heal allies within 4 m of the impact for 30. |
-| RMB | **Groove** |  |  | Toggle. While the groove is on, every beat (twice a second) heals allies within 9 m for 12 and Cadence for 6. Fire Bassline on the beat and the next pulse heals double. |
+| RMB | **Groove** |  |  | Toggle. While the groove is on, every beat (twice a second) heals allies within 9 m for 8 and Cadence for 4. Fire Bassline on the beat and the next pulse heals double. |
 | Shift | **Crescendo** | 10 s | area r10 20 heal, status Crescendo | A swelling chord: allies within 10 m (and Cadence) are healed for 20 and move 30% faster for 3 s. |
 | E | **Discord** | 9 s |  | A dissonant blast in a 60 degree cone, 15 m: every enemy caught takes 25% more damage for 4 s. |
 | Q | **Anthem** | ult 1900 | heal 60, area r14 | The drop. Allies within 14 m (Cadence included) are cleansed, healed for 60 and given 300 overhealth. Overhealth decays 2 s after the last hit. |

@@ -5,14 +5,11 @@ Living list. Items move from *Open* to *Done* with the commit that closed them; 
 ## Open
 
 - [ ] Three of six designed maps are unbuilt (Kestrel, Aurelia, Orchard/Meridian). Hybrid has no map.
-- [ ] Balance pass 3: Cathedral's Censer is the lever, not the mace; Cadence may need one more cut.
-      See BALANCE_LOG.md "Next pass" for the full list.
-- [ ] `HeroPicker` almost never picks Rook (1 slot in 48 matches), so Rook has no balance data.
-- [ ] Bots hoard support ultimates (14-30% ult uptime), which distorts every support's win rate.
-- [ ] 26 VFX ids across 13 heroes resolve to the generic fallback (8 loop, 18 area). `area_vfx` is
-      authored on abilities but never read by any client code, so area telegraphs are unwired.
+- [ ] Time-to-kill is measured across a whole life, so disengages and healing inflate it. It needs a
+      continuous-engagement window before it can be tuned against.
+- [ ] Balance passes 1-4 were run before the seed-collision fix, so pass 4's stated 56 matches were
+      really 32 distinct ones. Its conclusions still hold but its sample was half what it claimed.
 - [ ] Per-map soak (10 min each) with perf sampling; network stress run.
-- [ ] Export builds have never been produced or launched (two presets are configured).
 - [ ] Long audio (ambience, music) ships as WAV; converting those to OGG would cut ~60 MB.
 - [ ] Headless runs abort with a heap error at shutdown *after* completing, which corrupts CI exit
       codes. Every gate currently has to be judged on its printed output, not its status.
@@ -37,3 +34,19 @@ Living list. Items move from *Open* to *Done* with the commit that closed them; 
 - [x] Killcam on the death screen, and text chat in the HUD (22de1ae)
 - [x] Generated docs/HEROES.md and docs/MAPS.md; README corrected to the real map count
 - [x] Balance passes 1 and 2 with the data recorded in BALANCE_LOG.md
+- [x] Every authored VFX id resolves; `area_vfx` is read by area effects (9274b08)
+- [x] Exported server and client builds produced for the first time; fixed the registry finding no
+      heroes or maps in an exported build, which broke every export completely (f5601d4)
+- [x] Bots no longer hoard ultimates: support ult uptime roughly halved and usage rose (b51e0a6)
+- [x] `HeroPicker` samples instead of taking the argmax, so comps vary and per-hero win rate
+      measures the hero rather than the one comp the picker always built
+- [x] `tools/sim.py` no longer hands overlapping seeds to separate runs, and `analyze` warns when
+      the directories it is given repeat a match
+- [x] Balance passes 3, 4 and 5 recorded in BALANCE_LOG.md; Cathedral and Cadence back in band (2a94a3b)
+- [x] Escort scored a beaten distance as a draw, so the second attacker could only ever draw or
+      deliver outright. It was the entire source of the side skew seen since pass 1
+- [x] `ctx.ability` was null for every ability in the game, which mis-credited kills, left per-shot
+      weapon bloom inert, and made the client draw every hitscan weapon and beam with a default
+      presentation instead of its authored muzzle flash, tracer and impact VFX
+- [x] Coil's primary chained to two extra targets, giving it 30% more damage than any other hero
+      against a grouped team; cut to one on the primary, unchanged on the Arc Lance

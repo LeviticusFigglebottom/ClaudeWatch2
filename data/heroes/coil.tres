@@ -149,6 +149,7 @@ falloff_min = 1.0
 
 [sub_resource type="Resource" id="Resource_k24cy"]
 script = ExtResource("15_k24cy")
+max_jumps = 1
 
 [sub_resource type="Resource" id="Resource_g0efk"]
 script = ExtResource("5_o4u1s")
@@ -172,7 +173,7 @@ viewmodel_kick_rot = 2.0
 script = ExtResource("6_7h5l1")
 id = &"coil_chain"
 display_name = "Arc Gauntlet"
-description = "Hitscan lightning: 30 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to up to two more enemies within 6 m of the target for 21 and 15 damage. 12 cells, 1.4 s recharge."
+description = "Hitscan lightning: 30 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to one more enemy within 6 m of the target for 21 damage. 12 cells, 1.4 s recharge."
 trigger = 1
 fire_rate = 4.0
 resource = 1

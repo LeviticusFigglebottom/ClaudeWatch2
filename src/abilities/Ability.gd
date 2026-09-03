@@ -237,6 +237,20 @@ func reload() -> void:
 	pawn.world.on_reload_started(pawn, self)
 
 
+## Stamp this ability onto every context it runs an effect with. The runner that builds a context
+## does not know which slot asked for it, so nothing else can fill this in. `ctx.ability` was null
+## everywhere except one hero behaviour, and three separate systems quietly degraded because of it:
+## effects fell back to a blank ability id (every melee weapon's kills were reported as "Quick
+## Melee"), per-shot weapon bloom never accumulated because it is stored on the ability, and the
+## `slot` on hitscan and beam events was always -1, so the client could not look up the firing
+## ability and drew every weapon with a default presentation instead of its authored muzzle flash,
+## tracer and impact VFX.
+func _make_ctx(ctx_factory: Callable) -> AbilityContext:
+	var ctx: AbilityContext = ctx_factory.call()
+	ctx.ability = self
+	return ctx
+
+
 func step(cmd: InputCmd, dt: float, ctx_factory: Callable) -> void:
 	var st := pawn.status
 	var rate := st.cooldown_rate_mult
@@ -274,7 +288,7 @@ func step(cmd: InputCmd, dt: float, ctx_factory: Callable) -> void:
 				return
 			cast_remaining -= dt
 			if cast_remaining <= 0.0:
-				var ctx: AbilityContext = ctx_factory.call()
+				var ctx: AbilityContext = _make_ctx(ctx_factory)
 				ctx.seed = activation_seed
 				active_ctx = ctx
 				_fire(ctx)
@@ -285,7 +299,7 @@ func step(cmd: InputCmd, dt: float, ctx_factory: Callable) -> void:
 			if data.cancel_on_damage and pawn.last_damage_tick == pawn.world.tick:
 				end(true)
 				return
-			var ctx: AbilityContext = ctx_factory.call()
+			var ctx: AbilityContext = _make_ctx(ctx_factory)
 			ctx.seed = activation_seed
 			active_ctx = ctx
 			if behavior:
@@ -322,11 +336,11 @@ func handle_input(down: bool, just_pressed: bool, just_released: bool, ctx_facto
 	match data.trigger:
 		AbilityData.Trigger.PRESS:
 			if just_pressed:
-				var ctx: AbilityContext = ctx_factory.call()
+				var ctx: AbilityContext = _make_ctx(ctx_factory)
 				activate(ctx)
 		AbilityData.Trigger.HOLD:
 			if down and fire_interval_remaining <= 0.0 and state == State.IDLE:
-				var ctx: AbilityContext = ctx_factory.call()
+				var ctx: AbilityContext = _make_ctx(ctx_factory)
 				if activate(ctx):
 					pass
 				elif uses_ammo() and ammo_pool().ammo < data.ammo_per_use and just_pressed:
@@ -335,7 +349,7 @@ func handle_input(down: bool, just_pressed: bool, just_released: bool, ctx_facto
 				ammo_pool().reload()
 		AbilityData.Trigger.CHANNEL:
 			if just_pressed and state == State.IDLE:
-				var ctx: AbilityContext = ctx_factory.call()
+				var ctx: AbilityContext = _make_ctx(ctx_factory)
 				activate(ctx)
 			elif just_released and is_active():
 				if behavior:
@@ -346,7 +360,7 @@ func handle_input(down: bool, just_pressed: bool, just_released: bool, ctx_facto
 				if is_active():
 					toggled_on = false
 				else:
-					var ctx: AbilityContext = ctx_factory.call()
+					var ctx: AbilityContext = _make_ctx(ctx_factory)
 					activate(ctx)
 		AbilityData.Trigger.PASSIVE:
 			pass

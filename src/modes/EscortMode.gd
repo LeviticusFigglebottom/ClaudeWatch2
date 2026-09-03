@@ -16,6 +16,11 @@ var completed: Array[bool] = [false, false]
 var pushers: int = 0
 var contested: bool = false
 var target_progress_to_beat: float = -1.0
+## Set when the second attacker passes the first team's distance and the round is cut short there.
+## Without it that team is credited with a distance only a centimetre ahead, which `compute_winner`
+## reads as a tie: before this existed the second attacker could only draw or deliver outright, and
+## team A won 13 of the 16 decided escort matches in a 24-match sample.
+var distance_win_team: int = -1
 
 
 func on_setup() -> void:
@@ -91,6 +96,7 @@ func step_objective(dt: float) -> void:
 		# Round 2: beat the distance
 		if target_progress_to_beat >= 0.0 and progress > target_progress_to_beat + 0.01:
 			distance_results[attacking_team] = progress
+			distance_win_team = attacking_team
 			end_round(attacking_team, &"distance_beaten")
 			return
 	elif pushers == 0:
@@ -126,6 +132,11 @@ func compute_winner() -> int:
 		return RF.Team.A if time_results[0] > time_results[1] else (RF.Team.B if time_results[1] > time_results[0] else -1)
 	if completed[0]: return RF.Team.A
 	if completed[1]: return RF.Team.B
+	# Beating the other team's distance wins outright. The round stops the moment it is beaten, so
+	# the margin is always about a centimetre and the near-tie band below would otherwise call it a
+	# draw every single time.
+	if distance_win_team >= 0:
+		return distance_win_team
 	if absf(distance_results[0] - distance_results[1]) < 0.5:
 		return -1
 	return RF.Team.A if distance_results[0] > distance_results[1] else RF.Team.B
