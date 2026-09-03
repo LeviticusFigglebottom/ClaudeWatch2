@@ -71,6 +71,8 @@ func _register_rig_commands() -> void:
 		rig.animate(0.016, {"speed": 0.0, "max_speed": 5.5, "local_move": Vector2.ZERO, "grounded": true, "crouch": 0.0, "pitch": 0.0,
 			"recoil": 0.0, "melee": 0.0, "hit": 0.0, "heal": 0.0, "stunned": false, "rooted": false, "pose": &"", "vy": 0.0, "invisible": false, "revealed": false, "hovering": false})
 		return "rig %s at %s" % [h.id, pos])
+	Console.register("vmdebug", "Print viewmodel part positions (camera space + screen px)", func(_a: PackedStringArray) -> String:
+		return fp_rig.debug_dump())
 	Console.register("rigclear", "Remove the review rig", func(_a: PackedStringArray) -> String:
 		if _rig_show: _rig_show.queue_free()
 		_rig_show = null

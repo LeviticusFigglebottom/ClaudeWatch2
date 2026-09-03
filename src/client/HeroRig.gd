@@ -118,6 +118,10 @@ func build(hero: HeroData, t: int) -> void:
 	weapon.position = Vector3(0, -0.34 * h, 0.0)
 	weapon.rotation.x = -PI * 0.5   # forearm points forward once the arm swings up; align the barrel with it
 	WeaponBuilder.build(weapon, visual.weapon_style, visual, team)
+	# Slide the model so its grip point sits in the hand (the weapon origin is the hand).
+	var grip_local: Vector3 = WeaponBuilder.hand_points(visual.weapon_style)["grip"] * visual.weapon_scale
+	weapon.position -= weapon.basis * grip_local
+	_collect_meshes(weapon)   # weapon parts follow the body's layer/alpha handling (hidden from the FP camera)
 	muzzle = weapon.get_node_or_null("Muzzle") as Node3D
 	if muzzle == null:
 		muzzle = Node3D.new(); muzzle.name = "Muzzle"; weapon.add_child(muzzle); muzzle.position = Vector3(0, 0, -0.6)
@@ -303,6 +307,13 @@ func _cylinder(parent: Node3D, r: float, h: float, pos: Vector3, mat: Variant, r
 
 
 ## --- Runtime -------------------------------------------------------------------------------------
+
+func _collect_meshes(root: Node) -> void:
+	for c: Node in root.get_children():
+		if c is MeshInstance3D and not meshes.has(c):
+			meshes.append(c as MeshInstance3D)
+		_collect_meshes(c)
+
 
 func set_layer_mask(mask: int) -> void:
 	for m: MeshInstance3D in meshes:
