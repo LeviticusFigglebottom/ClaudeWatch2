@@ -58,6 +58,24 @@ static func register() -> void:
 		mat.radial_velocity_min = 2.0
 		mat.radial_velocity_max = 4.5
 		return p)
+	# Ids referenced from her behaviour scripts and effects rather than an AbilityPresentation:
+	# the on-beat heal pulse, its doubled variant, the shell's on-hit heal and the Discord ring.
+	VfxLibrary.register_builder(&"cadence_beat_heal", func(lib: VfxLibrary) -> GPUParticles3D:
+		return _emit(lib, 10, 0.45, Vector3(0, 0.2, 0), 180.0, Vector3.ZERO, 2.5, 5.0,
+			0.4, 0.9, 0.28, VfxLibrary.ring_texture(), PALE, FADE))
+	VfxLibrary.register_builder(&"cadence_beat_heal_double", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := _emit(lib, 20, 0.6, Vector3(0, 0.2, 0), 180.0, Vector3.ZERO, 3.5, 7.5,
+			0.5, 1.2, 0.34, VfxLibrary.ring_texture(), Color(1.0, 0.85, 0.95), FADE)
+		return p)
+	VfxLibrary.register_builder(&"cadence_beat_burst", func(lib: VfxLibrary) -> GPUParticles3D:
+		return _emit(lib, 14, 0.4, Vector3(0, 1, 0), 120.0, Vector3(0, 1.0, 0), 1.5, 4.0,
+			0.3, 0.7, 0.2, VfxLibrary.soft_texture(), PALE, FADE))
+	VfxLibrary.register_builder(&"cadence_discord", func(lib: VfxLibrary) -> GPUParticles3D:
+		return _emit(lib, 16, 0.5, Vector3(0, 0.2, 0), 180.0, Vector3.ZERO, 2.0, 5.0,
+			0.3, 0.8, 0.24, VfxLibrary.spark_texture(), Color(1.0, 0.5, 0.85), FADE))
+	VfxLibrary.register_builder(&"cadence_anthem_ring", func(lib: VfxLibrary) -> GPUParticles3D:
+		return _emit(lib, 40, 1.0, Vector3(0, 0.1, 0), 180.0, Vector3.ZERO, 8.0, 15.0,
+			0.6, 1.4, 0.4, VfxLibrary.ring_texture(), Color(1.0, 0.8, 0.95), FADE))
 	# Anthem ultimate: a room-filling bloom of pink light.
 	VfxLibrary.register_builder(&"cadence_anthem_cast", func(lib: VfxLibrary) -> GPUParticles3D:
 		var p := _emit(lib, 120, 1.2, Vector3(0, 0.4, 0), 180.0, Vector3(0, 0.8, 0), 7.0, 16.0,

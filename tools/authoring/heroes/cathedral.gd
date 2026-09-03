@@ -62,9 +62,9 @@ static func build() -> HeroData:
 	h.ai.melee_brawler = true; h.ai.builds = true
 	h.ai.ult_style = &"counter"; h.ai.ult_min_targets = 1; h.ai.strafe_style = &"weave"
 	# --- Primary: Reliquary Mace (wide melee arc)
-	var prim := A.weapon(&"cathedral_mace", "Reliquary Mace", "A slow, wide swing: 70 damage to up to three enemies in a 90 degree arc within 3 m, and they are slowed to 80% for a second. Each enemy struck heals you for 8.", 1.1, 0, 0.0)
+	var prim := A.weapon(&"cathedral_mace", "Reliquary Mace", "A slow, wide swing: 58 damage to up to three enemies in a 90 degree arc within 3 m, and they are slowed to 80% for a second.", 1.1, 0, 0.0)
 	var mace := MeleeEffect.new()
-	mace.damage = 70.0
+	mace.damage = 58.0
 	mace.range = 3.0
 	mace.arc_deg = 90.0
 	mace.knockback = 3.0

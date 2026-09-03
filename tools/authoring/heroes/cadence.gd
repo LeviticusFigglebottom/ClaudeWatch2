@@ -15,7 +15,7 @@ static func build() -> HeroData:
 	h.playstyle = "Stand in the middle of your team with the Groove on and let the beat do the healing. Learn the metronome: Bassline shells fired on the beat hit harder, heal around the impact and double the next pulse. Crescendo to reposition the whole team, Discord to open a target, Anthem before the enemy commits."
 	h.theme_color = Color(0.95, 0.38, 0.72)
 	h.difficulty = 2
-	h.unique_mechanic = "On the beat: a 120 bpm clock. Groove heals allies within 9 m for 12 on every beat; Bassline shots fired within 66 ms of a beat deal 1.5x, heal allies within 4 m of the impact for 30, and make the next Groove pulse heal 24."
+	h.unique_mechanic = "On the beat: a 120 bpm clock. Groove heals allies within 9 m for 8 on every beat; Bassline shots fired within 66 ms of a beat deal 1.5x, heal allies within 4 m of the impact for 30, and make the next Groove pulse heal 16."
 	h.counters = [&"bombard", &"bramble", &"rook"]
 	h.countered_by = [&"coil", &"wisp", &"sable"]
 	h.synergies = [&"harrier", &"ballast", &"sable"]
@@ -74,7 +74,7 @@ static func build() -> HeroData:
 	prim.ai.telegraph_seconds = 0.3
 	h.primary = prim
 	# --- Secondary: Groove (toggle aura; heals on every beat)
-	var groove := A.ability(&"cadence_groove", "Groove", "Toggle. While the groove is on, every beat (twice a second) heals allies within 9 m for 12 and Cadence for 6. Fire Bassline on the beat and the next pulse heals double.", AbilityData.Trigger.TOGGLE, 0.0)
+	var groove := A.ability(&"cadence_groove", "Groove", "Toggle. While the groove is on, every beat (twice a second) heals allies within 9 m for 8 and Cadence for 4. Fire Bassline on the beat and the next pulse heals double.", AbilityData.Trigger.TOGGLE, 0.0)
 	groove.behavior = load("res://src/heroes/abilities/CadenceGrooveBehavior.gd")
 	var groove_status := A.status(&"cadence_groove", "Groove", 0.6)
 	groove_status.cleansable = false

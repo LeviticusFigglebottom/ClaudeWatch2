@@ -44,6 +44,10 @@ static func register() -> void:
 		mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
 		mat.emission_sphere_radius = 0.6
 		return p)
+	# Emitted by the Triage area effect rather than a presentation field.
+	VfxLibrary.register_builder(&"suture_triage_ring", func(lib: VfxLibrary) -> GPUParticles3D:
+		return _emit(lib, 34, 0.9, Vector3(0, 0.1, 0), 180.0, Vector3.ZERO, 5.0, 10.0,
+			0.5, 1.2, 0.34, VfxLibrary.ring_texture(), PALE, FADE_MINT))
 	# Triage ultimate: a wide, calm dome of mint light rather than a blast.
 	VfxLibrary.register_builder(&"suture_triage_cast", func(lib: VfxLibrary) -> GPUParticles3D:
 		var p := _emit(lib, 110, 1.3, Vector3(0, 0.5, 0), 180.0, Vector3(0, 0.5, 0), 4.0, 11.0,

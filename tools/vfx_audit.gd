@@ -27,6 +27,16 @@ func _ready() -> void:
 				if not referenced.has(id):
 					referenced[id] = []
 				referenced[id].append("%s/%s/%s" % [hid, ab.id, field])
+			# Effects carry their own vfx_id, which no presentation field mentions.
+			for e: AbilityEffect in ab.effects + ab.tick_effects:
+				if e == null or not ("vfx_id" in e):
+					continue
+				var eid: StringName = e.get("vfx_id")
+				if eid == &"":
+					continue
+				if not referenced.has(eid):
+					referenced[eid] = []
+				referenced[eid].append("%s/%s/effect" % [hid, ab.id])
 	var missing := 0
 	var built := 0
 	var failed := 0

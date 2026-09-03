@@ -8,7 +8,7 @@ extends HeroBehavior
 
 const BEAT_TICKS := 30                 # 0.5 s at 60 Hz
 const BEAT_WINDOW_TICKS := 4           # +-66 ms: the last tick that still counts as "on the beat"
-const BEAT_HEAL := 12.0                # aura heal per beat per ally
+const BEAT_HEAL := 8.0                 # aura heal per beat per ally (16 hp/s at 120 bpm)
 const AURA_RADIUS := 9.0
 
 var _bonus_until_tick: int = -1        # next aura pulse at or before this tick heals double

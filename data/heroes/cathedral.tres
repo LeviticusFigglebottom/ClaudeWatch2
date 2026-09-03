@@ -190,7 +190,7 @@ color = Color(0.9, 0.8, 0.5, 1)
 
 [sub_resource type="Resource" id="Resource_te0if"]
 script = ExtResource("15_aey0l")
-damage = 70.0
+damage = 58.0
 range = 3.0
 arc_deg = 90.0
 knockback = 3.0
@@ -218,7 +218,7 @@ crosshair = &"bracket"
 script = ExtResource("6_sevib")
 id = &"cathedral_mace"
 display_name = "Reliquary Mace"
-description = "A slow, wide swing: 70 damage to up to three enemies in a 90 degree arc within 3 m, and they are slowed to 80% for a second. Each enemy struck heals you for 8."
+description = "A slow, wide swing: 58 damage to up to three enemies in a 90 degree arc within 3 m, and they are slowed to 80% for a second."
 trigger = 1
 fire_rate = 1.1
 reload_time = 0.0

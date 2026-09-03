@@ -54,6 +54,10 @@ static func register() -> void:
 		mat.angular_velocity_min = 90.0
 		mat.angular_velocity_max = 220.0
 		return p)
+	# Emitted by the Crossing area effect rather than a presentation field.
+	VfxLibrary.register_builder(&"ferry_crossing_ring", func(lib: VfxLibrary) -> GPUParticles3D:
+		return _emit(lib, 36, 0.9, Vector3(0, 0.1, 0), 180.0, Vector3.ZERO, 6.0, 12.0,
+			0.5, 1.2, 0.36, VfxLibrary.ring_texture(), FOAM, FADE))
 	# Crossing ultimate: the tide comes in. A tall standing column, then a slow bloom.
 	VfxLibrary.register_builder(&"ferry_crossing_cast", func(lib: VfxLibrary) -> GPUParticles3D:
 		var p := _emit(lib, 110, 1.4, Vector3(0, 1, 0), 26.0, Vector3(0, 1.4, 0), 5.0, 13.0,
