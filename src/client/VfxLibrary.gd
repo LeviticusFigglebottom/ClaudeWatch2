@@ -289,6 +289,18 @@ func mesh_quad(size: float, tex: Texture2D, add: bool = true) -> QuadMesh:
 	return q
 
 
+## Ids build_particles() has an explicit recipe for. Anything else falls back to a generic puff, so
+## tools/vfx_audit.gd uses this to tell a real recipe from a silent fallback.
+const BUILTIN_PARTICLES: Array[StringName] = [&"impact_generic", &"impact_bullet", &"impact_flesh",
+	&"impact_barrier", &"muzzle_generic", &"death_burst", &"melee_hit", &"blink_out", &"blink_in",
+	&"deploy_place", &"deploy_break", &"ping_marker", &"explosion", &"heal_burst", &"cast_generic",
+	&"ult_burst", &"smoke_puff", &"projectile_trail"]
+
+
+func has_builtin(kind: StringName) -> bool:
+	return BUILTIN_PARTICLES.has(kind)
+
+
 func build_particles(kind: StringName) -> GPUParticles3D:
 	if custom_builders.has(kind):
 		var built: GPUParticles3D = (custom_builders[kind] as Callable).call(self)
@@ -526,12 +538,16 @@ func attach_loop(p: Pawn, kind: StringName, ability_id: StringName, color: Color
 	light.light_energy = 1.8
 	light.omni_range = 4.0
 	node.add_child(light)
-	var part := build_particles(&"cast_generic")
+	# Use the hero's own loop recipe when one is registered; heroes author loop_vfx ids like
+	# "sable_requiem_loop", and this used to ignore them and always emit the generic cast puff.
+	var custom := custom_builders.has(kind)
+	var part := build_particles(kind if custom else &"cast_generic")
 	part.one_shot = false
 	part.explosiveness = 0.0
-	part.amount = 24
-	part.lifetime = 0.8
-	(part.process_material as ParticleProcessMaterial).color = color
+	if not custom:
+		part.amount = 24
+		part.lifetime = 0.8
+		(part.process_material as ParticleProcessMaterial).color = color
 	node.add_child(part)
 	part.emitting = true
 	loops[key] = node
