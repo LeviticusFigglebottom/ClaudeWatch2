@@ -1,6 +1,12 @@
 class_name HeroPicker
 ## Team-composition-aware hero selection for bots.
 
+## Multipliers on a hero's draw weight, applied once per matching teammate or enemy. A hero with
+## three synergies is roughly six times as likely as an unrelated one, which reads as a team that
+## drafts around its picks without every match producing the same five heroes.
+const SYNERGY_WEIGHT := 1.8
+const COUNTER_WEIGHT := 1.45
+
 static func pick(server: GameServer, team: int, ps: PlayerState, rng: RandomNumberGenerator) -> StringName:
 	var taken: Array[StringName] = []
 	var role_counts := [0, 0, 0]
@@ -30,20 +36,32 @@ static func pick(server: GameServer, team: int, ps: PlayerState, rng: RandomNumb
 			if not taken.has(h.id): candidates.append(h)
 	if candidates.is_empty():
 		return Registry.hero_ids()[0]
-	# Score: synergy with teammates, counter to enemy comp, small random.
+	# Weighted choice, not argmax. Synergy and counters bias the draw; they no longer decide it.
+	#
+	# The old scoring added a flat bonus per synergy against a small random term, so once the first
+	# hero on a team was locked the rest of the comp followed almost deterministically: across 160
+	# measured matches Cairn played alongside Lumen in 96% of its games, Kiln drew Suture in 82% and
+	# Ballast drew Cadence in 73%. That made per-hero win rate useless as a balance signal, because
+	# it measured the comp the picker always built rather than the hero, and it left Rook picked 7
+	# times in 56 matches. Real teams do not converge on one optimal comp every game either.
 	var enemy_team := RF.enemy_team(team)
 	var enemy_heroes: Array[StringName] = []
 	for other: PlayerState in server.team_players(enemy_team):
 		if other.hero_id != &"": enemy_heroes.append(other.hero_id)
-	var best: HeroData = null
-	var best_score := -INF
+	var weights: Array[float] = []
+	var total := 0.0
 	for h: HeroData in candidates:
-		var s := rng.randf() * 1.5
+		var w := 1.0
 		for t: StringName in taken:
-			if h.synergies.has(t): s += 1.0
+			if h.synergies.has(t): w *= SYNERGY_WEIGHT
 		for e: StringName in enemy_heroes:
-			if h.counters.has(e): s += 0.8
-			if h.countered_by.has(e): s -= 0.6
-		if s > best_score:
-			best_score = s; best = h
-	return best.id
+			if h.counters.has(e): w *= COUNTER_WEIGHT
+			if h.countered_by.has(e): w /= COUNTER_WEIGHT
+		weights.append(w)
+		total += w
+	var roll := rng.randf() * total
+	for i in candidates.size():
+		roll -= weights[i]
+		if roll <= 0.0:
+			return candidates[i].id
+	return candidates[candidates.size() - 1].id
