@@ -2,28 +2,30 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3f18wv4umarx"
-path="res://.godot/imported/ao.jpg-a160eacbdc0aaea5ef2893c566d7bcba.ctex"
+uid="uid://d1ivguphaxv0h"
+path.bptc="res://.godot/imported/ao.jpg-a160eacbdc0aaea5ef2893c566d7bcba.bptc.ctex"
+path.astc="res://.godot/imported/ao.jpg-a160eacbdc0aaea5ef2893c566d7bcba.astc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/textures/roof_tiles/ao.jpg"
-dest_files=["res://.godot/imported/ao.jpg-a160eacbdc0aaea5ef2893c566d7bcba.ctex"]
+dest_files=["res://.godot/imported/ao.jpg-a160eacbdc0aaea5ef2893c566d7bcba.bptc.ctex", "res://.godot/imported/ao.jpg-a160eacbdc0aaea5ef2893c566d7bcba.astc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -37,4 +39,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

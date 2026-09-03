@@ -186,6 +186,7 @@ func place(path: String, pos: Vector3, yaw_deg: float = 0.0, scale_f: float = 1.
 	node.rotation.y = yaw
 	node.scale = Vector3.ONE * scale_f
 	props_root.add_child(node)
+	_prop_lod(node, scale_f)
 	if collide:
 		PropLibrary.add_box_collision(node, static_root, node.position, yaw, scale_f)
 	return node

@@ -211,6 +211,7 @@ func _build_video() -> Control:
 	_row(p, "MSAA", _option(&"video", "msaa", ["Off", "2×", "4×", "8×"], [0, 1, 2, 3]))
 	_row(p, "FXAA", _toggle(&"video", "fxaa"), "Cheap edge smoothing", false)
 	_row(p, "Shadow quality", _option(&"video", "shadow_quality", ["Off", "Low", "Medium", "High"], [0, 1, 2, 3]))
+	_row(p, "Prop detail distance", _option(&"video", "detail_distance", ["Near", "Normal", "Far", "Max"], [0.6, 1.0, 1.5, 2.0]), "How far away small props stay visible")
 	_row(p, "Ambient occlusion", _toggle(&"video", "ssao"), "", false)
 	_row(p, "Glow", _toggle(&"video", "glow"), "", false)
 	_row(p, "Volumetric fog", _toggle(&"video", "volumetric_fog"), "", false)

@@ -1,0 +1,3703 @@
+{
+ "ability_loop": {
+  "files": [
+   "assets/audio/ability_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "ability_loop",
+  "sources": []
+ },
+ "ally_down": {
+  "files": [
+   "assets/audio/ally_down.wav"
+  ],
+  "kind": "ui",
+  "recipe": "ally_down",
+  "sources": []
+ },
+ "amb_forest": {
+  "files": [
+   "assets/audio/amb_forest.wav"
+  ],
+  "kind": "ambience",
+  "recipe": "amb_forest",
+  "sources": []
+ },
+ "amb_harbor": {
+  "files": [
+   "assets/audio/amb_harbor.wav"
+  ],
+  "kind": "ambience",
+  "recipe": "amb_harbor",
+  "sources": []
+ },
+ "amb_market": {
+  "files": [
+   "assets/audio/amb_market.wav"
+  ],
+  "kind": "ambience",
+  "recipe": "amb_market",
+  "sources": []
+ },
+ "amb_rain_city": {
+  "files": [
+   "assets/audio/amb_rain_city.wav"
+  ],
+  "kind": "ambience",
+  "recipe": "amb_rain_city",
+  "sources": []
+ },
+ "amb_snow_wind": {
+  "files": [
+   "assets/audio/amb_snow_wind.wav"
+  ],
+  "kind": "ambience",
+  "recipe": "amb_snow_wind",
+  "sources": []
+ },
+ "amb_wind": {
+  "files": [
+   "assets/audio/amb_wind.wav"
+  ],
+  "kind": "ambience",
+  "recipe": "amb_wind",
+  "sources": []
+ },
+ "anchor": {
+  "files": [
+   "assets/audio/anchor.wav"
+  ],
+  "kind": "cast",
+  "recipe": "anchor",
+  "sources": []
+ },
+ "announce_capture_enemy": {
+  "files": [
+   "assets/audio/announce_capture_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_capture_enemy",
+  "sources": []
+ },
+ "announce_capture_friendly": {
+  "files": [
+   "assets/audio/announce_capture_friendly.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_capture_friendly",
+  "sources": []
+ },
+ "announce_checkpoint": {
+  "files": [
+   "assets/audio/announce_checkpoint.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_checkpoint",
+  "sources": []
+ },
+ "announce_defeat": {
+  "files": [
+   "assets/audio/announce_defeat.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_defeat",
+  "sources": []
+ },
+ "announce_draw": {
+  "files": [
+   "assets/audio/announce_draw.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_draw",
+  "sources": []
+ },
+ "announce_generic": {
+  "files": [
+   "assets/audio/announce_generic.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_generic",
+  "sources": []
+ },
+ "announce_live": {
+  "files": [
+   "assets/audio/announce_live.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_live",
+  "sources": []
+ },
+ "announce_overtime": {
+  "files": [
+   "assets/audio/announce_overtime.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_overtime",
+  "sources": []
+ },
+ "announce_round_end": {
+  "files": [
+   "assets/audio/announce_round_end.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_round_end",
+  "sources": []
+ },
+ "announce_round_start": {
+  "files": [
+   "assets/audio/announce_round_start.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_round_start",
+  "sources": []
+ },
+ "announce_unlocked": {
+  "files": [
+   "assets/audio/announce_unlocked.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_unlocked",
+  "sources": []
+ },
+ "announce_victory": {
+  "files": [
+   "assets/audio/announce_victory.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "announce_victory",
+  "sources": []
+ },
+ "aura_beat": {
+  "files": [
+   "assets/audio/aura_beat.wav"
+  ],
+  "kind": "loop",
+  "recipe": "aura_beat",
+  "sources": []
+ },
+ "ballast_anchor_end": {
+  "files": [
+   "assets/audio/ballast_anchor_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "zip_end",
+  "sources": []
+ },
+ "ballast_anchor_fire": {
+  "files": [
+   "assets/audio/ballast_anchor_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "anchor",
+  "sources": []
+ },
+ "ballast_anchor_impact": {
+  "files": [
+   "assets/audio/ballast_anchor_impact_1.wav",
+   "assets/audio/ballast_anchor_impact_2.wav",
+   "assets/audio/ballast_anchor_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_harpoon",
+  "sources": [
+   "impact-sounds/Audio/impactMetal_heavy_000.ogg",
+   "impact-sounds/Audio/impactMetal_heavy_001.ogg",
+   "impact-sounds/Audio/impactMetal_heavy_002.ogg"
+  ]
+ },
+ "ballast_anchor_loop": {
+  "files": [
+   "assets/audio/ballast_anchor_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "ability_loop",
+  "sources": []
+ },
+ "ballast_riptide_cast": {
+  "files": [
+   "assets/audio/ballast_riptide_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "pull",
+  "sources": []
+ },
+ "ballast_riptide_end": {
+  "files": [
+   "assets/audio/ballast_riptide_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "ballast_slug_impact": {
+  "files": [
+   "assets/audio/ballast_slug_impact_1.wav",
+   "assets/audio/ballast_slug_impact_2.wav",
+   "assets/audio/ballast_slug_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_shell",
+  "sources": []
+ },
+ "ballast_surge_cast": {
+  "files": [
+   "assets/audio/ballast_surge_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "buff_chime",
+  "sources": []
+ },
+ "ballast_surge_end": {
+  "files": [
+   "assets/audio/ballast_surge_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "ballast_surge_loop": {
+  "files": [
+   "assets/audio/ballast_surge_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "ability_loop",
+  "sources": []
+ },
+ "ballast_ult_line": {
+  "files": [
+   "assets/audio/ballast_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "ballast_ult_line_enemy": {
+  "files": [
+   "assets/audio/ballast_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "ballast_wave_impact": {
+  "files": [
+   "assets/audio/ballast_wave_impact_1.wav",
+   "assets/audio/ballast_wave_impact_2.wav",
+   "assets/audio/ballast_wave_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_generic",
+  "sources": [
+   "impact-sounds/Audio/impactGeneric_light_000.ogg",
+   "impact-sounds/Audio/impactGeneric_light_001.ogg",
+   "impact-sounds/Audio/impactGeneric_light_002.ogg"
+  ]
+ },
+ "barrier_down": {
+  "files": [
+   "assets/audio/barrier_down.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_down",
+  "sources": []
+ },
+ "barrier_up": {
+  "files": [
+   "assets/audio/barrier_up.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_up",
+  "sources": [
+   "sci-fi-sounds/Audio/forceField_000.ogg"
+  ]
+ },
+ "beam_end": {
+  "files": [
+   "assets/audio/beam_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "beam_fire": {
+  "files": [
+   "assets/audio/beam_fire_1.wav",
+   "assets/audio/beam_fire_2.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "beam_fire",
+  "sources": []
+ },
+ "beam_loop": {
+  "files": [
+   "assets/audio/beam_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "beam_loop",
+  "sources": []
+ },
+ "blade_swing": {
+  "files": [
+   "assets/audio/blade_swing_1.wav",
+   "assets/audio/blade_swing_2.wav",
+   "assets/audio/blade_swing_3.wav"
+  ],
+  "kind": "swing",
+  "recipe": "blade_swing",
+  "sources": []
+ },
+ "blink": {
+  "files": [
+   "assets/audio/blink.wav"
+  ],
+  "kind": "ui",
+  "recipe": "blink",
+  "sources": []
+ },
+ "bombard_airburst_impact": {
+  "files": [
+   "assets/audio/bombard_airburst_impact_1.wav",
+   "assets/audio/bombard_airburst_impact_2.wav",
+   "assets/audio/bombard_airburst_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_small",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "bombard_barrage_cast": {
+  "files": [
+   "assets/audio/bombard_barrage_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "bombard_barrage_end": {
+  "files": [
+   "assets/audio/bombard_barrage_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "bombard_barrage_impact": {
+  "files": [
+   "assets/audio/bombard_barrage_impact_1.wav",
+   "assets/audio/bombard_barrage_impact_2.wav",
+   "assets/audio/bombard_barrage_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_mortar",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "bombard_kick_fire": {
+  "files": [
+   "assets/audio/bombard_kick_fire_1.wav",
+   "assets/audio/bombard_kick_fire_2.wav",
+   "assets/audio/bombard_kick_fire_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "mortar_thump",
+  "sources": []
+ },
+ "bombard_kick_tail": {
+  "files": [
+   "assets/audio/bombard_kick_tail_1.wav",
+   "assets/audio/bombard_kick_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "cannon_tail",
+  "sources": []
+ },
+ "bombard_mortar_impact": {
+  "files": [
+   "assets/audio/bombard_mortar_impact_1.wav",
+   "assets/audio/bombard_mortar_impact_2.wav",
+   "assets/audio/bombard_mortar_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_mortar",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "bombard_spotter_end": {
+  "files": [
+   "assets/audio/bombard_spotter_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "bombard_spotter_fire": {
+  "files": [
+   "assets/audio/bombard_spotter_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "reveal_ping",
+  "sources": []
+ },
+ "bombard_spotter_loop": {
+  "files": [
+   "assets/audio/bombard_spotter_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "ability_loop",
+  "sources": []
+ },
+ "bombard_ult_line": {
+  "files": [
+   "assets/audio/bombard_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "bombard_ult_line_enemy": {
+  "files": [
+   "assets/audio/bombard_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "boots_heavy": {
+  "files": [
+   "assets/audio/boots_heavy_1.wav",
+   "assets/audio/boots_heavy_2.wav",
+   "assets/audio/boots_heavy_3.wav",
+   "assets/audio/boots_heavy_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_heavy",
+  "sources": [
+   "impact-sounds/Audio/footstep_concrete_000.ogg",
+   "impact-sounds/Audio/footstep_concrete_001.ogg",
+   "impact-sounds/Audio/footstep_concrete_002.ogg",
+   "impact-sounds/Audio/footstep_concrete_003.ogg"
+  ]
+ },
+ "boots_heavy_carpet": {
+  "files": [
+   "assets/audio/boots_heavy_carpet_1.wav",
+   "assets/audio/boots_heavy_carpet_2.wav",
+   "assets/audio/boots_heavy_carpet_3.wav",
+   "assets/audio/boots_heavy_carpet_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_heavy_carpet",
+  "sources": [
+   "impact-sounds/Audio/footstep_carpet_000.ogg",
+   "impact-sounds/Audio/footstep_carpet_001.ogg",
+   "impact-sounds/Audio/footstep_carpet_002.ogg",
+   "impact-sounds/Audio/footstep_carpet_003.ogg"
+  ]
+ },
+ "boots_heavy_grass": {
+  "files": [
+   "assets/audio/boots_heavy_grass_1.wav",
+   "assets/audio/boots_heavy_grass_2.wav",
+   "assets/audio/boots_heavy_grass_3.wav",
+   "assets/audio/boots_heavy_grass_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_heavy_grass",
+  "sources": [
+   "impact-sounds/Audio/footstep_grass_000.ogg",
+   "impact-sounds/Audio/footstep_grass_001.ogg",
+   "impact-sounds/Audio/footstep_grass_002.ogg",
+   "impact-sounds/Audio/footstep_grass_003.ogg"
+  ]
+ },
+ "boots_heavy_metal": {
+  "files": [
+   "assets/audio/boots_heavy_metal_1.wav",
+   "assets/audio/boots_heavy_metal_2.wav",
+   "assets/audio/boots_heavy_metal_3.wav",
+   "assets/audio/boots_heavy_metal_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_heavy_metal",
+  "sources": [
+   "impact-sounds/Audio/footstep_concrete_000.ogg",
+   "impact-sounds/Audio/footstep_concrete_001.ogg",
+   "impact-sounds/Audio/footstep_concrete_002.ogg",
+   "impact-sounds/Audio/footstep_concrete_003.ogg"
+  ]
+ },
+ "boots_heavy_snow": {
+  "files": [
+   "assets/audio/boots_heavy_snow_1.wav",
+   "assets/audio/boots_heavy_snow_2.wav",
+   "assets/audio/boots_heavy_snow_3.wav",
+   "assets/audio/boots_heavy_snow_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_heavy_snow",
+  "sources": [
+   "impact-sounds/Audio/footstep_snow_000.ogg",
+   "impact-sounds/Audio/footstep_snow_001.ogg",
+   "impact-sounds/Audio/footstep_snow_002.ogg",
+   "impact-sounds/Audio/footstep_snow_003.ogg"
+  ]
+ },
+ "boots_heavy_wood": {
+  "files": [
+   "assets/audio/boots_heavy_wood_1.wav",
+   "assets/audio/boots_heavy_wood_2.wav",
+   "assets/audio/boots_heavy_wood_3.wav",
+   "assets/audio/boots_heavy_wood_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_heavy_wood",
+  "sources": [
+   "impact-sounds/Audio/footstep_wood_000.ogg",
+   "impact-sounds/Audio/footstep_wood_001.ogg",
+   "impact-sounds/Audio/footstep_wood_002.ogg",
+   "impact-sounds/Audio/footstep_wood_003.ogg"
+  ]
+ },
+ "boots_light": {
+  "files": [
+   "assets/audio/boots_light_1.wav",
+   "assets/audio/boots_light_2.wav",
+   "assets/audio/boots_light_3.wav",
+   "assets/audio/boots_light_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_light",
+  "sources": [
+   "impact-sounds/Audio/footstep_concrete_000.ogg",
+   "impact-sounds/Audio/footstep_concrete_001.ogg",
+   "impact-sounds/Audio/footstep_concrete_002.ogg",
+   "impact-sounds/Audio/footstep_concrete_003.ogg"
+  ]
+ },
+ "boots_light_carpet": {
+  "files": [
+   "assets/audio/boots_light_carpet_1.wav",
+   "assets/audio/boots_light_carpet_2.wav",
+   "assets/audio/boots_light_carpet_3.wav",
+   "assets/audio/boots_light_carpet_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_light_carpet",
+  "sources": [
+   "impact-sounds/Audio/footstep_carpet_000.ogg",
+   "impact-sounds/Audio/footstep_carpet_001.ogg",
+   "impact-sounds/Audio/footstep_carpet_002.ogg",
+   "impact-sounds/Audio/footstep_carpet_003.ogg"
+  ]
+ },
+ "boots_light_grass": {
+  "files": [
+   "assets/audio/boots_light_grass_1.wav",
+   "assets/audio/boots_light_grass_2.wav",
+   "assets/audio/boots_light_grass_3.wav",
+   "assets/audio/boots_light_grass_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_light_grass",
+  "sources": [
+   "impact-sounds/Audio/footstep_grass_000.ogg",
+   "impact-sounds/Audio/footstep_grass_001.ogg",
+   "impact-sounds/Audio/footstep_grass_002.ogg",
+   "impact-sounds/Audio/footstep_grass_003.ogg"
+  ]
+ },
+ "boots_light_metal": {
+  "files": [
+   "assets/audio/boots_light_metal_1.wav",
+   "assets/audio/boots_light_metal_2.wav",
+   "assets/audio/boots_light_metal_3.wav",
+   "assets/audio/boots_light_metal_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_light_metal",
+  "sources": [
+   "impact-sounds/Audio/footstep_concrete_000.ogg",
+   "impact-sounds/Audio/footstep_concrete_001.ogg",
+   "impact-sounds/Audio/footstep_concrete_002.ogg",
+   "impact-sounds/Audio/footstep_concrete_003.ogg"
+  ]
+ },
+ "boots_light_snow": {
+  "files": [
+   "assets/audio/boots_light_snow_1.wav",
+   "assets/audio/boots_light_snow_2.wav",
+   "assets/audio/boots_light_snow_3.wav",
+   "assets/audio/boots_light_snow_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_light_snow",
+  "sources": [
+   "impact-sounds/Audio/footstep_snow_000.ogg",
+   "impact-sounds/Audio/footstep_snow_001.ogg",
+   "impact-sounds/Audio/footstep_snow_002.ogg",
+   "impact-sounds/Audio/footstep_snow_003.ogg"
+  ]
+ },
+ "boots_light_wood": {
+  "files": [
+   "assets/audio/boots_light_wood_1.wav",
+   "assets/audio/boots_light_wood_2.wav",
+   "assets/audio/boots_light_wood_3.wav",
+   "assets/audio/boots_light_wood_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_light_wood",
+  "sources": [
+   "impact-sounds/Audio/footstep_wood_000.ogg",
+   "impact-sounds/Audio/footstep_wood_001.ogg",
+   "impact-sounds/Audio/footstep_wood_002.ogg",
+   "impact-sounds/Audio/footstep_wood_003.ogg"
+  ]
+ },
+ "boots_medium": {
+  "files": [
+   "assets/audio/boots_medium_1.wav",
+   "assets/audio/boots_medium_2.wav",
+   "assets/audio/boots_medium_3.wav",
+   "assets/audio/boots_medium_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_medium",
+  "sources": [
+   "impact-sounds/Audio/footstep_concrete_000.ogg",
+   "impact-sounds/Audio/footstep_concrete_001.ogg",
+   "impact-sounds/Audio/footstep_concrete_002.ogg",
+   "impact-sounds/Audio/footstep_concrete_003.ogg"
+  ]
+ },
+ "boots_medium_carpet": {
+  "files": [
+   "assets/audio/boots_medium_carpet_1.wav",
+   "assets/audio/boots_medium_carpet_2.wav",
+   "assets/audio/boots_medium_carpet_3.wav",
+   "assets/audio/boots_medium_carpet_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_medium_carpet",
+  "sources": [
+   "impact-sounds/Audio/footstep_carpet_000.ogg",
+   "impact-sounds/Audio/footstep_carpet_001.ogg",
+   "impact-sounds/Audio/footstep_carpet_002.ogg",
+   "impact-sounds/Audio/footstep_carpet_003.ogg"
+  ]
+ },
+ "boots_medium_grass": {
+  "files": [
+   "assets/audio/boots_medium_grass_1.wav",
+   "assets/audio/boots_medium_grass_2.wav",
+   "assets/audio/boots_medium_grass_3.wav",
+   "assets/audio/boots_medium_grass_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_medium_grass",
+  "sources": [
+   "impact-sounds/Audio/footstep_grass_000.ogg",
+   "impact-sounds/Audio/footstep_grass_001.ogg",
+   "impact-sounds/Audio/footstep_grass_002.ogg",
+   "impact-sounds/Audio/footstep_grass_003.ogg"
+  ]
+ },
+ "boots_medium_metal": {
+  "files": [
+   "assets/audio/boots_medium_metal_1.wav",
+   "assets/audio/boots_medium_metal_2.wav",
+   "assets/audio/boots_medium_metal_3.wav",
+   "assets/audio/boots_medium_metal_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_medium_metal",
+  "sources": [
+   "impact-sounds/Audio/footstep_concrete_000.ogg",
+   "impact-sounds/Audio/footstep_concrete_001.ogg",
+   "impact-sounds/Audio/footstep_concrete_002.ogg",
+   "impact-sounds/Audio/footstep_concrete_003.ogg"
+  ]
+ },
+ "boots_medium_snow": {
+  "files": [
+   "assets/audio/boots_medium_snow_1.wav",
+   "assets/audio/boots_medium_snow_2.wav",
+   "assets/audio/boots_medium_snow_3.wav",
+   "assets/audio/boots_medium_snow_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_medium_snow",
+  "sources": [
+   "impact-sounds/Audio/footstep_snow_000.ogg",
+   "impact-sounds/Audio/footstep_snow_001.ogg",
+   "impact-sounds/Audio/footstep_snow_002.ogg",
+   "impact-sounds/Audio/footstep_snow_003.ogg"
+  ]
+ },
+ "boots_medium_wood": {
+  "files": [
+   "assets/audio/boots_medium_wood_1.wav",
+   "assets/audio/boots_medium_wood_2.wav",
+   "assets/audio/boots_medium_wood_3.wav",
+   "assets/audio/boots_medium_wood_4.wav"
+  ],
+  "kind": "footstep",
+  "recipe": "boots_medium_wood",
+  "sources": [
+   "impact-sounds/Audio/footstep_wood_000.ogg",
+   "impact-sounds/Audio/footstep_wood_001.ogg",
+   "impact-sounds/Audio/footstep_wood_002.ogg",
+   "impact-sounds/Audio/footstep_wood_003.ogg"
+  ]
+ },
+ "bounce": {
+  "files": [
+   "assets/audio/bounce.wav"
+  ],
+  "kind": "ui",
+  "recipe": "bounce",
+  "sources": []
+ },
+ "bounce_tick": {
+  "files": [
+   "assets/audio/bounce_tick.wav"
+  ],
+  "kind": "cast",
+  "recipe": "bounce_tick",
+  "sources": []
+ },
+ "bramble_fan_impact": {
+  "files": [
+   "assets/audio/bramble_fan_impact_1.wav",
+   "assets/audio/bramble_fan_impact_2.wav",
+   "assets/audio/bramble_fan_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_thorn",
+  "sources": [
+   "impact-sounds/Audio/impactWood_light_000.ogg",
+   "impact-sounds/Audio/impactWood_light_001.ogg",
+   "impact-sounds/Audio/impactWood_light_002.ogg"
+  ]
+ },
+ "bramble_overgrowth_cast": {
+  "files": [
+   "assets/audio/bramble_overgrowth_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "bramble_overgrowth_end": {
+  "files": [
+   "assets/audio/bramble_overgrowth_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_down",
+  "sources": []
+ },
+ "bramble_overgrowth_impact": {
+  "files": [
+   "assets/audio/bramble_overgrowth_impact_1.wav",
+   "assets/audio/bramble_overgrowth_impact_2.wav",
+   "assets/audio/bramble_overgrowth_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_thorn",
+  "sources": [
+   "impact-sounds/Audio/impactWood_light_000.ogg",
+   "impact-sounds/Audio/impactWood_light_001.ogg",
+   "impact-sounds/Audio/impactWood_light_002.ogg"
+  ]
+ },
+ "bramble_snare_impact": {
+  "files": [
+   "assets/audio/bramble_snare_impact_1.wav",
+   "assets/audio/bramble_snare_impact_2.wav",
+   "assets/audio/bramble_snare_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_thorn",
+  "sources": [
+   "impact-sounds/Audio/impactWood_light_000.ogg",
+   "impact-sounds/Audio/impactWood_light_001.ogg",
+   "impact-sounds/Audio/impactWood_light_002.ogg"
+  ]
+ },
+ "bramble_thicket_end": {
+  "files": [
+   "assets/audio/bramble_thicket_end_1.wav",
+   "assets/audio/bramble_thicket_end_2.wav",
+   "assets/audio/bramble_thicket_end_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "deploy_break",
+  "sources": [
+   "impact-sounds/Audio/impactPlate_heavy_000.ogg",
+   "impact-sounds/Audio/impactPlate_heavy_001.ogg",
+   "impact-sounds/Audio/impactPlate_heavy_002.ogg"
+  ]
+ },
+ "bramble_thicket_loop": {
+  "files": [
+   "assets/audio/bramble_thicket_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "ability_loop",
+  "sources": []
+ },
+ "bramble_thorns_impact": {
+  "files": [
+   "assets/audio/bramble_thorns_impact_1.wav",
+   "assets/audio/bramble_thorns_impact_2.wav",
+   "assets/audio/bramble_thorns_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_thorn",
+  "sources": [
+   "impact-sounds/Audio/impactWood_light_000.ogg",
+   "impact-sounds/Audio/impactWood_light_001.ogg",
+   "impact-sounds/Audio/impactWood_light_002.ogg"
+  ]
+ },
+ "bramble_ult_line": {
+  "files": [
+   "assets/audio/bramble_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "bramble_ult_line_enemy": {
+  "files": [
+   "assets/audio/bramble_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "buff_chime": {
+  "files": [
+   "assets/audio/buff_chime.wav"
+  ],
+  "kind": "cast",
+  "recipe": "buff_chime",
+  "sources": []
+ },
+ "burn_apply": {
+  "files": [
+   "assets/audio/burn_apply.wav"
+  ],
+  "kind": "cast",
+  "recipe": "burn_apply",
+  "sources": []
+ },
+ "cadence_anthem_cast": {
+  "files": [
+   "assets/audio/cadence_anthem_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "cadence_anthem_fire": {
+  "files": [
+   "assets/audio/cadence_anthem_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "buff_chime",
+  "sources": []
+ },
+ "cadence_bass_impact": {
+  "files": [
+   "assets/audio/cadence_bass_impact_1.wav",
+   "assets/audio/cadence_bass_impact_2.wav",
+   "assets/audio/cadence_bass_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_orb",
+  "sources": []
+ },
+ "cadence_discord_fire": {
+  "files": [
+   "assets/audio/cadence_discord_fire_1.wav",
+   "assets/audio/cadence_discord_fire_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_orb",
+  "sources": []
+ },
+ "cadence_groove_cast": {
+  "files": [
+   "assets/audio/cadence_groove_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "buff_chime",
+  "sources": []
+ },
+ "cadence_groove_end": {
+  "files": [
+   "assets/audio/cadence_groove_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "cadence_groove_loop": {
+  "files": [
+   "assets/audio/cadence_groove_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "aura_beat",
+  "sources": []
+ },
+ "cadence_ult_line": {
+  "files": [
+   "assets/audio/cadence_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "cadence_ult_line_enemy": {
+  "files": [
+   "assets/audio/cadence_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "cairn_boulder_impact": {
+  "files": [
+   "assets/audio/cairn_boulder_impact_1.wav",
+   "assets/audio/cairn_boulder_impact_2.wav",
+   "assets/audio/cairn_boulder_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_mortar",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "cairn_landslide_cast": {
+  "files": [
+   "assets/audio/cairn_landslide_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "cairn_landslide_end": {
+  "files": [
+   "assets/audio/cairn_landslide_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "cairn_landslide_fire": {
+  "files": [
+   "assets/audio/cairn_landslide_fire_1.wav",
+   "assets/audio/cairn_landslide_fire_2.wav",
+   "assets/audio/cairn_landslide_fire_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "rock_lob",
+  "sources": []
+ },
+ "cairn_lobber_impact": {
+  "files": [
+   "assets/audio/cairn_lobber_impact_1.wav",
+   "assets/audio/cairn_lobber_impact_2.wav",
+   "assets/audio/cairn_lobber_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_shell",
+  "sources": []
+ },
+ "cairn_slab_end": {
+  "files": [
+   "assets/audio/cairn_slab_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_down",
+  "sources": []
+ },
+ "cairn_slab_fire": {
+  "files": [
+   "assets/audio/cairn_slab_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_up",
+  "sources": [
+   "sci-fi-sounds/Audio/forceField_000.ogg"
+  ]
+ },
+ "cairn_ult_line": {
+  "files": [
+   "assets/audio/cairn_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "cairn_ult_line_enemy": {
+  "files": [
+   "assets/audio/cairn_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "cairn_upthrust_cast": {
+  "files": [
+   "assets/audio/cairn_upthrust_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "lift",
+  "sources": []
+ },
+ "cairn_upthrust_end": {
+  "files": [
+   "assets/audio/cairn_upthrust_end_1.wav",
+   "assets/audio/cairn_upthrust_end_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "cairn_upthrust_impact": {
+  "files": [
+   "assets/audio/cairn_upthrust_impact_1.wav",
+   "assets/audio/cairn_upthrust_impact_2.wav",
+   "assets/audio/cairn_upthrust_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_small",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "cannon": {
+  "files": [
+   "assets/audio/cannon_1.wav",
+   "assets/audio/cannon_2.wav",
+   "assets/audio/cannon_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "cannon",
+  "sources": []
+ },
+ "cannon_tail": {
+  "files": [
+   "assets/audio/cannon_tail_1.wav",
+   "assets/audio/cannon_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "cannon_tail",
+  "sources": []
+ },
+ "capacitor_loop": {
+  "files": [
+   "assets/audio/capacitor_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "capacitor_loop",
+  "sources": []
+ },
+ "cathedral_censer_impact": {
+  "files": [
+   "assets/audio/cathedral_censer_impact_1.wav",
+   "assets/audio/cathedral_censer_impact_2.wav",
+   "assets/audio/cathedral_censer_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_candle",
+  "sources": []
+ },
+ "cathedral_guard_cast": {
+  "files": [
+   "assets/audio/cathedral_guard_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_up",
+  "sources": [
+   "sci-fi-sounds/Audio/forceField_000.ogg"
+  ]
+ },
+ "cathedral_guard_end": {
+  "files": [
+   "assets/audio/cathedral_guard_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_down",
+  "sources": []
+ },
+ "cathedral_guard_loop": {
+  "files": [
+   "assets/audio/cathedral_guard_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "ability_loop",
+  "sources": []
+ },
+ "cathedral_mace_fire": {
+  "files": [
+   "assets/audio/cathedral_mace_fire_1.wav",
+   "assets/audio/cathedral_mace_fire_2.wav",
+   "assets/audio/cathedral_mace_fire_3.wav"
+  ],
+  "kind": "swing",
+  "recipe": "mace_swing",
+  "sources": []
+ },
+ "cathedral_mace_impact": {
+  "files": [
+   "assets/audio/cathedral_mace_impact_1.wav",
+   "assets/audio/cathedral_mace_impact_2.wav",
+   "assets/audio/cathedral_mace_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "melee_hit",
+  "sources": [
+   "impact-sounds/Audio/impactPunch_medium_000.ogg",
+   "impact-sounds/Audio/impactPunch_medium_001.ogg",
+   "impact-sounds/Audio/impactPunch_medium_002.ogg"
+  ]
+ },
+ "cathedral_mace_tail": {
+  "files": [
+   "assets/audio/cathedral_mace_tail_1.wav",
+   "assets/audio/cathedral_mace_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "cathedral_sanctuary_cast": {
+  "files": [
+   "assets/audio/cathedral_sanctuary_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "cathedral_sanctuary_end": {
+  "files": [
+   "assets/audio/cathedral_sanctuary_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_down",
+  "sources": []
+ },
+ "cathedral_ult_line": {
+  "files": [
+   "assets/audio/cathedral_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "cathedral_ult_line_enemy": {
+  "files": [
+   "assets/audio/cathedral_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "cathedral_wall_end": {
+  "files": [
+   "assets/audio/cathedral_wall_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_down",
+  "sources": []
+ },
+ "cathedral_wall_fire": {
+  "files": [
+   "assets/audio/cathedral_wall_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_up",
+  "sources": [
+   "sci-fi-sounds/Audio/forceField_000.ogg"
+  ]
+ },
+ "chain_zap": {
+  "files": [
+   "assets/audio/chain_zap.wav"
+  ],
+  "kind": "cast",
+  "recipe": "chain_zap",
+  "sources": []
+ },
+ "cleanse_chime": {
+  "files": [
+   "assets/audio/cleanse_chime.wav"
+  ],
+  "kind": "cast",
+  "recipe": "cleanse_chime",
+  "sources": []
+ },
+ "coil_blackout_cast": {
+  "files": [
+   "assets/audio/coil_blackout_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "coil_blackout_end": {
+  "files": [
+   "assets/audio/coil_blackout_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "coil_blackout_fire": {
+  "files": [
+   "assets/audio/coil_blackout_fire_1.wav",
+   "assets/audio/coil_blackout_fire_2.wav",
+   "assets/audio/coil_blackout_fire_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "lightning_arc",
+  "sources": []
+ },
+ "coil_blackout_impact": {
+  "files": [
+   "assets/audio/coil_blackout_impact_1.wav",
+   "assets/audio/coil_blackout_impact_2.wav",
+   "assets/audio/coil_blackout_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_bolt",
+  "sources": []
+ },
+ "coil_capacitor_cast": {
+  "files": [
+   "assets/audio/coil_capacitor_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "buff_chime",
+  "sources": []
+ },
+ "coil_capacitor_end": {
+  "files": [
+   "assets/audio/coil_capacitor_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "coil_capacitor_loop": {
+  "files": [
+   "assets/audio/coil_capacitor_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "capacitor_loop",
+  "sources": []
+ },
+ "coil_chain_impact": {
+  "files": [
+   "assets/audio/coil_chain_impact.wav"
+  ],
+  "kind": "cast",
+  "recipe": "chain_zap",
+  "sources": []
+ },
+ "coil_lance_impact": {
+  "files": [
+   "assets/audio/coil_lance_impact_1.wav",
+   "assets/audio/coil_lance_impact_2.wav",
+   "assets/audio/coil_lance_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_bolt",
+  "sources": []
+ },
+ "coil_tesla_node_end": {
+  "files": [
+   "assets/audio/coil_tesla_node_end_1.wav",
+   "assets/audio/coil_tesla_node_end_2.wav",
+   "assets/audio/coil_tesla_node_end_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "deploy_break",
+  "sources": [
+   "impact-sounds/Audio/impactPlate_heavy_000.ogg",
+   "impact-sounds/Audio/impactPlate_heavy_001.ogg",
+   "impact-sounds/Audio/impactPlate_heavy_002.ogg"
+  ]
+ },
+ "coil_tesla_node_loop": {
+  "files": [
+   "assets/audio/coil_tesla_node_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "ability_loop",
+  "sources": []
+ },
+ "coil_ult_line": {
+  "files": [
+   "assets/audio/coil_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "coil_ult_line_enemy": {
+  "files": [
+   "assets/audio/coil_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "dash": {
+  "files": [
+   "assets/audio/dash.wav"
+  ],
+  "kind": "cast",
+  "recipe": "dash",
+  "sources": []
+ },
+ "death_generic": {
+  "files": [
+   "assets/audio/death_generic_1.wav",
+   "assets/audio/death_generic_2.wav"
+  ],
+  "kind": "voice",
+  "recipe": "death_generic",
+  "sources": []
+ },
+ "density_loop": {
+  "files": [
+   "assets/audio/density_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "density_loop",
+  "sources": []
+ },
+ "deploy_break": {
+  "files": [
+   "assets/audio/deploy_break_1.wav",
+   "assets/audio/deploy_break_2.wav",
+   "assets/audio/deploy_break_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "deploy_break",
+  "sources": [
+   "impact-sounds/Audio/impactPlate_heavy_000.ogg",
+   "impact-sounds/Audio/impactPlate_heavy_001.ogg",
+   "impact-sounds/Audio/impactPlate_heavy_002.ogg"
+  ]
+ },
+ "disc_launch": {
+  "files": [
+   "assets/audio/disc_launch_1.wav",
+   "assets/audio/disc_launch_2.wav",
+   "assets/audio/disc_launch_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "disc_launch",
+  "sources": []
+ },
+ "explosion_large": {
+  "files": [
+   "assets/audio/explosion_large_1.wav",
+   "assets/audio/explosion_large_2.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_large",
+  "sources": [
+   "sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg",
+   "sci-fi-sounds/Audio/lowFrequency_explosion_001.ogg"
+  ]
+ },
+ "explosion_small": {
+  "files": [
+   "assets/audio/explosion_small_1.wav",
+   "assets/audio/explosion_small_2.wav",
+   "assets/audio/explosion_small_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_small",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "ferry_crossing_cast": {
+  "files": [
+   "assets/audio/ferry_crossing_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "ferry_crossing_end": {
+  "files": [
+   "assets/audio/ferry_crossing_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_in",
+  "sources": []
+ },
+ "ferry_crossing_fire": {
+  "files": [
+   "assets/audio/ferry_crossing_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_out",
+  "sources": []
+ },
+ "ferry_ult_line": {
+  "files": [
+   "assets/audio/ferry_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "ferry_ult_line_enemy": {
+  "files": [
+   "assets/audio/ferry_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "ferry_undertow_fire": {
+  "files": [
+   "assets/audio/ferry_undertow_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "pull",
+  "sources": []
+ },
+ "flame_bolt": {
+  "files": [
+   "assets/audio/flame_bolt_1.wav",
+   "assets/audio/flame_bolt_2.wav",
+   "assets/audio/flame_bolt_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "flame_bolt",
+  "sources": []
+ },
+ "focus_off": {
+  "files": [
+   "assets/audio/focus_off.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "focus_on": {
+  "files": [
+   "assets/audio/focus_on.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_on",
+  "sources": []
+ },
+ "freeze": {
+  "files": [
+   "assets/audio/freeze.wav"
+  ],
+  "kind": "cast",
+  "recipe": "freeze",
+  "sources": []
+ },
+ "generic_blip": {
+  "files": [
+   "assets/audio/generic_blip.wav"
+  ],
+  "kind": "cast",
+  "recipe": "generic_blip",
+  "sources": []
+ },
+ "gravity_mortar": {
+  "files": [
+   "assets/audio/gravity_mortar_1.wav",
+   "assets/audio/gravity_mortar_2.wav",
+   "assets/audio/gravity_mortar_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "gravity_mortar",
+  "sources": []
+ },
+ "harrier_afterburn_end": {
+  "files": [
+   "assets/audio/harrier_afterburn_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "harrier_afterburn_fire": {
+  "files": [
+   "assets/audio/harrier_afterburn_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "jet_burst",
+  "sources": []
+ },
+ "harrier_afterburn_tail": {
+  "files": [
+   "assets/audio/harrier_afterburn_tail_1.wav",
+   "assets/audio/harrier_afterburn_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "harrier_dive_cast": {
+  "files": [
+   "assets/audio/harrier_dive_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "dash",
+  "sources": []
+ },
+ "harrier_dive_end": {
+  "files": [
+   "assets/audio/harrier_dive_end_1.wav",
+   "assets/audio/harrier_dive_end_2.wav"
+  ],
+  "kind": "impact",
+  "recipe": "land_generic",
+  "sources": [
+   "impact-sounds/Audio/footstep_concrete_000.ogg",
+   "impact-sounds/Audio/footstep_concrete_001.ogg"
+  ]
+ },
+ "harrier_dive_impact": {
+  "files": [
+   "assets/audio/harrier_dive_impact_1.wav",
+   "assets/audio/harrier_dive_impact_2.wav",
+   "assets/audio/harrier_dive_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_small",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "harrier_jet_jump": {
+  "files": [
+   "assets/audio/harrier_jet_jump.wav"
+  ],
+  "kind": "cast",
+  "recipe": "jet_burst",
+  "sources": []
+ },
+ "harrier_jet_land": {
+  "files": [
+   "assets/audio/harrier_jet_land_1.wav",
+   "assets/audio/harrier_jet_land_2.wav"
+  ],
+  "kind": "impact",
+  "recipe": "land_generic",
+  "sources": [
+   "impact-sounds/Audio/footstep_concrete_000.ogg",
+   "impact-sounds/Audio/footstep_concrete_001.ogg"
+  ]
+ },
+ "harrier_rockets_impact": {
+  "files": [
+   "assets/audio/harrier_rockets_impact_1.wav",
+   "assets/audio/harrier_rockets_impact_2.wav",
+   "assets/audio/harrier_rockets_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_small",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "harrier_smg_impact": {
+  "files": [
+   "assets/audio/harrier_smg_impact_1.wav",
+   "assets/audio/harrier_smg_impact_2.wav",
+   "assets/audio/harrier_smg_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_generic",
+  "sources": [
+   "impact-sounds/Audio/impactGeneric_light_000.ogg",
+   "impact-sounds/Audio/impactGeneric_light_001.ogg",
+   "impact-sounds/Audio/impactGeneric_light_002.ogg"
+  ]
+ },
+ "harrier_strafing_run_cast": {
+  "files": [
+   "assets/audio/harrier_strafing_run_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "harrier_strafing_run_end": {
+  "files": [
+   "assets/audio/harrier_strafing_run_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "harrier_strafing_run_fire": {
+  "files": [
+   "assets/audio/harrier_strafing_run_fire_1.wav",
+   "assets/audio/harrier_strafing_run_fire_2.wav",
+   "assets/audio/harrier_strafing_run_fire_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "smg",
+  "sources": []
+ },
+ "harrier_strafing_run_impact": {
+  "files": [
+   "assets/audio/harrier_strafing_run_impact_1.wav",
+   "assets/audio/harrier_strafing_run_impact_2.wav",
+   "assets/audio/harrier_strafing_run_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_small",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "harrier_ult_line": {
+  "files": [
+   "assets/audio/harrier_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "harrier_ult_line_enemy": {
+  "files": [
+   "assets/audio/harrier_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "heal_bolt": {
+  "files": [
+   "assets/audio/heal_bolt_1.wav",
+   "assets/audio/heal_bolt_2.wav",
+   "assets/audio/heal_bolt_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "heal_bolt",
+  "sources": []
+ },
+ "heal_pulse": {
+  "files": [
+   "assets/audio/heal_pulse.wav"
+  ],
+  "kind": "cast",
+  "recipe": "heal_pulse",
+  "sources": []
+ },
+ "health_pack": {
+  "files": [
+   "assets/audio/health_pack.wav"
+  ],
+  "kind": "ui",
+  "recipe": "health_pack",
+  "sources": []
+ },
+ "hero_stinger": {
+  "files": [
+   "assets/audio/hero_stinger.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "hero_ult_line": {
+  "files": [
+   "assets/audio/hero_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "hitmarker": {
+  "files": [
+   "assets/audio/hitmarker.wav"
+  ],
+  "kind": "ui",
+  "recipe": "hitmarker",
+  "sources": []
+ },
+ "hitmarker_head": {
+  "files": [
+   "assets/audio/hitmarker_head.wav"
+  ],
+  "kind": "ui",
+  "recipe": "hitmarker_head",
+  "sources": []
+ },
+ "hitmarker_kill": {
+  "files": [
+   "assets/audio/hitmarker_kill.wav"
+  ],
+  "kind": "ui",
+  "recipe": "hitmarker_kill",
+  "sources": []
+ },
+ "hurt_generic": {
+  "files": [
+   "assets/audio/hurt_generic_1.wav",
+   "assets/audio/hurt_generic_2.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hurt_generic",
+  "sources": []
+ },
+ "impact_barrier": {
+  "files": [
+   "assets/audio/impact_barrier_1.wav",
+   "assets/audio/impact_barrier_2.wav",
+   "assets/audio/impact_barrier_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_barrier",
+  "sources": []
+ },
+ "impact_bolt": {
+  "files": [
+   "assets/audio/impact_bolt_1.wav",
+   "assets/audio/impact_bolt_2.wav",
+   "assets/audio/impact_bolt_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_bolt",
+  "sources": []
+ },
+ "impact_candle": {
+  "files": [
+   "assets/audio/impact_candle_1.wav",
+   "assets/audio/impact_candle_2.wav",
+   "assets/audio/impact_candle_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_candle",
+  "sources": []
+ },
+ "impact_disc": {
+  "files": [
+   "assets/audio/impact_disc_1.wav",
+   "assets/audio/impact_disc_2.wav",
+   "assets/audio/impact_disc_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_disc",
+  "sources": [
+   "impact-sounds/Audio/impactMetal_light_000.ogg",
+   "impact-sounds/Audio/impactMetal_light_001.ogg",
+   "impact-sounds/Audio/impactMetal_light_002.ogg"
+  ]
+ },
+ "impact_flare": {
+  "files": [
+   "assets/audio/impact_flare_1.wav",
+   "assets/audio/impact_flare_2.wav",
+   "assets/audio/impact_flare_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_flare",
+  "sources": []
+ },
+ "impact_flesh": {
+  "files": [
+   "assets/audio/impact_flesh_1.wav",
+   "assets/audio/impact_flesh_2.wav",
+   "assets/audio/impact_flesh_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_flesh",
+  "sources": [
+   "impact-sounds/Audio/impactSoft_medium_000.ogg",
+   "impact-sounds/Audio/impactSoft_medium_001.ogg",
+   "impact-sounds/Audio/impactSoft_medium_002.ogg"
+  ]
+ },
+ "impact_generic": {
+  "files": [
+   "assets/audio/impact_generic_1.wav",
+   "assets/audio/impact_generic_2.wav",
+   "assets/audio/impact_generic_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_generic",
+  "sources": [
+   "impact-sounds/Audio/impactGeneric_light_000.ogg",
+   "impact-sounds/Audio/impactGeneric_light_001.ogg",
+   "impact-sounds/Audio/impactGeneric_light_002.ogg"
+  ]
+ },
+ "impact_grenade": {
+  "files": [
+   "assets/audio/impact_grenade_1.wav",
+   "assets/audio/impact_grenade_2.wav",
+   "assets/audio/impact_grenade_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_grenade",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "impact_harpoon": {
+  "files": [
+   "assets/audio/impact_harpoon_1.wav",
+   "assets/audio/impact_harpoon_2.wav",
+   "assets/audio/impact_harpoon_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_harpoon",
+  "sources": [
+   "impact-sounds/Audio/impactMetal_heavy_000.ogg",
+   "impact-sounds/Audio/impactMetal_heavy_001.ogg",
+   "impact-sounds/Audio/impactMetal_heavy_002.ogg"
+  ]
+ },
+ "impact_mortar": {
+  "files": [
+   "assets/audio/impact_mortar_1.wav",
+   "assets/audio/impact_mortar_2.wav",
+   "assets/audio/impact_mortar_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_mortar",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "impact_needle": {
+  "files": [
+   "assets/audio/impact_needle_1.wav",
+   "assets/audio/impact_needle_2.wav",
+   "assets/audio/impact_needle_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_needle",
+  "sources": []
+ },
+ "impact_orb": {
+  "files": [
+   "assets/audio/impact_orb_1.wav",
+   "assets/audio/impact_orb_2.wav",
+   "assets/audio/impact_orb_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_orb",
+  "sources": []
+ },
+ "impact_plasma": {
+  "files": [
+   "assets/audio/impact_plasma_1.wav",
+   "assets/audio/impact_plasma_2.wav",
+   "assets/audio/impact_plasma_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_plasma",
+  "sources": []
+ },
+ "impact_shell": {
+  "files": [
+   "assets/audio/impact_shell_1.wav",
+   "assets/audio/impact_shell_2.wav",
+   "assets/audio/impact_shell_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_shell",
+  "sources": []
+ },
+ "impact_spear": {
+  "files": [
+   "assets/audio/impact_spear_1.wav",
+   "assets/audio/impact_spear_2.wav",
+   "assets/audio/impact_spear_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_spear",
+  "sources": []
+ },
+ "impact_thorn": {
+  "files": [
+   "assets/audio/impact_thorn_1.wav",
+   "assets/audio/impact_thorn_2.wav",
+   "assets/audio/impact_thorn_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_thorn",
+  "sources": [
+   "impact-sounds/Audio/impactWood_light_000.ogg",
+   "impact-sounds/Audio/impactWood_light_001.ogg",
+   "impact-sounds/Audio/impactWood_light_002.ogg"
+  ]
+ },
+ "jet_burst": {
+  "files": [
+   "assets/audio/jet_burst.wav"
+  ],
+  "kind": "cast",
+  "recipe": "jet_burst",
+  "sources": []
+ },
+ "jump_generic": {
+  "files": [
+   "assets/audio/jump_generic_1.wav",
+   "assets/audio/jump_generic_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "jump_generic",
+  "sources": []
+ },
+ "kill_confirm": {
+  "files": [
+   "assets/audio/kill_confirm.wav"
+  ],
+  "kind": "ui",
+  "recipe": "kill_confirm",
+  "sources": []
+ },
+ "kiln_blast_impact": {
+  "files": [
+   "assets/audio/kiln_blast_impact_1.wav",
+   "assets/audio/kiln_blast_impact_2.wav",
+   "assets/audio/kiln_blast_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_small",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "kiln_meltdown_cast": {
+  "files": [
+   "assets/audio/kiln_meltdown_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "kiln_meltdown_end": {
+  "files": [
+   "assets/audio/kiln_meltdown_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "kiln_meltdown_loop": {
+  "files": [
+   "assets/audio/kiln_meltdown_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "meltdown",
+  "sources": []
+ },
+ "kiln_slag_cast": {
+  "files": [
+   "assets/audio/kiln_slag_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "whoosh",
+  "sources": []
+ },
+ "kiln_slag_end": {
+  "files": [
+   "assets/audio/kiln_slag_end_1.wav",
+   "assets/audio/kiln_slag_end_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "kiln_slag_fire": {
+  "files": [
+   "assets/audio/kiln_slag_fire_1.wav",
+   "assets/audio/kiln_slag_fire_2.wav",
+   "assets/audio/kiln_slag_fire_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "flame_bolt",
+  "sources": []
+ },
+ "kiln_slug_impact": {
+  "files": [
+   "assets/audio/kiln_slug_impact_1.wav",
+   "assets/audio/kiln_slug_impact_2.wav",
+   "assets/audio/kiln_slug_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_shell",
+  "sources": []
+ },
+ "kiln_ult_line": {
+  "files": [
+   "assets/audio/kiln_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "kiln_ult_line_enemy": {
+  "files": [
+   "assets/audio/kiln_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "kiln_vent_cast": {
+  "files": [
+   "assets/audio/kiln_vent_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "whoosh",
+  "sources": []
+ },
+ "kiln_vent_end": {
+  "files": [
+   "assets/audio/kiln_vent_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "kiln_vent_fire": {
+  "files": [
+   "assets/audio/kiln_vent_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "jet_burst",
+  "sources": []
+ },
+ "land_generic": {
+  "files": [
+   "assets/audio/land_generic_1.wav",
+   "assets/audio/land_generic_2.wav"
+  ],
+  "kind": "impact",
+  "recipe": "land_generic",
+  "sources": [
+   "impact-sounds/Audio/footstep_concrete_000.ogg",
+   "impact-sounds/Audio/footstep_concrete_001.ogg"
+  ]
+ },
+ "launch_bolt": {
+  "files": [
+   "assets/audio/launch_bolt_1.wav",
+   "assets/audio/launch_bolt_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_bolt",
+  "sources": []
+ },
+ "launch_candle": {
+  "files": [
+   "assets/audio/launch_candle_1.wav",
+   "assets/audio/launch_candle_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_candle",
+  "sources": []
+ },
+ "launch_disc": {
+  "files": [
+   "assets/audio/launch_disc_1.wav",
+   "assets/audio/launch_disc_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_disc",
+  "sources": []
+ },
+ "launch_flare": {
+  "files": [
+   "assets/audio/launch_flare_1.wav",
+   "assets/audio/launch_flare_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_flare",
+  "sources": []
+ },
+ "launch_grenade": {
+  "files": [
+   "assets/audio/launch_grenade_1.wav",
+   "assets/audio/launch_grenade_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_grenade",
+  "sources": []
+ },
+ "launch_harpoon": {
+  "files": [
+   "assets/audio/launch_harpoon_1.wav",
+   "assets/audio/launch_harpoon_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_harpoon",
+  "sources": []
+ },
+ "launch_mortar": {
+  "files": [
+   "assets/audio/launch_mortar_1.wav",
+   "assets/audio/launch_mortar_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_mortar",
+  "sources": []
+ },
+ "launch_needle": {
+  "files": [
+   "assets/audio/launch_needle_1.wav",
+   "assets/audio/launch_needle_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_needle",
+  "sources": []
+ },
+ "launch_orb": {
+  "files": [
+   "assets/audio/launch_orb_1.wav",
+   "assets/audio/launch_orb_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_orb",
+  "sources": []
+ },
+ "launch_plasma": {
+  "files": [
+   "assets/audio/launch_plasma_1.wav",
+   "assets/audio/launch_plasma_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_plasma",
+  "sources": []
+ },
+ "launch_shell": {
+  "files": [
+   "assets/audio/launch_shell_1.wav",
+   "assets/audio/launch_shell_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_shell",
+  "sources": []
+ },
+ "launch_spear": {
+  "files": [
+   "assets/audio/launch_spear_1.wav",
+   "assets/audio/launch_spear_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_spear",
+  "sources": []
+ },
+ "launch_thorn": {
+  "files": [
+   "assets/audio/launch_thorn_1.wav",
+   "assets/audio/launch_thorn_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_thorn",
+  "sources": []
+ },
+ "lift": {
+  "files": [
+   "assets/audio/lift.wav"
+  ],
+  "kind": "cast",
+  "recipe": "lift",
+  "sources": []
+ },
+ "lightning_arc": {
+  "files": [
+   "assets/audio/lightning_arc_1.wav",
+   "assets/audio/lightning_arc_2.wav",
+   "assets/audio/lightning_arc_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "lightning_arc",
+  "sources": []
+ },
+ "lumen_beam_cast": {
+  "files": [
+   "assets/audio/lumen_beam_cast_1.wav",
+   "assets/audio/lumen_beam_cast_2.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "beam_fire",
+  "sources": []
+ },
+ "lumen_beam_end": {
+  "files": [
+   "assets/audio/lumen_beam_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "lumen_beam_loop": {
+  "files": [
+   "assets/audio/lumen_beam_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "beam_loop",
+  "sources": []
+ },
+ "lumen_blind_apply": {
+  "files": [
+   "assets/audio/lumen_blind_apply.wav"
+  ],
+  "kind": "cast",
+  "recipe": "reveal_ping",
+  "sources": []
+ },
+ "lumen_glint_fire": {
+  "files": [
+   "assets/audio/lumen_glint_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "reveal_ping",
+  "sources": []
+ },
+ "lumen_prism_fire": {
+  "files": [
+   "assets/audio/lumen_prism_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_up",
+  "sources": [
+   "sci-fi-sounds/Audio/forceField_000.ogg"
+  ]
+ },
+ "lumen_refract_fire": {
+  "files": [
+   "assets/audio/lumen_refract_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_out",
+  "sources": []
+ },
+ "lumen_sunstroke_cast": {
+  "files": [
+   "assets/audio/lumen_sunstroke_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "lumen_sunstroke_end": {
+  "files": [
+   "assets/audio/lumen_sunstroke_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "lumen_ult_line": {
+  "files": [
+   "assets/audio/lumen_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "lumen_ult_line_enemy": {
+  "files": [
+   "assets/audio/lumen_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "mace_swing": {
+  "files": [
+   "assets/audio/mace_swing_1.wav",
+   "assets/audio/mace_swing_2.wav",
+   "assets/audio/mace_swing_3.wav"
+  ],
+  "kind": "swing",
+  "recipe": "mace_swing",
+  "sources": []
+ },
+ "melee_hit": {
+  "files": [
+   "assets/audio/melee_hit_1.wav",
+   "assets/audio/melee_hit_2.wav",
+   "assets/audio/melee_hit_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "melee_hit",
+  "sources": [
+   "impact-sounds/Audio/impactPunch_medium_000.ogg",
+   "impact-sounds/Audio/impactPunch_medium_001.ogg",
+   "impact-sounds/Audio/impactPunch_medium_002.ogg"
+  ]
+ },
+ "melee_swing": {
+  "files": [
+   "assets/audio/melee_swing.wav"
+  ],
+  "kind": "cast",
+  "recipe": "whoosh",
+  "sources": []
+ },
+ "meltdown": {
+  "files": [
+   "assets/audio/meltdown.wav"
+  ],
+  "kind": "loop",
+  "recipe": "meltdown",
+  "sources": []
+ },
+ "mortar_thump": {
+  "files": [
+   "assets/audio/mortar_thump_1.wav",
+   "assets/audio/mortar_thump_2.wav",
+   "assets/audio/mortar_thump_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "mortar_thump",
+  "sources": []
+ },
+ "music_defeat": {
+  "files": [
+   "assets/audio/music_defeat.wav"
+  ],
+  "kind": "music",
+  "recipe": "music_defeat",
+  "sources": []
+ },
+ "music_menu": {
+  "files": [
+   "assets/audio/music_menu.wav"
+  ],
+  "kind": "music",
+  "recipe": "music_menu",
+  "sources": []
+ },
+ "music_potg": {
+  "files": [
+   "assets/audio/music_potg.wav"
+  ],
+  "kind": "music",
+  "recipe": "music_potg",
+  "sources": []
+ },
+ "music_victory": {
+  "files": [
+   "assets/audio/music_victory.wav"
+  ],
+  "kind": "music",
+  "recipe": "music_victory",
+  "sources": []
+ },
+ "notification": {
+  "files": [
+   "assets/audio/notification.wav"
+  ],
+  "kind": "ui",
+  "recipe": "notification",
+  "sources": []
+ },
+ "ping": {
+  "files": [
+   "assets/audio/ping.wav"
+  ],
+  "kind": "ui",
+  "recipe": "ping",
+  "sources": []
+ },
+ "pull": {
+  "files": [
+   "assets/audio/pull.wav"
+  ],
+  "kind": "cast",
+  "recipe": "pull",
+  "sources": []
+ },
+ "radio_a": {
+  "files": [
+   "assets/audio/radio_a.wav"
+  ],
+  "kind": "ui",
+  "recipe": "ping",
+  "sources": []
+ },
+ "respawn": {
+  "files": [
+   "assets/audio/respawn.wav"
+  ],
+  "kind": "ui",
+  "recipe": "respawn",
+  "sources": []
+ },
+ "reveal_ping": {
+  "files": [
+   "assets/audio/reveal_ping.wav"
+  ],
+  "kind": "cast",
+  "recipe": "reveal_ping",
+  "sources": []
+ },
+ "ricochet_bank_shot_cast": {
+  "files": [
+   "assets/audio/ricochet_bank_shot_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_on",
+  "sources": []
+ },
+ "ricochet_bank_shot_end": {
+  "files": [
+   "assets/audio/ricochet_bank_shot_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "ricochet_disc_impact": {
+  "files": [
+   "assets/audio/ricochet_disc_impact_1.wav",
+   "assets/audio/ricochet_disc_impact_2.wav",
+   "assets/audio/ricochet_disc_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_disc",
+  "sources": [
+   "impact-sounds/Audio/impactMetal_light_000.ogg",
+   "impact-sounds/Audio/impactMetal_light_001.ogg",
+   "impact-sounds/Audio/impactMetal_light_002.ogg"
+  ]
+ },
+ "ricochet_lob_impact": {
+  "files": [
+   "assets/audio/ricochet_lob_impact_1.wav",
+   "assets/audio/ricochet_lob_impact_2.wav",
+   "assets/audio/ricochet_lob_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_grenade",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "ricochet_pinball_cast": {
+  "files": [
+   "assets/audio/ricochet_pinball_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "ricochet_pinball_end": {
+  "files": [
+   "assets/audio/ricochet_pinball_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "ricochet_pinball_fire": {
+  "files": [
+   "assets/audio/ricochet_pinball_fire_1.wav",
+   "assets/audio/ricochet_pinball_fire_2.wav",
+   "assets/audio/ricochet_pinball_fire_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "disc_launch",
+  "sources": []
+ },
+ "ricochet_pinball_impact": {
+  "files": [
+   "assets/audio/ricochet_pinball_impact_1.wav",
+   "assets/audio/ricochet_pinball_impact_2.wav",
+   "assets/audio/ricochet_pinball_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_disc",
+  "sources": [
+   "impact-sounds/Audio/impactMetal_light_000.ogg",
+   "impact-sounds/Audio/impactMetal_light_001.ogg",
+   "impact-sounds/Audio/impactMetal_light_002.ogg"
+  ]
+ },
+ "ricochet_skip_fire": {
+  "files": [
+   "assets/audio/ricochet_skip_fire_1.wav",
+   "assets/audio/ricochet_skip_fire_2.wav"
+  ],
+  "kind": "cast",
+  "recipe": "launch_grenade",
+  "sources": []
+ },
+ "ricochet_skip_tail": {
+  "files": [
+   "assets/audio/ricochet_skip_tail_1.wav",
+   "assets/audio/ricochet_skip_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "ricochet_ult_line": {
+  "files": [
+   "assets/audio/ricochet_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "ricochet_ult_line_enemy": {
+  "files": [
+   "assets/audio/ricochet_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "rifle_semi": {
+  "files": [
+   "assets/audio/rifle_semi_1.wav",
+   "assets/audio/rifle_semi_2.wav",
+   "assets/audio/rifle_semi_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "rifle_semi",
+  "sources": []
+ },
+ "rifle_tail": {
+  "files": [
+   "assets/audio/rifle_tail_1.wav",
+   "assets/audio/rifle_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "rifle_tail",
+  "sources": []
+ },
+ "rock_lob": {
+  "files": [
+   "assets/audio/rock_lob_1.wav",
+   "assets/audio/rock_lob_2.wav",
+   "assets/audio/rock_lob_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "rock_lob",
+  "sources": []
+ },
+ "rook_density_cast": {
+  "files": [
+   "assets/audio/rook_density_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "lift",
+  "sources": []
+ },
+ "rook_density_end": {
+  "files": [
+   "assets/audio/rook_density_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "rook_density_loop": {
+  "files": [
+   "assets/audio/rook_density_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "density_loop",
+  "sources": []
+ },
+ "rook_ground_zero_cast": {
+  "files": [
+   "assets/audio/rook_ground_zero_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "rook_ground_zero_end": {
+  "files": [
+   "assets/audio/rook_ground_zero_end_1.wav",
+   "assets/audio/rook_ground_zero_end_2.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_large",
+  "sources": [
+   "sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg",
+   "sci-fi-sounds/Audio/lowFrequency_explosion_001.ogg"
+  ]
+ },
+ "rook_lift_cast": {
+  "files": [
+   "assets/audio/rook_lift_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "lift",
+  "sources": []
+ },
+ "rook_lift_end": {
+  "files": [
+   "assets/audio/rook_lift_end_1.wav",
+   "assets/audio/rook_lift_end_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "rook_lift_fire": {
+  "files": [
+   "assets/audio/rook_lift_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "lift",
+  "sources": []
+ },
+ "rook_mortar_impact": {
+  "files": [
+   "assets/audio/rook_mortar_impact_1.wav",
+   "assets/audio/rook_mortar_impact_2.wav",
+   "assets/audio/rook_mortar_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_mortar",
+  "sources": [
+   "sci-fi-sounds/Audio/explosionCrunch_000.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_001.ogg",
+   "sci-fi-sounds/Audio/explosionCrunch_002.ogg"
+  ]
+ },
+ "rook_singularity_impact": {
+  "files": [
+   "assets/audio/rook_singularity_impact_1.wav",
+   "assets/audio/rook_singularity_impact_2.wav"
+  ],
+  "kind": "impact",
+  "recipe": "explosion_large",
+  "sources": [
+   "sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg",
+   "sci-fi-sounds/Audio/lowFrequency_explosion_001.ogg"
+  ]
+ },
+ "rook_ult_line": {
+  "files": [
+   "assets/audio/rook_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "rook_ult_line_enemy": {
+  "files": [
+   "assets/audio/rook_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "sable_blades_impact": {
+  "files": [
+   "assets/audio/sable_blades_impact_1.wav",
+   "assets/audio/sable_blades_impact_2.wav",
+   "assets/audio/sable_blades_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "melee_hit",
+  "sources": [
+   "impact-sounds/Audio/impactPunch_medium_000.ogg",
+   "impact-sounds/Audio/impactPunch_medium_001.ogg",
+   "impact-sounds/Audio/impactPunch_medium_002.ogg"
+  ]
+ },
+ "sable_lunge_cast": {
+  "files": [
+   "assets/audio/sable_lunge_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "dash",
+  "sources": []
+ },
+ "sable_lunge_end": {
+  "files": [
+   "assets/audio/sable_lunge_end_1.wav",
+   "assets/audio/sable_lunge_end_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "sable_lunge_impact": {
+  "files": [
+   "assets/audio/sable_lunge_impact_1.wav",
+   "assets/audio/sable_lunge_impact_2.wav",
+   "assets/audio/sable_lunge_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "melee_hit",
+  "sources": [
+   "impact-sounds/Audio/impactPunch_medium_000.ogg",
+   "impact-sounds/Audio/impactPunch_medium_001.ogg",
+   "impact-sounds/Audio/impactPunch_medium_002.ogg"
+  ]
+ },
+ "sable_requiem_cast": {
+  "files": [
+   "assets/audio/sable_requiem_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "sable_requiem_end": {
+  "files": [
+   "assets/audio/sable_requiem_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "sable_requiem_impact": {
+  "files": [
+   "assets/audio/sable_requiem_impact_1.wav",
+   "assets/audio/sable_requiem_impact_2.wav",
+   "assets/audio/sable_requiem_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "melee_hit",
+  "sources": [
+   "impact-sounds/Audio/impactPunch_medium_000.ogg",
+   "impact-sounds/Audio/impactPunch_medium_001.ogg",
+   "impact-sounds/Audio/impactPunch_medium_002.ogg"
+  ]
+ },
+ "sable_shroud_cast": {
+  "files": [
+   "assets/audio/sable_shroud_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "shroud_on",
+  "sources": []
+ },
+ "sable_shroud_end": {
+  "files": [
+   "assets/audio/sable_shroud_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "sable_ult_line": {
+  "files": [
+   "assets/audio/sable_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "sable_ult_line_enemy": {
+  "files": [
+   "assets/audio/sable_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "sable_vault_fire": {
+  "files": [
+   "assets/audio/sable_vault_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "dash",
+  "sources": []
+ },
+ "sable_vault_tail": {
+  "files": [
+   "assets/audio/sable_vault_tail_1.wav",
+   "assets/audio/sable_vault_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "short_tail": {
+  "files": [
+   "assets/audio/short_tail_1.wav",
+   "assets/audio/short_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "shotgun_wave": {
+  "files": [
+   "assets/audio/shotgun_wave_1.wav",
+   "assets/audio/shotgun_wave_2.wav",
+   "assets/audio/shotgun_wave_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "shotgun_wave",
+  "sources": []
+ },
+ "shroud_on": {
+  "files": [
+   "assets/audio/shroud_on.wav"
+  ],
+  "kind": "cast",
+  "recipe": "shroud_on",
+  "sources": []
+ },
+ "slug_cannon": {
+  "files": [
+   "assets/audio/slug_cannon_1.wav",
+   "assets/audio/slug_cannon_2.wav",
+   "assets/audio/slug_cannon_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "slug_cannon",
+  "sources": []
+ },
+ "smg": {
+  "files": [
+   "assets/audio/smg_1.wav",
+   "assets/audio/smg_2.wav",
+   "assets/audio/smg_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "smg",
+  "sources": []
+ },
+ "spawn_generic": {
+  "files": [
+   "assets/audio/spawn_generic.wav"
+  ],
+  "kind": "cast",
+  "recipe": "spawn_generic",
+  "sources": []
+ },
+ "staff_bolt": {
+  "files": [
+   "assets/audio/staff_bolt_1.wav",
+   "assets/audio/staff_bolt_2.wav",
+   "assets/audio/staff_bolt_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "staff_bolt",
+  "sources": []
+ },
+ "suture_adrenaline_apply": {
+  "files": [
+   "assets/audio/suture_adrenaline_apply.wav"
+  ],
+  "kind": "cast",
+  "recipe": "buff_chime",
+  "sources": []
+ },
+ "suture_adrenaline_fire": {
+  "files": [
+   "assets/audio/suture_adrenaline_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "buff_chime",
+  "sources": []
+ },
+ "suture_tether_fire": {
+  "files": [
+   "assets/audio/suture_tether_fire_1.wav",
+   "assets/audio/suture_tether_fire_2.wav",
+   "assets/audio/suture_tether_fire_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "heal_bolt",
+  "sources": []
+ },
+ "suture_triage_cast": {
+  "files": [
+   "assets/audio/suture_triage_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "suture_triage_fire": {
+  "files": [
+   "assets/audio/suture_triage_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "heal_pulse",
+  "sources": []
+ },
+ "suture_ult_line": {
+  "files": [
+   "assets/audio/suture_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "suture_ult_line_enemy": {
+  "files": [
+   "assets/audio/suture_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "tallow_bolt_impact": {
+  "files": [
+   "assets/audio/tallow_bolt_impact_1.wav",
+   "assets/audio/tallow_bolt_impact_2.wav",
+   "assets/audio/tallow_bolt_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_candle",
+  "sources": []
+ },
+ "tallow_last_light_apply": {
+  "files": [
+   "assets/audio/tallow_last_light_apply.wav"
+  ],
+  "kind": "cast",
+  "recipe": "cleanse_chime",
+  "sources": []
+ },
+ "tallow_snuff_apply": {
+  "files": [
+   "assets/audio/tallow_snuff_apply.wav"
+  ],
+  "kind": "cast",
+  "recipe": "burn_apply",
+  "sources": []
+ },
+ "tallow_snuff_fire": {
+  "files": [
+   "assets/audio/tallow_snuff_fire_1.wav",
+   "assets/audio/tallow_snuff_fire_2.wav",
+   "assets/audio/tallow_snuff_fire_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "flame_bolt",
+  "sources": []
+ },
+ "tallow_snuff_tail": {
+  "files": [
+   "assets/audio/tallow_snuff_tail_1.wav",
+   "assets/audio/tallow_snuff_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "tallow_ult_line": {
+  "files": [
+   "assets/audio/tallow_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "tallow_ult_line_enemy": {
+  "files": [
+   "assets/audio/tallow_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "tallow_vigil_apply": {
+  "files": [
+   "assets/audio/tallow_vigil_apply.wav"
+  ],
+  "kind": "cast",
+  "recipe": "heal_pulse",
+  "sources": []
+ },
+ "tallow_vigil_cast": {
+  "files": [
+   "assets/audio/tallow_vigil_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "tallow_vigil_end": {
+  "files": [
+   "assets/audio/tallow_vigil_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_down",
+  "sources": []
+ },
+ "tallow_vigil_fire": {
+  "files": [
+   "assets/audio/tallow_vigil_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "barrier_up",
+  "sources": [
+   "sci-fi-sounds/Audio/forceField_000.ogg"
+  ]
+ },
+ "tallow_wax_impact": {
+  "files": [
+   "assets/audio/tallow_wax_impact_1.wav",
+   "assets/audio/tallow_wax_impact_2.wav",
+   "assets/audio/tallow_wax_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_candle",
+  "sources": []
+ },
+ "tallow_wicks_end": {
+  "files": [
+   "assets/audio/tallow_wicks_end_1.wav",
+   "assets/audio/tallow_wicks_end_2.wav",
+   "assets/audio/tallow_wicks_end_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "deploy_break",
+  "sources": [
+   "impact-sounds/Audio/impactPlate_heavy_000.ogg",
+   "impact-sounds/Audio/impactPlate_heavy_001.ogg",
+   "impact-sounds/Audio/impactPlate_heavy_002.ogg"
+  ]
+ },
+ "tallow_wicks_loop": {
+  "files": [
+   "assets/audio/tallow_wicks_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "ability_loop",
+  "sources": []
+ },
+ "teleport_in": {
+  "files": [
+   "assets/audio/teleport_in.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_in",
+  "sources": []
+ },
+ "teleport_out": {
+  "files": [
+   "assets/audio/teleport_out.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_out",
+  "sources": []
+ },
+ "thorn": {
+  "files": [
+   "assets/audio/thorn_1.wav",
+   "assets/audio/thorn_2.wav",
+   "assets/audio/thorn_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "thorn",
+  "sources": []
+ },
+ "ui_back": {
+  "files": [
+   "assets/audio/ui_back.wav"
+  ],
+  "kind": "ui",
+  "recipe": "ui_back",
+  "sources": [
+   "interface-sounds/Audio/back_002.ogg"
+  ]
+ },
+ "ui_click": {
+  "files": [
+   "assets/audio/ui_click.wav"
+  ],
+  "kind": "ui",
+  "recipe": "ui_click",
+  "sources": [
+   "interface-sounds/Audio/click_001.ogg"
+  ]
+ },
+ "ui_confirm": {
+  "files": [
+   "assets/audio/ui_confirm.wav"
+  ],
+  "kind": "ui",
+  "recipe": "ui_confirm",
+  "sources": [
+   "interface-sounds/Audio/confirmation_001.ogg"
+  ]
+ },
+ "ui_hover": {
+  "files": [
+   "assets/audio/ui_hover.wav"
+  ],
+  "kind": "ui",
+  "recipe": "ui_hover",
+  "sources": [
+   "ui-audio/Audio/rollover2.ogg"
+  ]
+ },
+ "ult_ballast": {
+  "files": [
+   "assets/audio/ult_ballast.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_ballast_enemy": {
+  "files": [
+   "assets/audio/ult_ballast_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_bombard": {
+  "files": [
+   "assets/audio/ult_bombard.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_bombard_enemy": {
+  "files": [
+   "assets/audio/ult_bombard_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_bramble": {
+  "files": [
+   "assets/audio/ult_bramble.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_bramble_enemy": {
+  "files": [
+   "assets/audio/ult_bramble_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_cadence": {
+  "files": [
+   "assets/audio/ult_cadence.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_cadence_enemy": {
+  "files": [
+   "assets/audio/ult_cadence_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_cairn": {
+  "files": [
+   "assets/audio/ult_cairn.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_cairn_enemy": {
+  "files": [
+   "assets/audio/ult_cairn_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_cast": {
+  "files": [
+   "assets/audio/ult_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "ult_cathedral": {
+  "files": [
+   "assets/audio/ult_cathedral.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_cathedral_enemy": {
+  "files": [
+   "assets/audio/ult_cathedral_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_coil": {
+  "files": [
+   "assets/audio/ult_coil.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_coil_enemy": {
+  "files": [
+   "assets/audio/ult_coil_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_ferry": {
+  "files": [
+   "assets/audio/ult_ferry.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_ferry_enemy": {
+  "files": [
+   "assets/audio/ult_ferry_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_harrier": {
+  "files": [
+   "assets/audio/ult_harrier.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_harrier_enemy": {
+  "files": [
+   "assets/audio/ult_harrier_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_kiln": {
+  "files": [
+   "assets/audio/ult_kiln.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_kiln_enemy": {
+  "files": [
+   "assets/audio/ult_kiln_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_lumen": {
+  "files": [
+   "assets/audio/ult_lumen.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_lumen_enemy": {
+  "files": [
+   "assets/audio/ult_lumen_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_ready": {
+  "files": [
+   "assets/audio/ult_ready.wav"
+  ],
+  "kind": "ui",
+  "recipe": "ult_ready",
+  "sources": []
+ },
+ "ult_ready_generic": {
+  "files": [
+   "assets/audio/ult_ready_generic.wav"
+  ],
+  "kind": "ui",
+  "recipe": "ult_ready",
+  "sources": []
+ },
+ "ult_ricochet": {
+  "files": [
+   "assets/audio/ult_ricochet.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_ricochet_enemy": {
+  "files": [
+   "assets/audio/ult_ricochet_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_rook": {
+  "files": [
+   "assets/audio/ult_rook.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_rook_enemy": {
+  "files": [
+   "assets/audio/ult_rook_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_sable": {
+  "files": [
+   "assets/audio/ult_sable.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_sable_enemy": {
+  "files": [
+   "assets/audio/ult_sable_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_suture": {
+  "files": [
+   "assets/audio/ult_suture.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_suture_enemy": {
+  "files": [
+   "assets/audio/ult_suture_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_tallow": {
+  "files": [
+   "assets/audio/ult_tallow.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_tallow_enemy": {
+  "files": [
+   "assets/audio/ult_tallow_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_vesper": {
+  "files": [
+   "assets/audio/ult_vesper.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_vesper_enemy": {
+  "files": [
+   "assets/audio/ult_vesper_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_wisp": {
+  "files": [
+   "assets/audio/ult_wisp.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "ult_wisp_enemy": {
+  "files": [
+   "assets/audio/ult_wisp_enemy.wav"
+  ],
+  "kind": "stinger",
+  "recipe": "hero_stinger",
+  "sources": []
+ },
+ "vesper_focus_off": {
+  "files": [
+   "assets/audio/vesper_focus_off.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "vesper_focus_on": {
+  "files": [
+   "assets/audio/vesper_focus_on.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_on",
+  "sources": []
+ },
+ "vesper_ult": {
+  "files": [
+   "assets/audio/vesper_ult.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "vesper_ult_line": {
+  "files": [
+   "assets/audio/vesper_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "vesper_ult_line_enemy": {
+  "files": [
+   "assets/audio/vesper_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "vesper_zip_end": {
+  "files": [
+   "assets/audio/vesper_zip_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "zip_end",
+  "sources": []
+ },
+ "vesper_zip_fire": {
+  "files": [
+   "assets/audio/vesper_zip_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "zip_fire",
+  "sources": []
+ },
+ "vesper_zip_loop": {
+  "files": [
+   "assets/audio/vesper_zip_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "zipline_loop",
+  "sources": []
+ },
+ "whoosh": {
+  "files": [
+   "assets/audio/whoosh.wav"
+  ],
+  "kind": "cast",
+  "recipe": "whoosh",
+  "sources": []
+ },
+ "wisp_displacement_cast": {
+  "files": [
+   "assets/audio/wisp_displacement_cast.wav"
+  ],
+  "kind": "cast",
+  "recipe": "ult_cast",
+  "sources": []
+ },
+ "wisp_displacement_end": {
+  "files": [
+   "assets/audio/wisp_displacement_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "beam_end",
+  "sources": []
+ },
+ "wisp_displacement_fire": {
+  "files": [
+   "assets/audio/wisp_displacement_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_out",
+  "sources": []
+ },
+ "wisp_displacement_impact": {
+  "files": [
+   "assets/audio/wisp_displacement_impact.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_in",
+  "sources": []
+ },
+ "wisp_exchange_end": {
+  "files": [
+   "assets/audio/wisp_exchange_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_out",
+  "sources": []
+ },
+ "wisp_exchange_impact": {
+  "files": [
+   "assets/audio/wisp_exchange_impact.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_in",
+  "sources": []
+ },
+ "wisp_fold_fire": {
+  "files": [
+   "assets/audio/wisp_fold_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "teleport_out",
+  "sources": []
+ },
+ "wisp_fold_tail": {
+  "files": [
+   "assets/audio/wisp_fold_tail_1.wav",
+   "assets/audio/wisp_fold_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "wisp_mark_end": {
+  "files": [
+   "assets/audio/wisp_mark_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "focus_off",
+  "sources": []
+ },
+ "wisp_mark_fire": {
+  "files": [
+   "assets/audio/wisp_mark_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "reveal_ping",
+  "sources": []
+ },
+ "wisp_mark_tail": {
+  "files": [
+   "assets/audio/wisp_mark_tail_1.wav",
+   "assets/audio/wisp_mark_tail_2.wav"
+  ],
+  "kind": "tail",
+  "recipe": "short_tail",
+  "sources": []
+ },
+ "wisp_needle_impact": {
+  "files": [
+   "assets/audio/wisp_needle_impact_1.wav",
+   "assets/audio/wisp_needle_impact_2.wav",
+   "assets/audio/wisp_needle_impact_3.wav"
+  ],
+  "kind": "impact",
+  "recipe": "impact_needle",
+  "sources": []
+ },
+ "wisp_ult_line": {
+  "files": [
+   "assets/audio/wisp_ult_line.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "wisp_ult_line_enemy": {
+  "files": [
+   "assets/audio/wisp_ult_line_enemy.wav"
+  ],
+  "kind": "voice",
+  "recipe": "hero_ult_line",
+  "sources": []
+ },
+ "zip_end": {
+  "files": [
+   "assets/audio/zip_end.wav"
+  ],
+  "kind": "cast",
+  "recipe": "zip_end",
+  "sources": []
+ },
+ "zip_fire": {
+  "files": [
+   "assets/audio/zip_fire.wav"
+  ],
+  "kind": "cast",
+  "recipe": "zip_fire",
+  "sources": []
+ },
+ "zipline_loop": {
+  "files": [
+   "assets/audio/zipline_loop.wav"
+  ],
+  "kind": "loop",
+  "recipe": "zipline_loop",
+  "sources": []
+ }
+}

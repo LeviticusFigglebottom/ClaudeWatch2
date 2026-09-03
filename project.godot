@@ -215,3 +215,14 @@ anti_aliasing/quality/screen_space_aa=1
 environment/defaults/default_clear_color=Color(0.05, 0.06, 0.09, 1)
 occlusion_culling/use_occlusion_culling=true
 scaling_3d/mode=0
+
+[importer_defaults]
+
+texture={
+"compress/mode": 2,
+"compress/high_quality": true,
+"compress/hdr_compression": 1,
+"mipmaps/generate": true,
+"detect_3d/compress_to": 0,
+"roughness/mode": 0
+}

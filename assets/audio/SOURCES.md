@@ -1,0 +1,55 @@
+# Audio sources
+
+All sounds are rendered by tools/audio/gen_audio.py from procedural recipes. The following Kenney CC0 samples (https://kenney.nl, CC0 1.0) are layered into some renders:
+
+- impact-sounds/Audio/footstep_carpet_000.ogg
+- impact-sounds/Audio/footstep_carpet_001.ogg
+- impact-sounds/Audio/footstep_carpet_002.ogg
+- impact-sounds/Audio/footstep_carpet_003.ogg
+- impact-sounds/Audio/footstep_concrete_000.ogg
+- impact-sounds/Audio/footstep_concrete_001.ogg
+- impact-sounds/Audio/footstep_concrete_002.ogg
+- impact-sounds/Audio/footstep_concrete_003.ogg
+- impact-sounds/Audio/footstep_grass_000.ogg
+- impact-sounds/Audio/footstep_grass_001.ogg
+- impact-sounds/Audio/footstep_grass_002.ogg
+- impact-sounds/Audio/footstep_grass_003.ogg
+- impact-sounds/Audio/footstep_snow_000.ogg
+- impact-sounds/Audio/footstep_snow_001.ogg
+- impact-sounds/Audio/footstep_snow_002.ogg
+- impact-sounds/Audio/footstep_snow_003.ogg
+- impact-sounds/Audio/footstep_wood_000.ogg
+- impact-sounds/Audio/footstep_wood_001.ogg
+- impact-sounds/Audio/footstep_wood_002.ogg
+- impact-sounds/Audio/footstep_wood_003.ogg
+- impact-sounds/Audio/impactGeneric_light_000.ogg
+- impact-sounds/Audio/impactGeneric_light_001.ogg
+- impact-sounds/Audio/impactGeneric_light_002.ogg
+- impact-sounds/Audio/impactMetal_heavy_000.ogg
+- impact-sounds/Audio/impactMetal_heavy_001.ogg
+- impact-sounds/Audio/impactMetal_heavy_002.ogg
+- impact-sounds/Audio/impactMetal_light_000.ogg
+- impact-sounds/Audio/impactMetal_light_001.ogg
+- impact-sounds/Audio/impactMetal_light_002.ogg
+- impact-sounds/Audio/impactPlate_heavy_000.ogg
+- impact-sounds/Audio/impactPlate_heavy_001.ogg
+- impact-sounds/Audio/impactPlate_heavy_002.ogg
+- impact-sounds/Audio/impactPunch_medium_000.ogg
+- impact-sounds/Audio/impactPunch_medium_001.ogg
+- impact-sounds/Audio/impactPunch_medium_002.ogg
+- impact-sounds/Audio/impactSoft_medium_000.ogg
+- impact-sounds/Audio/impactSoft_medium_001.ogg
+- impact-sounds/Audio/impactSoft_medium_002.ogg
+- impact-sounds/Audio/impactWood_light_000.ogg
+- impact-sounds/Audio/impactWood_light_001.ogg
+- impact-sounds/Audio/impactWood_light_002.ogg
+- interface-sounds/Audio/back_002.ogg
+- interface-sounds/Audio/click_001.ogg
+- interface-sounds/Audio/confirmation_001.ogg
+- sci-fi-sounds/Audio/explosionCrunch_000.ogg
+- sci-fi-sounds/Audio/explosionCrunch_001.ogg
+- sci-fi-sounds/Audio/explosionCrunch_002.ogg
+- sci-fi-sounds/Audio/forceField_000.ogg
+- sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg
+- sci-fi-sounds/Audio/lowFrequency_explosion_001.ogg
+- ui-audio/Audio/rollover2.ogg

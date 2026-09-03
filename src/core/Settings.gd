@@ -28,6 +28,7 @@ const DEFAULTS := {
 		"glow": true,
 		"volumetric_fog": true,
 		"motion_blur": false,
+		"detail_distance": 1.0,          # multiplier on the distance at which small props fade out
 		"show_fps": false,
 	},
 	&"audio": {

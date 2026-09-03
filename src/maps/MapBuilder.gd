@@ -37,7 +37,15 @@ func _ready() -> void:
 	add_child(lights_root)
 	rng.seed = hash(name)
 	build()
+	_merge_static_geometry()
+	_apply_detail_distance()
+	EventBus.settings_changed.connect(_on_settings_changed)   # bound method: auto-disconnects when freed
 	_setup_navigation()
+
+
+func _on_settings_changed(section: StringName) -> void:
+	if section == &"video" and is_inside_tree():
+		_apply_detail_distance()
 
 
 func build() -> void:
@@ -175,6 +183,7 @@ func prop(path: String, pos: Vector3, yaw_deg: float = 0.0, scale_f: float = 1.0
 	node.rotation.y = yaw
 	node.scale = Vector3.ONE * scale_f
 	props_root.add_child(node)
+	_prop_lod(node, scale_f)
 	if collide:
 		PropLibrary.add_box_collision(node, static_root, node.position, yaw, scale_f)
 	return node
@@ -300,6 +309,108 @@ func _setup_navigation() -> void:
 	if OS.has_feature("editor") or OS.get_cmdline_user_args().has("--save-nav"):
 		DirAccess.make_dir_recursive_absolute("res://data/maps/nav")
 		ResourceSaver.save(nav_region.navigation_mesh, cache_path)
+
+
+## --- Optimisation ---------------------------------------------------------------------------------
+
+const MERGE_CELL := 24.0   # metres; merged chunks stay small enough for frustum culling to matter
+
+
+## Merge the thousands of primitive blocks/decos that share a material into one mesh per (material,
+## shadow flag, grid cell). Collision and navigation use the StaticBody shapes, so visuals are free to
+## merge. Transparent materials and glTF props are left alone (draw order / instancing semantics).
+func _merge_static_geometry() -> void:
+	var groups: Dictionary = {}
+	for root: Node3D in [static_root, props_root]:
+		for c: Node in root.get_children():
+			if not (c is MeshInstance3D):
+				continue
+			var mi := c as MeshInstance3D
+			if mi.mesh == null or not (mi.mesh is PrimitiveMesh):
+				continue
+			var m := mi.material_override
+			if m == null or not (m is StandardMaterial3D):
+				continue
+			var sm := m as StandardMaterial3D
+			if sm.transparency != BaseMaterial3D.TRANSPARENCY_DISABLED or sm.billboard_mode != BaseMaterial3D.BILLBOARD_DISABLED:
+				continue
+			if mi.visibility_range_end > 0.0 or mi.get_meta("no_merge", false):
+				continue
+			var p := mi.global_position
+			var cell := Vector3i(floori(p.x / MERGE_CELL), floori(p.y / MERGE_CELL), floori(p.z / MERGE_CELL))
+			var key := "%d|%d|%s|%s" % [m.get_instance_id(), int(mi.cast_shadow), cell, root.name]
+			if not groups.has(key):
+				groups[key] = []
+			(groups[key] as Array).append(mi)
+	var merged := 0
+	var removed := 0
+	for key: String in groups:
+		var list: Array = groups[key]
+		if list.size() < 2:
+			continue
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var first := list[0] as MeshInstance3D
+		var parent := first.get_parent() as Node3D
+		for mi: MeshInstance3D in list:
+			var xf := parent.global_transform.affine_inverse() * mi.global_transform
+			st.append_from(mi.mesh, 0, xf)
+		st.index()
+		var mesh := st.commit()
+		var out := MeshInstance3D.new()
+		out.name = "Merged%d" % merged
+		out.mesh = mesh
+		out.material_override = first.material_override
+		out.cast_shadow = first.cast_shadow
+		out.layers = first.layers
+		parent.add_child(out)
+		for mi: MeshInstance3D in list:
+			mi.queue_free()
+			removed += 1
+		merged += 1
+	if merged > 0:
+		print("[map] %s: merged %d primitive meshes into %d chunks" % [name, removed, merged])
+
+
+## Small props fade out with distance; the cutoff scales with the "detail_distance" video setting.
+func _prop_lod(node: Node3D, scale_f: float) -> void:
+	var ab := PropLibrary._aabb(node)
+	var extent := maxf(ab.size.x, maxf(ab.size.y, ab.size.z)) * scale_f
+	var base := 0.0
+	if extent < 0.6:
+		base = 32.0
+	elif extent < 1.5:
+		base = 55.0
+	elif extent < 3.5:
+		base = 95.0
+	if base <= 0.0:
+		return
+	node.set_meta("lod_base", base)
+	_set_visibility_range(node, base * _detail_mult())
+
+
+func _detail_mult() -> float:
+	return clampf(float(Settings.get_value(&"video", "detail_distance")), 0.5, 2.0)
+
+
+func _apply_detail_distance() -> void:
+	var k := _detail_mult()
+	for c: Node in props_root.get_children():
+		if c.has_meta("lod_base"):
+			_set_visibility_range(c as Node3D, float(c.get_meta("lod_base")) * k)
+
+
+func _set_visibility_range(node: Node3D, end: float) -> void:
+	var stack: Array[Node] = [node]
+	while not stack.is_empty():
+		var n: Node = stack.pop_back()
+		if n is GeometryInstance3D:
+			var g := n as GeometryInstance3D
+			g.visibility_range_end = end
+			g.visibility_range_end_margin = end * 0.15
+			g.visibility_range_fade_mode = GeometryInstance3D.VISIBILITY_RANGE_FADE_SELF
+		for c: Node in n.get_children():
+			stack.append(c)
 
 
 class MeshInstanceWrap:
