@@ -138,7 +138,7 @@ spam_ok = true
 
 [sub_resource type="Resource" id="Resource_4ddmg"]
 script = ExtResource("14_4ddmg")
-damage = 30.0
+damage = 25.0
 range = 25.0
 spread_deg = 0.5
 spread_moving_deg = 0.6
@@ -149,7 +149,7 @@ falloff_min = 1.0
 
 [sub_resource type="Resource" id="Resource_k24cy"]
 script = ExtResource("15_k24cy")
-max_jumps = 1
+base_damage = 25.0
 
 [sub_resource type="Resource" id="Resource_g0efk"]
 script = ExtResource("5_o4u1s")
@@ -173,7 +173,7 @@ viewmodel_kick_rot = 2.0
 script = ExtResource("6_7h5l1")
 id = &"coil_chain"
 display_name = "Arc Gauntlet"
-description = "Hitscan lightning: 30 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to one more enemy within 6 m of the target for 21 damage. 12 cells, 1.4 s recharge."
+description = "Hitscan lightning: 25 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to up to two more enemies within 6 m of the target for 17 and 12 damage. 12 cells, 1.4 s recharge."
 trigger = 1
 fire_rate = 4.0
 resource = 1

@@ -52,19 +52,21 @@ static func build() -> HeroData:
 	h.ai.ult_style = &"counter"; h.ai.ult_min_targets = 2; h.ai.strafe_style = &"weave"
 	h.ai.aim_difficulty_scale = 1.0
 	# --- Primary: Arc Gauntlet (hitscan 30 + chain 70% / 50%)
-	var prim := A.weapon(&"coil_chain", "Arc Gauntlet", "Hitscan lightning: 30 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to one more enemy within 6 m of the target for 21 damage. 12 cells, 1.4 s recharge.", 4.0, 12, 1.4)
-	var hs := A.hitscan(30.0, 25.0)
+	var prim := A.weapon(&"coil_chain", "Arc Gauntlet", "Hitscan lightning: 25 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to up to two more enemies within 6 m of the target for 17 and 12 damage. 12 cells, 1.4 s recharge.", 4.0, 12, 1.4)
+	# 25, not 30. Coil posted 17584 dmg/10m in balance pass 5 against 13600 for the next hero, on a
+	# 64% win rate and the highest K/D in the game over 42 picks. Cutting the chain to a single jump
+	# was tried first and moved damage by 3%: three enemies rarely sit inside the 6 m chain radius,
+	# so the outlier was never the spread. It is the base weapon — 30 damage four times a second,
+	# hitscan, no falloff to 25 m, and it headshots — so that is what moves, and the chain follows it
+	# down proportionally. The kit keeps both jumps.
+	var hs := A.hitscan(25.0, 25.0)
 	hs.spread_deg = 0.5; hs.spread_moving_deg = 0.6; hs.spread_airborne_deg = 1.5
 	hs.falloff_start = 25.0; hs.falloff_end = 25.0; hs.falloff_min = 1.0
 	hs.headshot = true
 	var chain := load("res://src/heroes/abilities/CoilChainEffect.gd").new() as AbilityEffect
 	chain.set("radius", 6.0)
-	# One jump on the primary, two on the Lance. Against a grouped team the second jump made every
-	# primary shot worth 66 damage across three bodies at four shots a second, which is why Coil
-	# posted 17584 dmg/10m in balance pass 5 against 13600 for the next hero, on a 64% win rate over
-	# 42 picks. Single-target output is untouched: the outlier was entirely in the spread.
-	chain.set("max_jumps", 1)
-	chain.set("base_damage", 30.0)
+	chain.set("max_jumps", 2)
+	chain.set("base_damage", 25.0)
 	prim.effects = [hs, chain]
 	A.pres(prim, &"coil_chain_fire", &"coil_chain_tail", &"arc", Color(0.75, 0.6, 1.0))
 	prim.presentation.tracer_width = 0.035

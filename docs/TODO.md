@@ -9,6 +9,8 @@ Living list. Items move from *Open* to *Done* with the commit that closed them; 
       continuous-engagement window before it can be tuned against.
 - [ ] Balance passes 1-4 were run before the seed-collision fix, so pass 4's stated 56 matches were
       really 32 distinct ones. Its conclusions still hold but its sample was half what it claimed.
+- [ ] Coil's Tesla Node is 23% of his damage and also relays his chain; the 25-damage cut to his
+      primary moved his output by only 4%. See BALANCE_LOG.md pass 5.
 - [ ] Per-map soak (10 min each) with perf sampling; network stress run.
 - [ ] Long audio (ambience, music) ships as WAV; converting those to OGG would cut ~60 MB.
 - [ ] Headless runs abort with a heap error at shutdown *after* completing, which corrupts CI exit
@@ -48,5 +50,6 @@ Living list. Items move from *Open* to *Done* with the commit that closed them; 
 - [x] `ctx.ability` was null for every ability in the game, which mis-credited kills, left per-shot
       weapon bloom inert, and made the client draw every hitscan weapon and beam with a default
       presentation instead of its authored muzzle flash, tracer and impact VFX
-- [x] Coil's primary chained to two extra targets, giving it 30% more damage than any other hero
-      against a grouped team; cut to one on the primary, unchanged on the Arc Lance
+- [x] Coil's Arc Gauntlet cut from 30 damage to 25; the highest damage and K/D in the game
+- [x] Telemetry records damage per ability, not just per hero, so a lever can be identified before
+      it is pulled rather than after two failed guesses

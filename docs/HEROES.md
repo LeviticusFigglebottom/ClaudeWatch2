@@ -150,7 +150,7 @@ Find the clump. Every shot on one target arcs to two more within 6 m, so aim at 
 
 | Key | Ability | Cooldown / rate | Numbers | Description |
 |---|---|---|---|---|
-| LMB | **Arc Gauntlet** | 4.0/s, 12 ammo | 30 dmg hitscan | Hitscan lightning: 30 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to one more enemy within 6 m of the target for 21 damage. 12 cells, 1.4 s recharge. |
+| LMB | **Arc Gauntlet** | 4.0/s, 12 ammo | 25 dmg hitscan | Hitscan lightning: 25 damage, 4 shots per second, 25 m range, no falloff. Each hit chains to up to two more enemies within 6 m of the target for 17 and 12 damage. 12 cells, 1.4 s recharge. |
 | RMB | **Arc Lance** | 7 s | 70 dmg hitscan | Overcharge the gauntlet into a 40 m hitscan bolt: 70 damage, headshots double, then chains to two more enemies within 8 m for 49 and 35. 7 s cooldown. |
 | Shift | **Tesla Node** | 12 s | deploy tesla_node | Plant a 150 hp pylon (12 s) where you aim, up to 12 m away. Every 0.8 s it zaps the nearest enemy within 7 m for 20 damage, and your Chain can jump through it. 12 s cooldown. |
 | E | **Capacitor** | 11 s |  | For 1.5 s every hit you take is absorbed instead of dealt. When it ends you release the stored damage (up to 250) as a burst in 5 m with knockback. Nothing stored, nothing released. 11 s cooldown. |

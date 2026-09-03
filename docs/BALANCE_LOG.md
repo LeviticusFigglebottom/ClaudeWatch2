@@ -353,7 +353,7 @@ repeats more than twice, so it is the first one that can be read as being about 
 3. **Bombard at 26.8% over 41 picks** is the lowest win rate with a large sample, on the lowest
    damage in the game. This is the bot-competence caveat: Bombard lobs shells over cover and the
    bots cannot use it. Do not buff it on this data.
-4. **Cairn at 29.2%** is now the weakest bulwark, having read mid-table under the old picker. 24
+3. **Cairn at 29.2%** is now the weakest bulwark, having read mid-table under the old picker. 24
    picks is thin; it needs a mirror test like Kiln's rather than a tuning change.
 5. **Side skew is gone.** 32-34 across 72 matches once escort scores correctly.
 
@@ -361,7 +361,42 @@ repeats more than twice, so it is the first one that can be read as being about 
 
 | Change | From | To | Why |
 |---|---|---|---|
-| Coil Arc Gauntlet chain jumps | 2 | 1 | Against a grouped team every primary shot hit three bodies for 66 damage at four shots a second. Single-target output is unchanged; the outlier was entirely in the spread. The Arc Lance keeps both jumps |
+| Coil Arc Gauntlet damage | 30 | 25 | The highest damage and K/D in the game over 42 picks. The chain follows the base damage down; the Arc Lance is untouched |
+
+### Verifying the Coil change, and what it cost to find the lever
+
+Two attempts, each re-run on the pass-5 seeds for Control and Push (48 matches, 28 Coil picks):
+
+| build | Coil win% | Coil dmg/10m |
+|---|---|---|
+| pass 5 baseline | 60.7 | 18852 |
+| chain cut to one jump | 64.3 | 18220 |
+| chain restored, base damage 30 → 25 | 57.1 | 18052 |
+
+The first attempt assumed the chain carried Coil's output and moved damage by 3%: three enemies
+rarely stand inside the 6 m chain radius, so it was reverted rather than left in place for no
+measured benefit. The second cut the base weapon 17% and moved damage by 4%. Both attempts were
+guesses, because the telemetry recorded damage per hero but not per ability.
+
+It does now, and the answer was in neither ability:
+
+| Coil's damage | share |
+|---|---|
+| Arc Gauntlet (primary) | 53.7% |
+| **Tesla Node (deployable)** | **23.0%** |
+| Arc Lance | 10.5% |
+| Capacitor | 6.7% |
+| Blackout (ult) | 5.4% |
+
+A deployable that is placed once and then ignored does nearly a quarter of his damage, and it also
+relays chain arcs without spending a jump, so it feeds the primary as well. That is the lever, and
+it is the next pass's to pull. The 25-damage cut stays: the direction is right and it is the highest
+damage in the game either way, but its measured effect is inside the noise on 28 picks and should be
+read that way.
+
+The same data settles Cathedral, whose lever pass 3 named on the strength of the broken attribution:
+the Reliquary Mace is 63.7% of his damage and Censer is 9.9%. Pass 3 blamed Censer. Quick melee is
+another 23.4%, which is worth a look on its own.
 
 Non-hero changes: `HeroPicker` samples instead of taking the argmax; `EscortMode` wins on a beaten
 distance; `BotDecision` grows ult pressure over time; `Ability` populates `ctx.ability`;
@@ -380,21 +415,23 @@ distance; `BotDecision` grows ult pressure over time; `Ability` populates `ctx.a
    30. Fix the weighting, then it can be measured.
 5. **Ult hoarding.** 16-23% ult uptime on the supports is a bot policy problem in `BotDecision`, and
    it distorts every support's apparent strength. Worth fixing before trusting support win rates.
-6. **Time-to-kill.** A median near 8.9 s from first damage to death is long for the genre, but the
+5. **Time-to-kill.** A median near 8.9 s from first damage to death is long for the genre, but the
    measure spans an entire life including disengages and healing, so it needs a cleaner definition
    (damage within a continuous engagement window) before it can be tuned against.
 
 ## Next pass
 
-1. **Verify the Coil change** on the same seeds as pass 5, the way pass 2 verified pass 1.
-2. **Cathedral.** 64.3% over 28 picks, and every previous diagnosis of which ability carries him was
-   made with broken kill attribution. Read the ability-level kill and damage data first.
-3. **Cairn**, and **Bramble** at 31.7% over 41 picks: mirror tests like Kiln's, not tuning changes.
+1. **Coil's Tesla Node**, which the new per-ability damage data shows is 23% of his output and also
+   relays his chain. Two cuts to the wrong abilities moved his damage by 3% and 4%; this is where to
+   look.
+2. **Cathedral.** 64.3% over 28 picks. The Reliquary Mace is 63.7% of his damage and quick melee
+   another 23.4%, so pass 3's diagnosis (Censer, at 9.9%) was wrong and his mace is the lever.
+4. **Cairn**, and **Bramble** at 31.7% over 41 picks: mirror tests like Kiln's, not tuning changes.
    A mirror is the only measurement here that isolates one hero from its composition.
 4. **Bombard and Ricochet** cannot be balanced from this harness at all. Bombard lobs over cover and
    Ricochet needs bounces to arm; the bots do neither. They need either a bot that can use them or a
    human playtest before any number moves.
-5. **Time-to-kill.** A median of 7.4 s from first damage to death is long for the genre, but the
+6. **Time-to-kill.** A median of 7.4 s from first damage to death is long for the genre, but the
    measure spans an entire life including disengages and healing, so it needs a cleaner definition
    (damage within a continuous engagement window) before it can be tuned against.
 6. **Map-specific balance** is still out of reach: one map per mode, and Hybrid has no map.

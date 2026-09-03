@@ -17,6 +17,11 @@ var objective_track: Array = []   # {t, contest_a, contest_b, ...mode progress} 
 ## resource or a cooldown policy rather than by its numbers, and no amount of damage tuning fixes
 ## that. This is the first thing to read when a hero posts good individual stats and loses anyway.
 var ability_uses: Dictionary = {}
+## "<hero>/<ability id>" -> damage dealt. Without this a hero's total damage says it is an outlier
+## but not which ability made it one, and tuning proceeds by guesswork: Coil's chain was cut on the
+## assumption it carried his output and moved total damage by 3%, then his primary was cut 17% and
+## moved it by 4%. Read this before choosing a lever.
+var damage_by_ability: Dictionary = {}
 var _uptime_accum: float = 0.0
 var _track_accum: float = 0.0
 
@@ -74,7 +79,11 @@ func on_event(kind: StringName, pl: Dictionary) -> void:
 				first_damage_tick[tgt] = server.tick
 			var src := server.world.get_pawn(int(pl["src"]))
 			if src:
-				damage_by_hero[src.hero_id()] = float(damage_by_hero.get(src.hero_id(), 0.0)) + float(pl["amt"])
+				var amt := float(pl["amt"])
+				damage_by_hero[src.hero_id()] = float(damage_by_hero.get(src.hero_id(), 0.0)) + amt
+				var aid := String(pl.get("ability", ""))
+				var akey := "%s/%s" % [src.hero_id(), aid if aid != "" else "(weapon)"]
+				damage_by_ability[akey] = float(damage_by_ability.get(akey, 0.0)) + amt
 		&"heal":
 			var src := server.world.get_pawn(int(pl["src"]))
 			if src:
@@ -102,6 +111,7 @@ func finish(summary: Dictionary) -> void:
 		"ult_uptime_by_hero": ult_uptime_by_hero, "objective_time_by_hero": objective_time_by_hero,
 		"objective_track": objective_track,
 		"ability_uses": ability_uses,
+		"damage_by_ability": damage_by_ability,
 		"rounds": summary.get("rounds", []),
 	}
 	var path := server.config.telemetry_path
