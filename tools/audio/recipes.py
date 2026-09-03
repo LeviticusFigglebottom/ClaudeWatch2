@@ -401,7 +401,7 @@ def needle_burst(seed, variant=0, hero=None, **_):
     offs = []
     for i in range(3):
         f = semi(v, 2600 + 300 * i) * var_jitter(seed, variant + i, 0.05)
-        t = apply(fm(f, 2.01, 1.5, 0.04), exp_env(0.04, 0.01)) + click(seed + i, 0.003, 3000) * 0.5
+        t = layer(apply(fm(f, 2.01, 1.5, 0.04), exp_env(0.04, 0.01)), click(seed + i, 0.003, 3000) * 0.5)
         ticks.append(t)
         offs.append(i * 0.026)
     b = body(semi(v, 160), semi(v, 70), 0.09, 0.03, 1.4) * 0.5
@@ -463,8 +463,8 @@ def staff_bolt(seed, variant=0, hero=None, **_):
 @recipe("stapler", "gunshot", 3, doc="Mechanical 'ka-chk': two clicks 40 ms apart + spring ping (field-medic stapler).")
 def stapler(seed, variant=0, hero=None, **_):
     v = hero_voice(hero)
-    c1 = click(seed + variant, 0.006, 1200) + apply(lowpass(noise(0.02, seed + 1), 1500, 3), exp_env(0.02, 0.005))
-    c2 = click(seed + 40 + variant, 0.008, 900) * 1.2 + apply(lowpass(noise(0.03, seed + 2), 700, 2), exp_env(0.03, 0.008))
+    c1 = layer(click(seed + variant, 0.006, 1200), apply(lowpass(noise(0.02, seed + 1), 1500, 3), exp_env(0.02, 0.005)))
+    c2 = layer(click(seed + 40 + variant, 0.008, 900) * 1.2, apply(lowpass(noise(0.03, seed + 2), 700, 2), exp_env(0.03, 0.008)))
     spring = ring(semi(v, 1800), 0.07, seed + 5, 25) * 0.5
     b = body(semi(v, 200), semi(v, 90), 0.08, 0.025, 1.2) * 0.6
     return soft_clip(layer(c1, c2, spring, b, offsets=[0.0, 0.04, 0.04, 0.04]), 1.2)
@@ -484,7 +484,7 @@ def flame_bolt(seed, variant=0, hero=None, **_):
 def bass_cannon(seed, variant=0, hero=None, **_):
     v = hero_voice(hero)
     k = sub_kick(semi(v, 160) * var_jitter(seed, variant, 0.03), semi(v, 42), 0.22, 3.0)
-    c = click(seed + variant, 0.004, 2500) * 0.8 + crack(seed + 3, 0.02, 2200, 1.0) * 0.5
+    c = layer(click(seed + variant, 0.004, 2500) * 0.8, crack(seed + 3, 0.02, 2200, 1.0) * 0.5)
     return soft_clip(layer(c, k * 1.2), 1.2)
 
 
@@ -562,7 +562,7 @@ def whoosh_cast(seed, variant=0, hero=None, **_):
 def throw_whoosh(seed, variant=0, hero=None, **_):
     v = hero_voice(hero)
     w = whoosh(300, 1800, 0.22, seed, 2.0, "pink", (0.5, 1.0, 0.0))
-    tink = ring(semi(v, 3800), 0.12, seed + 3, 30) * 0.35 + glass(semi(v, 1760), 0.2, seed) * 0.25
+    tink = layer(ring(semi(v, 3800), 0.12, seed + 3, 30) * 0.35, glass(semi(v, 1760), 0.2, seed) * 0.25)
     return layer(w, tink, offsets=[0.0, 0.05])
 
 
@@ -594,7 +594,7 @@ def teleport_in(seed, variant=0, hero=None, **_):
 @recipe("deploy_place", "cast", doc="Deployable set down: mechanical clack + servo whir + confirmation tone.")
 def deploy_place(seed, variant=0, hero=None, **_):
     v = hero_voice(hero)
-    clack = click(seed, 0.008, 800) + apply(lowpass(noise(0.04, seed + 1), 900, 2.5), exp_env(0.04, 0.01))
+    clack = layer(click(seed, 0.008, 800), apply(lowpass(noise(0.04, seed + 1), 900, 2.5), exp_env(0.04, 0.01)))
     servo = apply(lowpass(saw(sweep(180, 420, 0.22), 0.22), 1400, 2.0), env_points(0.22, [(0, 0.6), (0.18, 0.6), (0.22, 0)])) * 0.35
     tone_ = apply(sine(semi(v, 1320), 0.18) + 0.3 * sine(semi(v, 1980), 0.18), exp_env(0.18, 0.06)) * 0.4
     k = ken("impact-sounds", "impactMetal_medium_001", -8, 0, 300, None, 0.2)
@@ -637,7 +637,7 @@ def barrier_down(seed, variant=0, hero=None, **_):
 def root_snare(seed, variant=0, hero=None, **_):
     creak = apply(bandpass(saw(sweep(90, 160, 0.3), 0.3), 700, 4.0), env_points(0.3, [(0, 0), (0.1, 0.8), (0.3, 0)])) * 0.4
     rustle = apply(bandpass(noise(0.3, seed, "white"), 3500, 0.8), env_points(0.3, [(0, 0), (0.05, 1), (0.3, 0)])) * 0.5
-    snap = click(seed + 4, 0.008, 700) + apply(lowpass(noise(0.05, seed + 5), 500, 3), exp_env(0.05, 0.012))
+    snap = layer(click(seed + 4, 0.008, 700), apply(lowpass(noise(0.05, seed + 5), 500, 3), exp_env(0.05, 0.012)))
     return layer(creak, rustle, snap, offsets=[0, 0, 0.22])
 
 
@@ -861,7 +861,7 @@ def flight_jets(seed, variant=0, hero=None, **_):
     thrust = lowpass(noise(d, seed, "pink"), 2200, 0.8)
     hum = lowpass(saw(92.0, d) + 0.5 * saw(184.0, d), 600)
     flutter = 0.8 + 0.2 * S.lfo(d, 27.0)
-    sig = layer(thrust * 0.8, hum * 0.5) * flutter
+    sig = apply(layer(thrust * 0.8, hum * 0.5), flutter)
     k = ken("sci-fi-sounds", "thrusterFire_002", -10, 0, 150, 5000, d, trim_head=False)
     if k is not None:
         sig = layer(sig, k[: n_samples(d)] * 0.7)
@@ -902,7 +902,7 @@ def ult_loop(seed, variant=0, hero=None, **_):
     p5 = pad_note(f * 1.5, d, seed + 1, 0.3, 0.01) * 0.5
     pulse = 0.75 + 0.25 * S.lfo(d, 1.0)
     shimmer = apply(bandpass(noise(d, seed, "white"), 6000, 2.0), S.lfo(d, 2.0)) * 0.15
-    return _loopify(layer(p, p5, shimmer) * pulse, 120)
+    return _loopify(apply(layer(p, p5, shimmer), pulse), 120)
 
 
 @recipe("ability_loop", "loop", loop=True, doc="Generic active-ability hum: soft filtered saw with slow motion.")
@@ -919,7 +919,7 @@ def shroud_loop(seed, variant=0, hero=None, **_):
     d = 2.0
     air = bandpass(noise(d, seed, "pink"), 3000, 1.0) * 0.5
     sh = fm(660.0, 2.5, 0.8, d) * 0.15
-    return _loopify(layer(air, sh) * (0.7 + 0.3 * S.lfo(d, 0.5)), 150)
+    return _loopify(apply(layer(air, sh), 0.7 + 0.3 * S.lfo(d, 0.5)), 150)
 
 
 @recipe("capacitor_loop", "loop", loop=True, doc="Capacitor charging: rising electrical hum with crackle ticks.")
@@ -1469,10 +1469,10 @@ def spawn_generic(seed, variant=0, **_):
 
 @recipe("reload_generic", "cast", doc="Reload: mag out click, slide, mag in clack, bolt click; 650 ms.")
 def reload_generic(seed, variant=0, **_):
-    c1 = click(seed, 0.006, 1000) + apply(lowpass(noise(0.03, seed + 1), 1200, 2), exp_env(0.03, 0.008))
+    c1 = layer(click(seed, 0.006, 1000), apply(lowpass(noise(0.03, seed + 1), 1200, 2), exp_env(0.03, 0.008)))
     slide = apply(bandpass(noise(0.1, seed + 2), 2500, 1.0), env_points(0.1, [(0, 0), (0.03, 0.6), (0.1, 0)])) * 0.5
-    c2 = click(seed + 3, 0.008, 700) * 1.2 + apply(lowpass(noise(0.05, seed + 4), 600, 2), exp_env(0.05, 0.012))
-    c3 = click(seed + 5, 0.005, 1500) + ring(2200, 0.05, seed + 6, 15) * 0.4
+    c2 = layer(click(seed + 3, 0.008, 700) * 1.2, apply(lowpass(noise(0.05, seed + 4), 600, 2), exp_env(0.05, 0.012)))
+    c3 = layer(click(seed + 5, 0.005, 1500), ring(2200, 0.05, seed + 6, 15) * 0.4)
     return layer(c1, slide, c2, c3, offsets=[0.0, 0.15, 0.42, 0.55])
 
 
@@ -1719,7 +1719,7 @@ def amb_station(seed, variant=0, **_):
     vents = _wind_bed(AMB_DUR, seed, 300, 900, 0.05, "pink", 1.0) * 0.45
 
     def relay(i, r):
-        return click(seed + i, 0.008, 800) * 0.25 + apply(lowpass(noise(0.03, seed + i + 1), 1200, 2), exp_env(0.03, 0.008)) * 0.2
+        return layer(click(seed + i, 0.008, 800) * 0.25, apply(lowpass(noise(0.03, seed + i + 1), 1200, 2), exp_env(0.03, 0.008)) * 0.2)
 
     def blip(i, r):
         f = r.choice([1760, 2093, 2637])

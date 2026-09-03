@@ -31,6 +31,7 @@ All sounds are rendered by tools/audio/gen_audio.py from procedural recipes. The
 - impact-sounds/Audio/impactMetal_light_000.ogg
 - impact-sounds/Audio/impactMetal_light_001.ogg
 - impact-sounds/Audio/impactMetal_light_002.ogg
+- impact-sounds/Audio/impactMetal_medium_001.ogg
 - impact-sounds/Audio/impactPlate_heavy_000.ogg
 - impact-sounds/Audio/impactPlate_heavy_001.ogg
 - impact-sounds/Audio/impactPlate_heavy_002.ogg
@@ -52,4 +53,5 @@ All sounds are rendered by tools/audio/gen_audio.py from procedural recipes. The
 - sci-fi-sounds/Audio/forceField_000.ogg
 - sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg
 - sci-fi-sounds/Audio/lowFrequency_explosion_001.ogg
+- sci-fi-sounds/Audio/thrusterFire_002.ogg
 - ui-audio/Audio/rollover2.ogg

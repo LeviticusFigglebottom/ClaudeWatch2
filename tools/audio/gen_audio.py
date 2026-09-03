@@ -37,8 +37,10 @@ HEROES = ["ballast", "bombard", "bramble", "cadence", "cairn", "cathedral", "coi
 
 # Duration windows per kind (seconds): (min, max). Renders outside the window are reported, not rejected.
 KIND_LIMITS = {
-    "gunshot": (0.04, 0.7), "swing": (0.1, 0.8), "tail": (0.3, 1.6), "cast": (0.05, 1.6), "impact": (0.04, 1.6),
+    "gunshot": (0.04, 0.7), "swing": (0.1, 0.8), "tail": (0.3, 1.6), "cast": (0.05, 1.7), "impact": (0.04, 1.6),
     "ui": (0.03, 0.6), "stinger": (0.3, 4.0), "voice": (0.1, 1.5), "footstep": (0.04, 0.16), "loop": (0.3, 12.0),
+    # ult casts are the long end of "cast" at ~1.65 s
+
     "ambience": (6.0, 60.0), "music": (4.0, 120.0),
 }
 
@@ -60,7 +62,11 @@ for _h in HEROES:
     _m(f"{_h}_ult_line_enemy", "hero_ult_line", hero=_h, enemy=True)
 
 _m("ult_ready_generic", "ult_ready")
-_m("radio_a", "ping")
+# Callout chirp sets: heroes pick one via HeroAudioData.callout_tone. Same recipe, pitched apart
+# by the hero-voice offset so teammates' pings stay tellable from each other.
+_m("radio_a", "ping", hero="radio_a")
+_m("radio_b", "ping", hero="radio_b")
+_m("radio_c", "ping", hero="radio_c")
 _m("melee_swing", "whoosh")
 _m("harrier_jet_jump", "jet_burst")
 _m("harrier_jet_land", "land_generic")

@@ -14,6 +14,8 @@ func _ready() -> void:
 	var only := String(App.launch_args.get("map", ""))
 	var tol := float(App.launch_args.get("tol", FLOAT_TOL))
 	var include_decos := App.launch_args.has("decos")
+	# Merged chunks span a whole grid cell, which hides the individual surfaces props rest on.
+	MapBuilder.merge_enabled = false
 	var total := 0
 	var findings := 0
 	for id: StringName in Registry.map_ids():
@@ -43,6 +45,7 @@ func _ready() -> void:
 		_collect_boxes(builder, boxes, owners)
 		var n := 0
 		var bad := 0
+		var ignored := 0
 		for prop: Node in builder.props_root.get_children():
 			if not (prop is Node3D):
 				continue
@@ -57,6 +60,9 @@ func _ready() -> void:
 			var label := "%s '%s'" % [id, _describe(p3)]
 			if _is_waterborne(_describe(p3)):
 				continue   # boats sit in water, which has no collision and no "top" to rest on
+			if p3.has_meta("audit_ignore"):
+				ignored += 1   # the map author marked this one as deliberately not resting on anything
+				continue
 			var centre := ab.get_center()
 			var bottom := ab.position.y
 			var top := ab.end.y
@@ -107,7 +113,7 @@ func _ready() -> void:
 				if sink > SINK_TOL and sink < (top - bottom) * 0.95:
 					print("SUNK    %s: support surface %.2f m above its bottom (at %s)" % [label, sink, _v(centre)])
 					bad += 1
-		print("[%s] audited %d props, %d findings" % [id, n, bad])
+		print("[%s] audited %d props, %d findings (%d marked audit_ignore)" % [id, n, bad, ignored])
 		total += n
 		findings += bad
 		vp.queue_free()

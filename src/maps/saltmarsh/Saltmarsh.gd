@@ -453,9 +453,15 @@ func _stall(pos: Vector3, yaw: float, red: bool, goods: bool = true) -> void:
 	if goods:
 		var yr := deg_to_rad(yaw)
 		var fwd := Vector3(-sin(yr), 0, -cos(yr))
-		prop("food_kit/styrofoam.glb", pos + fwd * 1.5 + Vector3(0.5, 0, 0).rotated(Vector3.UP, yr), yaw + 20.0, 1.0)
-		prop("food_kit/fish.glb", pos + Vector3(0.3, 0.95, 0.1).rotated(Vector3.UP, yr), yaw + 90.0, 1.6, false)
-		prop("food_kit/fish.glb", pos + Vector3(-0.4, 0.95, 0.2).rotated(Vector3.UP, yr), yaw + 70.0, 1.6, false)
+		# The catch lies in the tray, not in mid-air: measure the tray and stack the fish on its rim.
+		# The stall models have no flat counter at a height we can assume, so nothing is placed on them.
+		var tray_pos := pos + fwd * 1.5 + Vector3(0.5, 0, 0).rotated(Vector3.UP, yr)
+		var tray := prop("food_kit/styrofoam.glb", tray_pos, yaw + 20.0, 1.0)
+		var top := tray_pos.y + 0.12
+		if tray:
+			top = tray_pos.y + PropLibrary._aabb(tray).size.y * float(tray.scale.y)
+		prop("food_kit/fish.glb", tray_pos + Vector3(0.12, top - tray_pos.y, 0.04).rotated(Vector3.UP, yr), yaw + 90.0, 1.3, false)
+		prop("food_kit/fish.glb", tray_pos + Vector3(-0.13, top - tray_pos.y, 0.1).rotated(Vector3.UP, yr), yaw + 70.0, 1.3, false)
 
 
 ## --- Ground -------------------------------------------------------------------------------------
@@ -1068,8 +1074,11 @@ func _keepers_house() -> void:
 	_overlay(84, 11.3, 98, 18, m_moss, 0.01)
 	_tree(Vector3(88, 0, 15), "palm", 3.4)
 	prop("nature_kit/plant_bushLarge.glb", Vector3(93, 0, 14), 0, 3.0)
-	prop("pirate_kit/rocks_a.glb", Vector3(97.5, -0.4, -8), 20, 1.4, false)
-	prop("pirate_kit/rocks_b.glb", Vector3(98.5, -0.4, 14), 200, 1.2, false)
+	var rock_a := prop("pirate_kit/rocks_a.glb", Vector3(97.5, -0.4, -8), 20, 1.4, false)
+	var rock_b := prop("pirate_kit/rocks_b.glb", Vector3(98.5, -0.4, 14), 200, 1.2, false)
+	for r: Node3D in [rock_a, rock_b]:
+		if r:
+			r.set_meta("audit_ignore", "shoreline rock, half sunk into the sand by design")
 	block(Vector3(104, WATER_Y - 0.4, 0), Vector3(3.0, 1.2, 60.0), m_stone, 0, false)  # breakwater
 	_lamp(Vector3(90, 0, -4.8))
 

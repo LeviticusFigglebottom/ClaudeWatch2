@@ -35,7 +35,11 @@ func _ready() -> void:
 	lights_root = Node3D.new()
 	lights_root.name = "Lights"
 	add_child(lights_root)
-	rng.seed = hash(name)
+	# Seed from the map's scene path, not the node name: SimWorld renames the map root, so a
+	# name-derived seed changes between loads and can differ between the server and client
+	# branches. Some randomised dressing (tree yaw on Saltmarsh) carries collision, so the two
+	# branches must generate byte-identical geometry or prediction diverges around it.
+	rng.seed = hash(scene_file_path if scene_file_path != "" else String(name))
 	build()
 	_merge_static_geometry()
 	_apply_detail_distance()
@@ -315,11 +319,16 @@ func _setup_navigation() -> void:
 
 const MERGE_CELL := 24.0   # metres; merged chunks stay small enough for frustum culling to matter
 
+## Tools that inspect individual meshes (tools/prop_audit.gd) turn merging off before loading a map.
+static var merge_enabled: bool = true
+
 
 ## Merge the thousands of primitive blocks/decos that share a material into one mesh per (material,
 ## shadow flag, grid cell). Collision and navigation use the StaticBody shapes, so visuals are free to
 ## merge. Transparent materials and glTF props are left alone (draw order / instancing semantics).
 func _merge_static_geometry() -> void:
+	if not merge_enabled:
+		return
 	var groups: Dictionary = {}
 	for root: Node3D in [static_root, props_root]:
 		for c: Node in root.get_children():

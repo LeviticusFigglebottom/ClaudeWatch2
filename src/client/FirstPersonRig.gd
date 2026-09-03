@@ -58,9 +58,14 @@ func _ready() -> void:
 	camera.add_child(vm_light)
 	vm_light.position = Vector3(0.3, -0.2, -0.8)
 	base_fov = float(Settings.get_value(&"controls", "fov"))
-	EventBus.settings_changed.connect(func(section: StringName) -> void:
-		if section == &"controls":
-			base_fov = float(Settings.get_value(&"controls", "fov")))
+	# Bound method, not a lambda: the connection dies with this node. A lambda capturing `self`
+	# outlives the rig and fires on a freed instance when the match is torn down.
+	EventBus.settings_changed.connect(_on_settings_changed)
+
+
+func _on_settings_changed(section: StringName) -> void:
+	if section == &"controls":
+		base_fov = float(Settings.get_value(&"controls", "fov"))
 
 
 func attach(p: Pawn) -> void:

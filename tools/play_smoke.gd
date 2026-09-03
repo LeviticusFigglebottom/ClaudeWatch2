@@ -60,9 +60,11 @@ func _ready() -> void:
 		get_tree().quit(1); return
 	print("AFTER 8s: hero=%s alive=%s hp=%.0f pos=%s pawns=%d ping=%.0f" % [
 		cur.hero.id, cur.alive, cur.health.total(), str(cur.global_position.round()), c.world.pawns.size(), c.ping_ms])
-	await RenderingServer.frame_post_draw
-	await RenderingServer.frame_post_draw
-	DirAccess.make_dir_recursive_absolute("res://screenshots/ui")
-	get_viewport().get_texture().get_image().save_png("res://screenshots/ui/play_end_to_end.png")
+	# frame_post_draw never fires under --headless, so only shoot when something is actually drawing.
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+		await RenderingServer.frame_post_draw
+		DirAccess.make_dir_recursive_absolute("res://screenshots/ui")
+		get_viewport().get_texture().get_image().save_png("res://screenshots/ui/play_end_to_end.png")
 	print("=== PLAY SMOKE OK ===")
 	get_tree().quit(0)

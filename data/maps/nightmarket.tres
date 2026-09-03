@@ -12,5 +12,5 @@ description = "A canyon street between stacked hab-towers. Push the hauler bot a
 scene_path = "res://src/maps/nightmarket/Nightmarket.tscn"
 supported_modes = Array[StringName]([&"push"])
 color_story = "Neon magenta and cyan on wet asphalt, sodium amber under the walkways."
-ambience = &"amb_rain"
+ambience = &"amb_rain_city"
 sort_order = 40

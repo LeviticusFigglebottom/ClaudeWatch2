@@ -419,6 +419,7 @@ func _koi(center: Vector3) -> void:
 	var root := Node3D.new()
 	root.position = center
 	root.rotation = Vector3(0.12, 0.35, 0.08)
+	root.set_meta("audit_ignore", "koi banner strung over the street: meant to hang")
 	props_root.add_child(root)
 	var body := mat(&"emissive", Color(0.7, 0.95, 1.0))
 	var fin := mat(&"emissive", Color(1.0, 0.4, 0.7))
