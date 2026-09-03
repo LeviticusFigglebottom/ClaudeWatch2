@@ -278,6 +278,7 @@ func _build_gameplay() -> Control:
 	_row(p, "Preferred role", _option(&"gameplay", "preferred_role", ["Any", RF.role_name(0), RF.role_name(1), RF.role_name(2)], [-1, 0, 1, 2]), "Hero select opens on this role")
 	_section(p, "Match")
 	_row(p, "Bot difficulty", _option(&"gameplay", "bot_difficulty", ["Recruit", "Regular", "Veteran", "Elite"], [0, 1, 2, 3]), "Default for Play vs Bots and Training")
+	_row(p, "Killcam", _toggle(&"gameplay", "killcam"), "Replay the killer's last seconds after you die")
 	_row(p, "Ally outlines", _toggle(&"gameplay", "show_ally_outlines"), "See teammates through walls", false)
 	_row(p, "Hero swap hints", _toggle(&"gameplay", "auto_hero_swap_hint"), "Suggest a counter-pick when you are being countered", false)
 	return p

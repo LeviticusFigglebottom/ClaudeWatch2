@@ -56,6 +56,7 @@ const DEFAULTS := {
 		"auto_hero_swap_hint": true,
 		"show_ally_outlines": true,
 		"bot_difficulty": 2,            # 0 recruit, 1 regular, 2 veteran, 3 elite
+		"killcam": true,                # replay the killer's last seconds on the death screen
 		"preferred_role": -1,
 	},
 	&"network": {

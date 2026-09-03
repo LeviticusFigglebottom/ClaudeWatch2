@@ -22,6 +22,8 @@ var fps_label: Label
 var _msg_timer: float = 0.0
 var _scale: float = 1.0
 var netstats: Label
+var chat_input: LineEdit
+var killcam_label: Label
 
 
 func _ready() -> void:
@@ -122,6 +124,16 @@ func _ready() -> void:
 	netstats.offset_left = -360; netstats.offset_right = -16; netstats.offset_top = 30; netstats.offset_bottom = 50
 	netstats.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	add_child(netstats)
+	killcam_label = UITheme.label("", 20, UITheme.TEXT)
+	killcam_label.set_anchors_preset(Control.PRESET_CENTER)
+	killcam_label.offset_left = -400; killcam_label.offset_right = 400
+	killcam_label.offset_top = 100; killcam_label.offset_bottom = 130
+	killcam_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	killcam_label.visible = false
+	add_child(killcam_label)
+	_build_chat()
+	EventBus.killcam_started.connect(_on_killcam_started)
+	EventBus.killcam_ended.connect(_on_killcam_ended)
 	scale = Vector2.ONE * _scale
 	EventBus.kill_feed.connect(_on_kill)
 	EventBus.hitmarker.connect(func(kind: StringName) -> void: hitmarker.trigger(kind))
@@ -337,7 +349,15 @@ func _on_phase(phase: StringName) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("scoreboard"):
+	if chat_input and chat_input.visible:
+		return   # the line edit owns the keyboard while it is open
+	if event.is_action_pressed("chat"):
+		_open_chat(false)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("team_chat"):
+		_open_chat(true)
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("scoreboard"):
 		UIRouter.show_overlay(&"scoreboard")
 	elif event.is_action_released("scoreboard"):
 		if not UIRouter.has_overlay(&"scoreboard") or not (UIRouter.overlays[&"scoreboard"] as Control).get_meta("final", false):
@@ -350,6 +370,74 @@ func _unhandled_input(event: InputEvent) -> void:
 				UIRouter.hide_overlay(k)
 		else:
 			UIRouter.show_overlay(&"pause")
+
+
+## --- Chat ---------------------------------------------------------------------------------------
+
+## A single line at the bottom left, hidden until the player presses the chat key. Incoming messages
+## are already shown by the Notifications overlay, so this is input only.
+func _build_chat() -> void:
+	chat_input = LineEdit.new()
+	chat_input.placeholder_text = "Say something"
+	chat_input.max_length = 200
+	chat_input.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	chat_input.offset_left = 24; chat_input.offset_right = 520
+	chat_input.offset_top = -132; chat_input.offset_bottom = -100
+	chat_input.visible = false
+	chat_input.add_theme_font_size_override("font_size", 16)
+	add_child(chat_input)
+	chat_input.text_submitted.connect(_on_chat_submitted)
+
+
+func _open_chat(team_only: bool) -> void:
+	if chat_input == null:
+		return
+	chat_input.set_meta("team_only", team_only)
+	chat_input.placeholder_text = "Team message" if team_only else "Say something"
+	chat_input.text = ""
+	chat_input.visible = true
+	chat_input.grab_focus()
+	# Release mouse capture so typing does not also steer the view.
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
+func _close_chat() -> void:
+	if chat_input == null:
+		return
+	chat_input.visible = false
+	chat_input.release_focus()
+	if App.screen == App.Screen.MATCH and not UIRouter.any_overlay_open():
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _on_chat_submitted(text: String) -> void:
+	var msg := text.strip_edges()
+	if msg != "" and App.client:
+		App.client.send_chat(msg, bool(chat_input.get_meta("team_only", false)))
+	_close_chat()
+
+
+func _input(event: InputEvent) -> void:
+	# Escape closes the chat line without sending, and without opening the pause menu.
+	if chat_input and chat_input.visible and event is InputEventKey and (event as InputEventKey).pressed:
+		if (event as InputEventKey).keycode == KEY_ESCAPE:
+			_close_chat()
+			get_viewport().set_input_as_handled()
+
+
+## --- Killcam ------------------------------------------------------------------------------------
+
+func _on_killcam_started(killer_name: String, killer_hero: StringName) -> void:
+	if killcam_label == null:
+		return
+	var who := killer_name if killer_name != "" else "them"
+	killcam_label.text = "Killed by %s%s" % [who, "  (%s)" % String(killer_hero) if killer_hero != &"" else ""]
+	killcam_label.visible = true
+
+
+func _on_killcam_ended() -> void:
+	if killcam_label:
+		killcam_label.visible = false
 
 
 ## --- Widgets ------------------------------------------------------------------------------------

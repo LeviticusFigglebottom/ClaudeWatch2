@@ -75,13 +75,13 @@ func _ensure_ghost(nid: int, pose: Dictionary) -> Dictionary:
 	return g
 
 
-func play(on_finished: Callable) -> void:
+func play(on_finished: Callable, with_music: bool = true) -> void:
 	playing = true
 	t = 0.0
 	event_index = 0
 	finished_callback = on_finished
 	camera.current = true
-	if presentation.audio:
+	if with_music and presentation.audio:
 		presentation.audio.play_music(&"music_potg", -4.0)
 
 

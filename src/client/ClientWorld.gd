@@ -144,6 +144,7 @@ func on_pawn_spawned_visual(p: Pawn) -> void:
 	if v:
 		v.play_spawn()
 	if p == local_pawn:
+		stop_killcam()   # respawning always cuts the killcam short
 		fp_rig.on_local_spawn()
 		spectator_cam.activate(false)
 
@@ -493,6 +494,8 @@ func _present(kind: StringName, pl: Dictionary, predicted: bool) -> void:
 			EventBus.notification.emit(String(pl.get("text", "")), &"info")
 		&"chat":
 			EventBus.notification.emit("%s: %s" % [pl.get("name", "?"), pl.get("text", "")], &"chat")
+		&"killcam":
+			_start_killcam(pl)
 		&"bot_directive":
 			pass
 		&"respawn_timer":
@@ -586,3 +589,35 @@ func _spawn_deployable_visual(pl: Dictionary) -> void:
 	deployable_visuals[id] = node
 	vfx.spawn(&"deploy_place", pl["pos"], Vector3.UP, owner_p.hero.theme_color if owner_p else Color.WHITE)
 	audio.play_3d(&"deploy_place", pl["pos"], &"SFX")
+
+
+## Killcam: replay the killer's last few seconds on the death screen. Skipped when the setting is
+## off, when a replay is already running (post-match POTG wins), or once we are alive again.
+func _start_killcam(window: Dictionary) -> void:
+	if not bool(Settings.get_value(&"gameplay", "killcam")):
+		return
+	if replay_player != null or window.get("frames", []).is_empty():
+		return
+	if local_pawn != null and is_instance_valid(local_pawn) and local_pawn.alive:
+		return
+	var r := ReplayPlayer.new()
+	r.name = "Killcam"
+	add_child(r)
+	replay_player = r
+	r.setup(self, window)
+	r.play(_on_killcam_finished, false)
+	EventBus.killcam_started.emit(String(window.get("killer_name", "")), String(window.get("killer_hero", "")))
+
+
+func _on_killcam_finished() -> void:
+	stop_killcam()
+
+
+func stop_killcam() -> void:
+	if replay_player == null or not is_instance_valid(replay_player):
+		replay_player = null
+		return
+	var r := replay_player
+	replay_player = null
+	r.stop()
+	EventBus.killcam_ended.emit()

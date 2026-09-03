@@ -1,8 +1,12 @@
 # RINGFALL
 
 A team-based hero shooter built in **Godot 4.7.2**: 5v5 objective combat, 18 mechanically distinct
-Runners across three roles, six hand-built maps, four objective modes, server-authoritative netcode
+Runners across three roles, hand-built maps, four objective modes, server-authoritative netcode
 with prediction and lag compensation, and bots designed to be mistaken for people.
+
+**Current content:** 18 heroes, all four modes implemented, and three playable maps (Nightmarket on
+Push, Saltmarsh on Escort, Training Range on Control). Three further maps are designed but not yet
+built, so Hybrid has no map to run on; see `docs/TODO.md`.
 
 > Ten Runners. Two Charters. One Core.
 

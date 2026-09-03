@@ -713,6 +713,23 @@ func _on_sim_event(kind: StringName, payload: Dictionary) -> void:
 		for ps: PlayerState in players.values():
 			if ps.pawn == v and ps.bot:
 				ps.bot.on_died()
+		_send_killcam(v, k)
+
+
+## Ship the victim the last few seconds from the killer's view. Humans only: bots have no screen,
+## and sending it to them would burn bandwidth in bot-heavy matches for nothing.
+func _send_killcam(victim: Pawn, killer: Pawn) -> void:
+	if victim == null or killer == null or killer == victim or config.sim_mode:
+		return
+	for ps: PlayerState in players.values():
+		if ps.pawn != victim or ps.is_bot:
+			continue
+		var w := replay.killcam_window(killer.net_id, tick)
+		if not w.is_empty():
+			w["killer_name"] = killer.display_name
+			w["killer_hero"] = killer.hero_id()
+			send_event_to(ps, &"killcam", w)
+		return
 
 
 func broadcast_event(kind: StringName, payload: Dictionary, team: int = -1) -> void:

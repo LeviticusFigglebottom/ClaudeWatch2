@@ -6,6 +6,8 @@ extends RefCounted
 
 const KEEP_SECONDS := 90.0
 const WINDOW := 9.0
+const KILLCAM_LEAD := 3.2      # seconds of the killer's view before the fatal blow
+const KILLCAM_TRAIL := 0.8     # and just after, so the kill itself is on screen
 
 var server: GameServer
 var frames: Array = []          # [tick, {net_id: {pos, yaw, pitch, flags, anim, hero, team}}]
@@ -66,6 +68,25 @@ func _add_score(player_id: int, t: int, pts: float) -> void:
 	var arr: Array = scores.get(player_id, [])
 	arr.append([t, pts])
 	scores[player_id] = arr
+
+
+## The last few seconds from the killer's point of view, for the victim's death screen. Short on
+## purpose: a killcam that outstays the respawn timer reads as a punishment rather than an
+## explanation.
+func killcam_window(killer_net_id: int, at_tick: int) -> Dictionary:
+	var start := at_tick - int(KILLCAM_LEAD * RF.TICK_RATE)
+	var end := at_tick + int(KILLCAM_TRAIL * RF.TICK_RATE)
+	var fr: Array = []
+	for f: Array in frames:
+		if int(f[0]) >= start and int(f[0]) <= end:
+			fr.append(f)
+	if fr.is_empty():
+		return {}
+	var ev: Array = []
+	for e: Array in events:
+		if int(e[0]) >= start and int(e[0]) <= end:
+			ev.append(e)
+	return {"net_id": killer_net_id, "start": start, "end": end, "frames": fr, "events": ev, "killcam": true}
 
 
 ## Finds the best window: highest sum of points within WINDOW seconds for one player.
