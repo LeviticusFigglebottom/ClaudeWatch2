@@ -140,7 +140,7 @@ static func build() -> HeroData:
 	wall.ai.combo_tags = [&"barrier"]
 	h.ability_1 = wall
 	# --- Ability 2: Censer (short dash + AoE damage)
-	var censer := A.ability(&"cathedral_censer", "Censer", "Swing the censer and lunge forward; 0.4 s later burning incense bursts around you: 70 damage within 4 m, enemies knocked back and set burning for 10 damage per second over 2 s.", AbilityData.Trigger.PRESS, 9.0)
+	var censer := A.ability(&"cathedral_censer", "Censer", "Swing the censer and lunge forward; 0.4 s later burning incense bursts around you: 52 damage within 4 m, enemies knocked back and set burning for 10 damage per second over 2 s.", AbilityData.Trigger.PRESS, 9.0)
 	censer.recovery = 0.3
 	censer.requires_ground = false
 	var dash := DashEffect.new()
@@ -157,7 +157,7 @@ static func build() -> HeroData:
 	var puff := AreaEffect.new()
 	puff.delay = 0.4
 	puff.radius = 4.0
-	puff.damage = 70.0
+	puff.damage = 52.0
 	puff.min_fraction = 0.6
 	puff.knockback = 4.0
 	puff.enemy_status = incense

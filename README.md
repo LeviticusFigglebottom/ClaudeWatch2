@@ -83,12 +83,23 @@ tools/sim.py analyze sim_out/kestrel           # pick/win/K-D/damage/heal/ult-up
 tools/net_stress.sh 150 0.1 40                 # bot match with simulated latency/loss/jitter
 tools/screenshot.sh "map aurelia hybrid 9; wait 600; shot screenshots/aurelia.png; quit"
 python3 tools/audio/gen_audio.py               # synthesize every referenced sound id
+tools/godot.sh --headless res://tools/prop_audit.tscn      # per-map floating/sunk/embedded prop report
+tools/godot.sh --headless res://tools/vfx_audit.tscn       # every authored VFX id resolves and builds
+tools/godot.sh --headless res://tools/play_smoke.tscn -- --client     # menu -> match -> alive with a hero
+tools/godot.sh --headless res://tools/killcam_smoke.tscn -- --client  # death -> killcam plays and ends
+tools/godot.sh --headless res://tools/chat_smoke.tscn -- --client     # chat line opens and round-trips
+tools/godot.sh --headless res://tools/gen_docs.tscn         # regenerate docs/HEROES.md and docs/MAPS.md
 tools/godot.sh --headless res://tools/bake_tactical.tscn   # bake bot spatial data per map
 tools/godot.sh --headless res://tools/build_data.tscn      # rebuild data/heroes/*.tres from builders
 ```
 
 `tools/godot.sh` wraps the engine binary (set `GODOT_BIN` if yours is elsewhere) and serializes runs
 through a lock so tooling can be automated safely.
+
+Two notes on reading tool output. A fresh clone needs one `tools/godot.sh --headless --import` pass
+before scripts resolve their `class_name` references or new assets can load. And headless runs
+currently abort with a heap error *after* finishing, so judge every gate on its printed result
+rather than on its exit code.
 
 ## Controls (defaults)
 

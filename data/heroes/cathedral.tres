@@ -98,7 +98,7 @@ color = Color(1, 0.7, 0.35, 1)
 [sub_resource type="Resource" id="Resource_4s62m"]
 script = ExtResource("9_rni1f")
 radius = 4.0
-damage = 70.0
+damage = 52.0
 min_fraction = 0.6
 knockback = 4.0
 enemy_status = SubResource("Resource_psq0m")
@@ -123,7 +123,7 @@ anim_tag = &"cast"
 script = ExtResource("6_sevib")
 id = &"cathedral_censer"
 display_name = "Censer"
-description = "Swing the censer and lunge forward; 0.4 s later burning incense bursts around you: 70 damage within 4 m, enemies knocked back and set burning for 10 damage per second over 2 s."
+description = "Swing the censer and lunge forward; 0.4 s later burning incense bursts around you: 52 damage within 4 m, enemies knocked back and set burning for 10 damage per second over 2 s."
 cooldown = 9.0
 recovery = 0.3
 effects = Array[ExtResource("2_k1h25")]([SubResource("Resource_sevib"), SubResource("Resource_4s62m")])
