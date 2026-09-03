@@ -13,6 +13,10 @@ var healing_by_hero: Dictionary = {}
 var ult_uptime_by_hero: Dictionary = {}
 var objective_time_by_hero: Dictionary = {}
 var objective_track: Array = []   # {t, contest_a, contest_b, ...mode progress} sampled every SAMPLE_S
+## "<hero>/<ability id>" -> activations. A hero whose abilities almost never fire is gated by a
+## resource or a cooldown policy rather than by its numbers, and no amount of damage tuning fixes
+## that. This is the first thing to read when a hero posts good individual stats and loses anyway.
+var ability_uses: Dictionary = {}
 var _uptime_accum: float = 0.0
 var _track_accum: float = 0.0
 
@@ -56,6 +60,14 @@ func step(dt: float) -> void:
 
 func on_event(kind: StringName, pl: Dictionary) -> void:
 	match kind:
+		&"ability":
+			if String(pl.get("phase", "")) == "activate":
+				var ap := server.world.get_pawn(int(pl.get("pawn", -1)))
+				if ap:
+					var key := "%s/%s" % [ap.hero_id(), pl.get("id", &"?")]
+					ability_uses[key] = int(ability_uses.get(key, 0)) + 1
+					if bool(pl.get("ult", false)):
+						ult_uses.append({"t": server.tick, "hero": ap.hero_id(), "team": ap.team})
 		&"damage":
 			var tgt := int(pl["tgt"])
 			if not first_damage_tick.has(tgt):
@@ -76,11 +88,6 @@ func on_event(kind: StringName, pl: Dictionary) -> void:
 				first_damage_tick.erase(vid)
 			kills.append({"t": server.tick, "killer": k.hero_id() if k else &"", "victim": v.hero_id() if v else &"",
 				"killer_team": k.team if k else -1, "ability": String(pl.get("ability", "")), "hs": pl.get("headshot", false)})
-		&"ability":
-			if pl.get("phase", &"") == &"activate" and pl.get("ult", false):
-				var p := server.world.get_pawn(int(pl["pawn"]))
-				if p:
-					ult_uses.append({"t": server.tick, "hero": p.hero_id(), "team": p.team})
 		&"heal_prevented", &"damage_prevented":
 			pass
 
@@ -94,6 +101,7 @@ func finish(summary: Dictionary) -> void:
 		"damage_by_hero": damage_by_hero, "healing_by_hero": healing_by_hero,
 		"ult_uptime_by_hero": ult_uptime_by_hero, "objective_time_by_hero": objective_time_by_hero,
 		"objective_track": objective_track,
+		"ability_uses": ability_uses,
 		"rounds": summary.get("rounds", []),
 	}
 	var path := server.config.telemetry_path

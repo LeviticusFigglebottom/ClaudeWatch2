@@ -60,9 +60,19 @@ func apply(ctx: AbilityContext) -> void:
 				ctx.world.apply_heal(p, q, heal * frac, ability_id)
 			if ally_status:
 				q.status.apply(ally_status, p)
-	ctx.world.emit_custom(&"area", {"pawn": p.net_id, "pos": c, "radius": radius, "vfx": vfx_id, "ability": ability_id})
+	ctx.world.emit_custom(&"area", {"pawn": p.net_id, "pos": c, "radius": radius, "vfx": _vfx(ctx), "ability": ability_id})
 
 
 func predict(ctx: AbilityContext) -> void:
 	var c := resolve_center(ctx)
-	ctx.world.emit_custom(&"area", {"pawn": ctx.pawn.net_id, "pos": c, "radius": radius, "vfx": vfx_id, "ability": ctx.ability.data.id if ctx.ability else &"", "predicted": true})
+	ctx.world.emit_custom(&"area", {"pawn": ctx.pawn.net_id, "pos": c, "radius": radius, "vfx": _vfx(ctx), "ability": ctx.ability.data.id if ctx.ability else &"", "predicted": true})
+
+
+## The effect's own id wins; otherwise fall back to the ability's authored area_vfx, which had no
+## path to the client before and so was silently ignored on every ability that set it.
+func _vfx(ctx: AbilityContext) -> StringName:
+	if vfx_id != &"":
+		return vfx_id
+	if ctx.ability and ctx.ability.data and ctx.ability.data.presentation:
+		return ctx.ability.data.presentation.area_vfx
+	return &""

@@ -94,6 +94,14 @@ static func register() -> void:
 	VfxLibrary.register_builder(&"wisp_displacement_end", func(lib: VfxLibrary) -> GPUParticles3D:
 		var p := _burst(lib, 30, 0.7, Vector3(0, 0.1, 1), 180.0, Vector3.ZERO, 6.0, 12.0, 0.5, 1.0, 0.4, VfxLibrary.soft_texture(), Color(0.8, 1.0, 0.95), Color(0.4, 1.0, 0.85, 0.0))
 		return p)
+	VfxLibrary.register_builder(&"wisp_displacement_explosion", func(lib: VfxLibrary) -> GPUParticles3D:
+		# Where the fold closes: space snapping back, thrown outward rather than collapsing in.
+		var p := _burst(lib, 70, 0.6, Vector3(0, 0.2, 0), 180.0, Vector3(0, -3.0, 0), 8.0, 18.0,
+			0.3, 0.8, 0.26, VfxLibrary.ring_texture(), Color(0.85, 1.0, 0.95), Color(0.4, 1.0, 0.85, 0.0))
+		var mat := p.process_material as ParticleProcessMaterial
+		mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		mat.emission_sphere_radius = 0.9
+		return p)
 
 
 static func _burst(lib: VfxLibrary, amount: int, life: float, dir: Vector3, spread: float, grav: Vector3, vmin: float, vmax: float, smin: float, smax: float, size: float, tex: Texture2D, c0: Color, c1: Color, add: bool = true) -> GPUParticles3D:

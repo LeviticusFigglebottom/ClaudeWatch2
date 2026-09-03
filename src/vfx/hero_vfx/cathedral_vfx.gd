@@ -15,6 +15,8 @@ static func register() -> void:
 		v.build(data, team, color, max_hp)
 		return v)
 
+	VfxLibrary.register_builder(&"cathedral_censer_explosion", func(lib: VfxLibrary) -> GPUParticles3D: return _censer_explosion(lib))
+
 
 static func _base(lib: VfxLibrary, amount: int, life: float, size: float, tex: Texture2D, add: bool = true) -> Array:
 	var p := GPUParticles3D.new()
@@ -219,3 +221,20 @@ class DomeVisual extends Node3D:
 			ring.rotation.y += delta * 0.6
 		if light:
 			light.light_energy = 2.2 + sin(t * 3.0) * 0.4
+
+
+## The censer bursting: burning incense thrown out at knee height, heavy and slow to clear.
+static func _censer_explosion(lib: VfxLibrary) -> GPUParticles3D:
+	var pair := _base(lib, 64, 0.9, 0.42, VfxLibrary.soft_texture())
+	var p: GPUParticles3D = pair[0]
+	var mat: ParticleProcessMaterial = pair[1]
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 0.8
+	mat.direction = Vector3(0, 0.25, 0)
+	mat.spread = 180.0
+	mat.initial_velocity_min = 4.0
+	mat.initial_velocity_max = 9.0
+	mat.gravity = Vector3(0, -1.2, 0)
+	mat.scale_min = 0.6
+	mat.scale_max = 1.5
+	return p

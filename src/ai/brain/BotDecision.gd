@@ -22,6 +22,13 @@ var kill_streak_seen: int = 0
 var forgotten_slot: int = -1
 var forgotten_until: float = 0.0
 var last_ult_consider: float = 0.0
+var ult_ready_since: float = -1.0     # when the ult meter filled, for hold pressure below
+
+## How long a bot will sit on a charged ultimate waiting for its ideal window before it starts
+## taking lesser opportunities. Scaled by ult_discipline, so an elite bot holds roughly three times
+## as long as a recruit. Players get itchy holding an ult; bots used to hold theirs forever.
+const ULT_BASE_PATIENCE := 14.0
+const ULT_MAX_PRESSURE := 0.45
 var ability_timers: Dictionary = {}    # slot -> next consider time
 var last_goal_change: float = 0.0
 var flank_point: Vector3
@@ -730,7 +737,10 @@ func _consider_ultimate(dt: float) -> void:
 	var me := brain.pawn
 	var ult := me.abilities.get_slot(RF.Slot.ULTIMATE)
 	if ult == null or not ult.is_ready():
+		ult_ready_since = -1.0
 		return
+	if ult_ready_since < 0.0:
+		ult_ready_since = time
 	if time - last_ult_consider < 0.35:
 		return
 	last_ult_consider = time
@@ -757,7 +767,10 @@ func _consider_ultimate(dt: float) -> void:
 			if low >= maxi(h.needs_allies_in_radius, 2) or (coord and coord.enemy_used_ult_recently(&"engage", 120)):
 				u = 0.6 + low * 0.15
 			elif allies >= 3 and per.visible_enemies.size() >= 3:
-				u = 0.3
+				# A full team fight with nobody hurt yet is a real window for a support ultimate.
+				# This used to score 0.3, which is below the press threshold, so it never fired and
+				# supports only ulted once two allies were already under half health.
+				u = 0.5
 		AbilityAIHints.Intent.REVEAL, AbilityAIHints.Intent.UTILITY, AbilityAIHints.Intent.MOBILITY:
 			if per.known_enemies.size() >= 2 and (goal == Goal.ENGAGE or goal == Goal.ADVANCE):
 				u = 0.5
@@ -773,6 +786,17 @@ func _consider_ultimate(dt: float) -> void:
 				u *= 0.3
 		if style == &"counter" and coord.enemy_used_ult_recently(&"engage", 90):
 			u = maxf(u, 0.9)
+	# Hold pressure: the longer a charged ultimate goes unused, the more willing the bot is to take
+	# a lesser window. Only while there is something to use it on and the round is live, so bots do
+	# not walk out of spawn and immediately dump. This is what stopped supports hoarding: their
+	# ideal window (two allies under half health inside the radius) is narrow, and their own healing
+	# keeps closing it, so without pressure they would sit at full charge for most of a match.
+	if ult_ready_since >= 0.0 and not per.known_enemies.is_empty():
+		var live: bool = brain.world.mode == null or brain.world.mode.phase == ModeController.Phase.LIVE or brain.world.mode.phase == ModeController.Phase.OVERTIME
+		if live:
+			var patience := ULT_BASE_PATIENCE * (0.6 + skill.ult_discipline)
+			var held := time - ult_ready_since
+			u += clampf((held - patience) / patience, 0.0, 1.0) * ULT_MAX_PRESSURE
 	# Human-shaped mistakes: panic ults, early ults, holding too long.
 	if time < panic_until and r.randf() < 0.05:
 		u = 1.0
@@ -782,3 +806,4 @@ func _consider_ultimate(dt: float) -> void:
 	if pressed:
 		brain.cmd.buttons |= RF.BTN_ULTIMATE
 		last_ult_consider = time + 1.0
+		ult_ready_since = -1.0

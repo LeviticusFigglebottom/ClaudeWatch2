@@ -43,6 +43,47 @@ static func register() -> void:
 	DeployableVisuals.register(&"tallow_vigil_ward", func(_kind: StringName, data: Dictionary, _team: int, color: Color, _max_hp: float) -> Node3D:
 		return _build_ward(data, color))
 
+	# The candles' warmth, a snuffed wick and the Vigil ward's boundary. Tallow's whole language is
+	# candlelight, so these stay warm and low-velocity: nothing here should read as an explosion.
+	VfxLibrary.register_builder(&"tallow_candle_glow", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := GPUParticles3D.new()
+		var m := ParticleProcessMaterial.new()
+		p.one_shot = true; p.explosiveness = 0.2; p.amount = 20; p.lifetime = 1.5
+		m.direction = Vector3(0, 1, 0); m.spread = 25.0; m.gravity = Vector3(0, 0.5, 0)
+		m.initial_velocity_min = 0.3; m.initial_velocity_max = 1.2
+		m.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		m.emission_sphere_radius = 2.2
+		m.scale_min = 0.25; m.scale_max = 0.6
+		m.color_ramp = _ramp(Color(1.0, 0.82, 0.5, 0.85), Color(0.9, 0.45, 0.15, 0))
+		p.process_material = m
+		p.draw_pass_1 = lib.mesh_quad(0.22, VfxLibrary.soft_texture())
+		return p)
+	VfxLibrary.register_builder(&"tallow_snuff", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := GPUParticles3D.new()
+		var m := ParticleProcessMaterial.new()
+		p.one_shot = true; p.explosiveness = 0.9; p.amount = 24; p.lifetime = 0.8
+		m.direction = Vector3(0, 1, 0); m.spread = 40.0; m.gravity = Vector3(0, 1.2, 0)
+		m.initial_velocity_min = 0.8; m.initial_velocity_max = 2.4
+		m.scale_min = 0.3; m.scale_max = 0.9
+		# Smoke, not fire: the wick has just gone out.
+		m.color_ramp = _ramp(Color(0.55, 0.5, 0.48, 0.7), Color(0.2, 0.18, 0.17, 0))
+		p.process_material = m
+		p.draw_pass_1 = lib.mesh_quad(0.3, VfxLibrary.soft_texture(), false)
+		return p)
+	VfxLibrary.register_builder(&"tallow_vigil_ring", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := GPUParticles3D.new()
+		var m := ParticleProcessMaterial.new()
+		p.one_shot = true; p.explosiveness = 0.6; p.amount = 40; p.lifetime = 1.1
+		m.direction = Vector3(0, 0.2, 0); m.spread = 180.0; m.gravity = Vector3.ZERO
+		m.initial_velocity_min = 3.0; m.initial_velocity_max = 7.0
+		m.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		m.emission_sphere_radius = 0.8
+		m.scale_min = 0.4; m.scale_max = 1.0
+		m.color_ramp = _ramp(Color(1.0, 0.88, 0.62, 1), Color(0.85, 0.4, 0.12, 0))
+		p.process_material = m
+		p.draw_pass_1 = lib.mesh_quad(0.32, VfxLibrary.ring_texture())
+		return p)
+
 
 static func _ramp(a: Color, b: Color) -> GradientTexture1D:
 	var g := Gradient.new()

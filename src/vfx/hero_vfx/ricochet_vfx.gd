@@ -34,6 +34,17 @@ static func register() -> void:
 		var p := _burst(lib, 26, 0.6, Vector3(0, 1, 0), 90.0, Vector3(0, -2, 0), 1.0, 3.0, 0.3, 0.6, 0.22, VfxLibrary.ring_texture(), Color(1.0, 0.5, 0.85), Color(1.0, 0.3, 0.7, 0.0))
 		return p)
 
+	VfxLibrary.register_builder(&"ricochet_pinball_loop", func(lib: VfxLibrary) -> GPUParticles3D:
+		# Pinball active: sparks shedding off the armed disc so its danger state is legible.
+		var p := _burst(lib, 24, 0.5, Vector3(0, 1, 0), 180.0, Vector3(0, -2.0, 0), 1.5, 4.0,
+			0.2, 0.5, 0.15, VfxLibrary.spark_texture(), Color(1.0, 0.95, 0.8), Color(1.0, 0.6, 0.2, 0.0))
+		p.one_shot = false
+		p.explosiveness = 0.0
+		var mat := p.process_material as ParticleProcessMaterial
+		mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		mat.emission_sphere_radius = 0.6
+		return p)
+
 
 static func _burst(lib: VfxLibrary, amount: int, life: float, dir: Vector3, spread: float, grav: Vector3, vmin: float, vmax: float, smin: float, smax: float, size: float, tex: Texture2D, c0: Color, c1: Color, add: bool = true) -> GPUParticles3D:
 	var p := GPUParticles3D.new()

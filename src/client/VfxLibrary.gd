@@ -477,7 +477,12 @@ func area(kind: StringName, pos: Vector3, radius: float, color: Color) -> void:
 	m.global_position = pos + Vector3(0, 0.08, 0)
 	m.rotation.x = -PI * 0.5
 	rings.append([m, 0.0, 0.6 if kind != &"ult" else 1.4])
-	spawn(&"explosion" if kind.contains("explo") else (&"heal_burst" if kind.contains("heal") else &"cast_generic"), pos, Vector3.UP, color)
+	# Hero modules register area recipes under the area's own id (kiln_meltdown_ground, and so on).
+	# Use one when it exists instead of guessing a generic burst from how the id is spelled.
+	if custom_builders.has(kind):
+		spawn(kind, pos, Vector3.UP, color)
+	else:
+		spawn(&"explosion" if kind.contains("explo") else (&"heal_burst" if kind.contains("heal") else &"cast_generic"), pos, Vector3.UP, color)
 
 
 func beam(net_id: int, from: Vector3, to: Vector3, pres: AbilityPresentation, color: Color) -> void:

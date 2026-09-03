@@ -16,6 +16,10 @@ static func register() -> void:
 		v.build(data, team, color, max_hp)
 		return v)
 
+	VfxLibrary.register_builder(&"kiln_meltdown_loop", func(lib: VfxLibrary) -> GPUParticles3D: return _meltdown_loop(lib))
+	VfxLibrary.register_builder(&"kiln_meltdown_ground", func(lib: VfxLibrary) -> GPUParticles3D: return _meltdown_ground(lib))
+	VfxLibrary.register_builder(&"kiln_meltdown_explosion", func(lib: VfxLibrary) -> GPUParticles3D: return _meltdown_explosion(lib))
+
 
 static func _base(lib: VfxLibrary, amount: int, life: float, size: float, tex: Texture2D, add: bool = true) -> Array:
 	var p := GPUParticles3D.new()
@@ -232,3 +236,58 @@ class SlagVisual extends Node3D:
 			m.emission_energy_multiplier = lerpf(3.0, 0.4, cool)
 		if light:
 			light.light_energy = lerpf(2.2, 0.3, cool) + sin(t * 6.0) * 0.1
+
+
+## Held while Meltdown burns: a steady updraught off the suit, quieter than the opening bloom so it
+## can run for the whole duration without swamping the fight.
+static func _meltdown_loop(lib: VfxLibrary) -> GPUParticles3D:
+	var pair := _base(lib, 40, 1.0, 0.35, VfxLibrary.soft_texture())
+	var p: GPUParticles3D = pair[0]
+	var mat: ParticleProcessMaterial = pair[1]
+	p.one_shot = false
+	p.explosiveness = 0.0
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 0.9
+	mat.direction = Vector3(0, 1, 0)
+	mat.spread = 35.0
+	mat.initial_velocity_min = 1.5
+	mat.initial_velocity_max = 4.5
+	mat.gravity = Vector3(0, 1.8, 0)
+	mat.scale_min = 0.5
+	mat.scale_max = 1.3
+	return p
+
+
+## The burning ground under Meltdown: low, wide and slow, so players can read the danger footprint.
+static func _meltdown_ground(lib: VfxLibrary) -> GPUParticles3D:
+	var pair := _base(lib, 70, 1.3, 0.45, VfxLibrary.soft_texture())
+	var p: GPUParticles3D = pair[0]
+	var mat: ParticleProcessMaterial = pair[1]
+	p.explosiveness = 0.4
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 3.2
+	mat.direction = Vector3(0, 1, 0)
+	mat.spread = 25.0
+	mat.initial_velocity_min = 0.5
+	mat.initial_velocity_max = 2.5
+	mat.gravity = Vector3(0, 1.2, 0)
+	mat.scale_min = 0.6
+	mat.scale_max = 1.6
+	return p
+
+
+## Meltdown ending: the stored heat leaves all at once.
+static func _meltdown_explosion(lib: VfxLibrary) -> GPUParticles3D:
+	var pair := _base(lib, 120, 0.9, 0.5, VfxLibrary.soft_texture())
+	var p: GPUParticles3D = pair[0]
+	var mat: ParticleProcessMaterial = pair[1]
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 1.0
+	mat.direction = Vector3(0, 0.3, 0)
+	mat.spread = 180.0
+	mat.initial_velocity_min = 8.0
+	mat.initial_velocity_max = 18.0
+	mat.gravity = Vector3(0, -3.0, 0)
+	mat.scale_min = 0.7
+	mat.scale_max = 1.8
+	return p

@@ -13,6 +13,9 @@ static func register() -> void:
 		v.build(data, team, color, max_hp)
 		return v)
 
+	VfxLibrary.register_builder(&"rook_density_loop", func(lib: VfxLibrary) -> GPUParticles3D: return _density_loop(lib))
+	VfxLibrary.register_builder(&"rook_ground_zero_pull", func(lib: VfxLibrary) -> GPUParticles3D: return _ground_zero_pull(lib))
+
 
 static func _base(lib: VfxLibrary, amount: int, life: float, size: float, tex: Texture2D, add: bool = true) -> Array:
 	var p := GPUParticles3D.new()
@@ -199,3 +202,40 @@ class WellVisual extends Node3D:
 			ground_ring.scale = Vector3(s, s, 1.0)
 		if light:
 			light.light_energy = 2.0 + 3.0 * k + sin(t * 20.0) * 0.3 * k
+
+
+## Density held: mass gathering inward around Rook, slow and heavy.
+static func _density_loop(lib: VfxLibrary) -> GPUParticles3D:
+	var pair := _base(lib, 30, 1.1, 0.3, VfxLibrary.soft_texture())
+	var p: GPUParticles3D = pair[0]
+	var mat: ParticleProcessMaterial = pair[1]
+	p.one_shot = false
+	p.explosiveness = 0.0
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 2.0
+	mat.direction = Vector3.ZERO
+	mat.spread = 180.0
+	mat.radial_velocity_min = -3.0
+	mat.radial_velocity_max = -1.0
+	mat.scale_min = 0.3
+	mat.scale_max = 0.9
+	return p
+
+
+## Ground Zero's draw phase: everything falls toward the singularity before it detonates.
+static func _ground_zero_pull(lib: VfxLibrary) -> GPUParticles3D:
+	var pair := _base(lib, 90, 1.0, 0.35, VfxLibrary.spark_texture())
+	var p: GPUParticles3D = pair[0]
+	var mat: ParticleProcessMaterial = pair[1]
+	p.explosiveness = 0.3
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 6.0
+	mat.direction = Vector3.ZERO
+	mat.spread = 180.0
+	mat.radial_velocity_min = -16.0
+	mat.radial_velocity_max = -8.0
+	mat.angular_velocity_min = -180.0
+	mat.angular_velocity_max = 180.0
+	mat.scale_min = 0.3
+	mat.scale_max = 0.8
+	return p

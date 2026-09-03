@@ -109,7 +109,11 @@ func _plan() -> void:
 		stance = Stance.PUSH if _grouped(positions, 14.0) else Stance.GROUP
 		rally_point = objective if stance == Stance.PUSH else _staging_point(objective)
 		directive_reason = "grouped push" if stance == Stance.PUSH else "grouping before push"
-	elif not attacking:
+	elif not attacking and not mode.data.symmetric:
+		# Symmetric modes have no defender: both sides want the same thing from the same place, so
+		# they must follow the same stance ladder. Team B used to fall through to HOLD here purely
+		# because attacking_team defaults to A, which gave the two teams different behaviour in
+		# Push and Control.
 		stance = Stance.HOLD
 		rally_point = _hold_point(objective)
 		directive_reason = "holding objective"

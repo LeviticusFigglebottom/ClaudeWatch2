@@ -8,7 +8,24 @@ import argparse, json, os, subprocess, sys, glob, statistics, time, itertools, r
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GODOT = os.environ.get("GODOT_BIN", "/opt/godot/Godot_v4.7.2-stable_linux.x86_64")
 
+# Seconds a single round can last, per mode, from data/modes/*.tres: setup + round_time + the time
+# checkpoints can add. A match of `max_rounds` rounds needs at least this much per round, and a
+# limit shorter than that truncates the last round. Escort matches run two rounds with the sides
+# swapped, so a 420 s limit used to cut round 2 off and hand every match to whoever attacked first.
+MODE_ROUND_SECONDS = {"escort": 450, "hybrid": 450, "control": 360, "push": 500}
+MODE_ROUNDS = {"escort": 2, "hybrid": 2, "control": 1, "push": 1}
+
+
+def minimum_limit(mode):
+    return MODE_ROUND_SECONDS.get(mode, 400) * MODE_ROUNDS.get(mode, 1)
+
+
 def run(args):
+    need = minimum_limit(args.mode)
+    if args.limit < need:
+        print(f"[sim] warning: --limit {args.limit} is short for {args.mode}, which can need {need}s "
+              f"({MODE_ROUNDS.get(args.mode, 1)} round(s)). Truncated rounds are scored for whoever "
+              f"was ahead, which biases the result toward the team that attacks first.")
     os.makedirs(args.out, exist_ok=True)
     per = max(1, args.matches // args.procs)
     procs = []

@@ -36,6 +36,28 @@ static func register() -> void:
 		var p := _burst(lib, 24, 0.6, Vector3(0, 1, 0), 60.0, Vector3(0, 1, 0), 1.0, 3.0, 0.8, 1.4, 0.5, VfxLibrary.soft_texture(), Color(0.5, 0.5, 0.55), Color(0.4, 0.4, 0.45, 0.0), false)
 		return p)
 
+	# Dive's ground burst and the two jet loops. The loops are thin and fast so they read as thrust
+	# rather than smoke, and stay cheap enough to run for a whole flight.
+	VfxLibrary.register_builder(&"harrier_dive_explosion", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := _burst(lib, 80, 0.65, Vector3(0, 0.3, 0), 180.0, Vector3(0, -6.0, 0), 10.0, 22.0,
+			0.35, 0.9, 0.3, VfxLibrary.soft_texture(), Color(1.0, 0.85, 0.6), Color(0.9, 0.4, 0.15, 0.0))
+		var mat := p.process_material as ParticleProcessMaterial
+		mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		mat.emission_sphere_radius = 1.1
+		return p)
+	VfxLibrary.register_builder(&"harrier_dive_loop", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := _burst(lib, 28, 0.35, Vector3(0, -1, 0), 22.0, Vector3(0, -2.0, 0), 6.0, 12.0,
+			0.2, 0.5, 0.16, VfxLibrary.soft_texture(), Color(1.0, 0.9, 0.75), Color(0.95, 0.45, 0.2, 0.0))
+		p.one_shot = false
+		p.explosiveness = 0.0
+		return p)
+	VfxLibrary.register_builder(&"harrier_strafing_run_loop", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := _burst(lib, 40, 0.4, Vector3(0, -0.4, 1), 30.0, Vector3(0, -1.0, 0), 8.0, 16.0,
+			0.25, 0.6, 0.18, VfxLibrary.soft_texture(), Color(1.0, 0.92, 0.8), Color(0.95, 0.5, 0.2, 0.0))
+		p.one_shot = false
+		p.explosiveness = 0.0
+		return p)
+
 
 static func _burst(lib: VfxLibrary, amount: int, life: float, dir: Vector3, spread: float, grav: Vector3, vmin: float, vmax: float, smin: float, smax: float, size: float, tex: Texture2D, c0: Color, c1: Color, add: bool = true) -> GPUParticles3D:
 	var p := GPUParticles3D.new()

@@ -9,6 +9,10 @@ static func register() -> void:
 	VfxLibrary.register_builder(&"ballast_anchor_impact", func(lib: VfxLibrary) -> GPUParticles3D: return _anchor_impact(lib))
 	VfxLibrary.register_builder(&"ballast_surge_cast", func(lib: VfxLibrary) -> GPUParticles3D: return _surge(lib))
 
+	VfxLibrary.register_builder(&"ballast_riptide_ring", func(lib: VfxLibrary) -> GPUParticles3D: return _riptide_ring(lib))
+	VfxLibrary.register_builder(&"ballast_riptide_loop", func(lib: VfxLibrary) -> GPUParticles3D: return _riptide_loop(lib))
+	VfxLibrary.register_builder(&"ballast_surge_loop", func(lib: VfxLibrary) -> GPUParticles3D: return _surge_loop(lib))
+
 
 static func _base(lib: VfxLibrary, amount: int, life: float, size: float, tex: Texture2D, add: bool = true) -> Array:
 	var p := GPUParticles3D.new()
@@ -109,4 +113,58 @@ static func _surge(lib: VfxLibrary) -> GPUParticles3D:
 	mat.gravity = Vector3.ZERO
 	mat.scale_min = 0.6
 	mat.scale_max = 1.4
+	return p
+
+
+## The riptide's footprint on the ground: water dragged inward along the floor of the zone.
+static func _riptide_ring(lib: VfxLibrary) -> GPUParticles3D:
+	var pair := _base(lib, 60, 0.9, 0.4, VfxLibrary.ring_texture())
+	var p: GPUParticles3D = pair[0]
+	var mat: ParticleProcessMaterial = pair[1]
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 4.5
+	mat.direction = Vector3(0, 0.15, 0)
+	mat.spread = 180.0
+	mat.gravity = Vector3(0, -1.5, 0)
+	mat.radial_velocity_min = -7.0
+	mat.radial_velocity_max = -3.0
+	mat.scale_min = 0.5
+	mat.scale_max = 1.2
+	return p
+
+
+## Held while the riptide is open: a slow churn so the zone reads as live, not a one-shot burst.
+static func _riptide_loop(lib: VfxLibrary) -> GPUParticles3D:
+	var pair := _base(lib, 34, 1.2, 0.32, VfxLibrary.soft_texture())
+	var p: GPUParticles3D = pair[0]
+	var mat: ParticleProcessMaterial = pair[1]
+	p.one_shot = false
+	p.explosiveness = 0.0
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 1.2
+	mat.direction = Vector3(0, 1, 0)
+	mat.spread = 60.0
+	mat.initial_velocity_min = 0.6
+	mat.initial_velocity_max = 2.2
+	mat.scale_min = 0.4
+	mat.scale_max = 0.9
+	return p
+
+
+## Surge: pressure venting off the suit while the armour buff is up.
+static func _surge_loop(lib: VfxLibrary) -> GPUParticles3D:
+	var pair := _base(lib, 26, 0.8, 0.22, VfxLibrary.spark_texture())
+	var p: GPUParticles3D = pair[0]
+	var mat: ParticleProcessMaterial = pair[1]
+	p.one_shot = false
+	p.explosiveness = 0.0
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 0.7
+	mat.direction = Vector3(0, 1, 0)
+	mat.spread = 45.0
+	mat.initial_velocity_min = 1.5
+	mat.initial_velocity_max = 4.0
+	mat.gravity = Vector3(0, 1.0, 0)
+	mat.scale_min = 0.25
+	mat.scale_max = 0.6
 	return p

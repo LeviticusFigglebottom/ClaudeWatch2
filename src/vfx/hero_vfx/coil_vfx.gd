@@ -137,6 +137,34 @@ static func register() -> void:
 		var p := _burst(lib, 20, 0.6, Vector3(0, 1, 0), 60.0, Vector3(0, 1, 0), 0.5, 2.0, 0.6, 1.2, 0.35, VfxLibrary.soft_texture(), Color(0.4, 0.2, 0.7), Color(0.3, 0.1, 0.5, 0.0))
 		return p)
 
+	# Blackout's field, the capacitor discharge and the node's chain burst. All three are the same
+	# electrical language as the arcs, kept violet-white so they never read as fire.
+	VfxLibrary.register_builder(&"coil_blackout_explosion", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := _burst(lib, 90, 0.7, Vector3(0, 0.2, 0), 180.0, Vector3(0, -2.0, 0), 9.0, 20.0,
+			0.25, 0.7, 0.24, VfxLibrary.spark_texture(), Color(0.95, 0.9, 1.0), Color(0.45, 0.3, 0.9, 0.0))
+		var mat := p.process_material as ParticleProcessMaterial
+		mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		mat.emission_sphere_radius = 1.0
+		return p)
+	VfxLibrary.register_builder(&"coil_capacitor_explosion", func(lib: VfxLibrary) -> GPUParticles3D:
+		return _burst(lib, 50, 0.5, Vector3(0, 0.3, 0), 180.0, Vector3(0, -4.0, 0), 7.0, 15.0,
+			0.2, 0.55, 0.2, VfxLibrary.spark_texture(), Color(1.0, 0.95, 1.0), Color(0.5, 0.35, 1.0, 0.0)))
+	VfxLibrary.register_builder(&"coil_chain_explosion", func(lib: VfxLibrary) -> GPUParticles3D:
+		return _burst(lib, 34, 0.45, Vector3(0, 0.4, 0), 180.0, Vector3(0, -3.0, 0), 5.0, 11.0,
+			0.18, 0.45, 0.17, VfxLibrary.spark_texture(), ARC_COLOR.lightened(0.4), Color(ARC_COLOR.r, ARC_COLOR.g, ARC_COLOR.b, 0.0)))
+	VfxLibrary.register_builder(&"coil_capacitor_loop", func(lib: VfxLibrary) -> GPUParticles3D:
+		# Charging: sparse ticks orbiting the gauntlet, so a charged Coil is readable at a glance.
+		var p := _burst(lib, 22, 0.9, Vector3(0, 1, 0), 180.0, Vector3.ZERO, 0.5, 2.0,
+			0.2, 0.5, 0.14, VfxLibrary.spark_texture(), Color(0.95, 0.9, 1.0), Color(ARC_COLOR.r, ARC_COLOR.g, ARC_COLOR.b, 0.0))
+		p.one_shot = false
+		p.explosiveness = 0.0
+		var mat := p.process_material as ParticleProcessMaterial
+		mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		mat.emission_sphere_radius = 0.75
+		mat.angular_velocity_min = 120.0
+		mat.angular_velocity_max = 320.0
+		return p)
+
 
 static func _spawn_arc(lib: VfxLibrary, from: Vector3, to: Vector3, color: Color) -> void:
 	if lib.world == null:

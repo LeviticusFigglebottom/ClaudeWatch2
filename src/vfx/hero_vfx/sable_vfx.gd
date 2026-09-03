@@ -38,6 +38,22 @@ static func register() -> void:
 		p.draw_pass_1 = lib.mesh_quad(0.5, VfxLibrary.soft_texture(), false)
 		return p)
 
+	# Requiem marks a victim: a tight violet brand that hangs on them rather than a burst.
+	VfxLibrary.register_builder(&"sable_requiem_mark", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := GPUParticles3D.new()
+		var m := ParticleProcessMaterial.new()
+		p.one_shot = true; p.explosiveness = 0.9; p.amount = 22; p.lifetime = 0.8
+		m.direction = Vector3(0, 1, 0); m.spread = 180.0; m.gravity = Vector3.ZERO
+		m.initial_velocity_min = 0.0; m.initial_velocity_max = 0.6
+		m.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		m.emission_sphere_radius = 1.0
+		m.radial_velocity_min = -2.5; m.radial_velocity_max = -0.8
+		m.scale_min = 0.3; m.scale_max = 0.7
+		m.color_ramp = _ramp(Color(0.75, 0.45, 1.0, 1), Color(0.3, 0.1, 0.5, 0))
+		p.process_material = m
+		p.draw_pass_1 = lib.mesh_quad(0.26, VfxLibrary.ring_texture())
+		return p)
+
 
 static func _ramp(a: Color, b: Color) -> GradientTexture1D:
 	var g := Gradient.new()

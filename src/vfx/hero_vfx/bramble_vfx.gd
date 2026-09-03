@@ -29,6 +29,35 @@ static func register() -> void:
 	DeployableVisuals.register(&"thicket_wall", func(_kind: StringName, data: Dictionary, team: int, color: Color, max_hp: float) -> Node3D:
 		return _build_hedge(data, team, color, max_hp))
 
+	# Overgrowth's field and the Thicket's footprint. Both are ground effects, so they crawl low and
+	# outward rather than blooming upward like the cast.
+	VfxLibrary.register_builder(&"bramble_overgrowth", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := GPUParticles3D.new()
+		var m := ParticleProcessMaterial.new()
+		p.one_shot = true; p.explosiveness = 0.7; p.amount = 70; p.lifetime = 1.1
+		m.direction = Vector3(0, 0.25, 0); m.spread = 180.0; m.gravity = Vector3(0, -1.0, 0)
+		m.initial_velocity_min = 2.0; m.initial_velocity_max = 6.0
+		m.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		m.emission_sphere_radius = 2.0
+		m.scale_min = 0.4; m.scale_max = 1.0
+		m.color_ramp = _ramp(Color(0.55, 1.0, 0.4, 1), Color(0.12, 0.36, 0.06, 0))
+		p.process_material = m
+		p.draw_pass_1 = lib.mesh_quad(0.34, VfxLibrary.spark_texture())
+		return p)
+	VfxLibrary.register_builder(&"bramble_thicket_zone", func(lib: VfxLibrary) -> GPUParticles3D:
+		var p := GPUParticles3D.new()
+		var m := ParticleProcessMaterial.new()
+		p.one_shot = true; p.explosiveness = 0.5; p.amount = 34; p.lifetime = 1.4
+		m.direction = Vector3(0, 1, 0); m.spread = 40.0; m.gravity = Vector3(0, 0.4, 0)
+		m.initial_velocity_min = 0.4; m.initial_velocity_max = 1.6
+		m.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+		m.emission_sphere_radius = 2.6
+		m.scale_min = 0.3; m.scale_max = 0.8
+		m.color_ramp = _ramp(Color(0.45, 0.95, 0.35, 0.9), Color(0.1, 0.3, 0.05, 0))
+		p.process_material = m
+		p.draw_pass_1 = lib.mesh_quad(0.3, VfxLibrary.soft_texture())
+		return p)
+
 
 static func _ramp(a: Color, b: Color) -> GradientTexture1D:
 	var g := Gradient.new()
