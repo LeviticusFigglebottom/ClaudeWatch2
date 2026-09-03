@@ -51,5 +51,10 @@ Living list. Items move from *Open* to *Done* with the commit that closed them; 
       weapon bloom inert, and made the client draw every hitscan weapon and beam with a default
       presentation instead of its authored muzzle flash, tracer and impact VFX
 - [x] Coil's Arc Gauntlet cut from 30 damage to 25; the highest damage and K/D in the game
+- [x] 27 weapon fire/tail sounds were never rendered: fourteen hero primaries and secondaries were
+      silent, and nothing reported it because the client never resolved their presentation. Wired
+      into the audio manifest and rendered; all three maps now report zero missing sound ids
+- [x] The prop audit reported only the first map when run over all of them, so a clean summary
+      covered one map in three. All three now audit in one run: 404 props, 0 findings
 - [x] Telemetry records damage per ability, not just per hero, so a lever can be identified before
       it is pulled rather than after two failed guesses

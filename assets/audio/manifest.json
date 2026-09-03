@@ -1723,6 +1723,16 @@
   "recipe": "ult_loop",
   "sources": []
  },
+ "ferry_light_fire": {
+  "files": [
+   "assets/audio/ferry_light_fire_1.wav",
+   "assets/audio/ferry_light_fire_2.wav",
+   "assets/audio/ferry_light_fire_3.wav"
+  ],
+  "kind": "gunshot",
+  "recipe": "heal_bolt",
+  "sources": []
+ },
  "ferry_ult_line": {
   "files": [
    "assets/audio/ferry_ult_line.wav"

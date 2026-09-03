@@ -99,7 +99,7 @@ _HERO_MAP = {
                  capacitor_cast="buff_chime", capacitor_loop="capacitor_loop", capacitor_end="focus_off",
                  chain_impact="chain_zap", lance_impact="impact_bolt", tesla_node_cast="deploy_place",
                  tesla_node_fire="deploy_place", tesla_node_loop="ability_loop", tesla_node_end="deploy_break"),
-    "ferry": dict(bolt_fire="staff_bolt", bolt_tail="short_tail", crossing_cast="ult_cast", crossing_fire="teleport_out", crossing_loop="ult_loop", crossing_end="teleport_in",
+    "ferry": dict(bolt_fire="staff_bolt", bolt_tail="short_tail", light_fire="heal_bolt", crossing_cast="ult_cast", crossing_fire="teleport_out", crossing_loop="ult_loop", crossing_end="teleport_in",
                   undertow_fire="pull", waystone_fire="deploy_place"),
     "harrier": dict(afterburn_fire="jet_burst", afterburn_tail="short_tail", afterburn_end="beam_end", dive_cast="dash",
                     dive_loop="flight_jets", dive_impact="explosion_small", dive_end="land_generic",
