@@ -11,7 +11,11 @@ Living list. Items move from *Open* to *Done* with the commit that closed them; 
       really 32 distinct ones. Its conclusions still hold but its sample was half what it claimed.
 - [ ] Coil's Tesla Node is 23% of his damage and also relays his chain; the 25-damage cut to his
       primary moved his output by only 4%. See BALANCE_LOG.md pass 5.
-- [ ] Per-map soak (10 min each) with perf sampling; network stress run.
+- [ ] Per-map soak (10 min each) with perf sampling; network stress run. One spot measurement so
+      far, Saltmarsh with the outskirts in: 903 draw calls, 290k primitives, 462 MB VRAM under
+      lavapipe, against roughly 2500 draw calls on Nightmarket, the heaviest map. Mesh instances
+      per map went 745 -> 1181 on Saltmarsh and 25 -> 70 on the range; Nightmarket is 737 either
+      way, which is what confirms its reverted backdrop left nothing behind.
 - [ ] Long audio (ambience, music) ships as WAV; converting those to OGG would cut ~60 MB.
 - [ ] Headless runs abort with a heap error at shutdown *after* completing, which corrupts CI exit
       codes. Every gate currently has to be judged on its printed output, not its status.
